@@ -260,6 +260,10 @@ export function SpotlightHome() {
         },
         onButtonDown: onRecentsButtonDown,
         onActivate: onRecentsActivate,
+        onSelect: (next: number) => {
+            focusGames();
+            select(next);
+        },
     };
     // Which action button holds focus (its index among the row's buttons), remembered for the way back.
     const onActionsFocus = (event: { target: EventTarget }) => {
