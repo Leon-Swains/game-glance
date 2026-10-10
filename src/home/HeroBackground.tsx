@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { LOG_PREFIX } from '../constants';
-import { browserStores, capsuleUrls, heroUrls } from './artwork';
+import { browserStores, capsuleUrls, heroUrls, registerArtworkCacheClearer, useArtworkVersion } from './artwork';
 import { loadWithTimeout } from './accentSample';
 import { HeroLayer, nextHeroLayers } from './heroLayers';
 import { heroSources, shouldMemoArt } from './homeView';
@@ -41,6 +41,10 @@ async function firstThatLoads(urls: string[]): Promise<string | null> {
 const artMemo = new Map<number, Art>();
 /** Lookups in flight, so a pre-load and the selection share one load. */
 const inFlight = new Map<number, Promise<Art>>();
+registerArtworkCacheClearer(() => {
+    artMemo.clear();
+    inFlight.clear();
+});
 
 function remember(appId: number, art: Art) {
     artMemo.delete(appId);
@@ -119,6 +123,7 @@ function Layer({ art, settled }: { art: Art; settled: boolean }) {
  * pre-loaded (local steamloopback files, at most 2 x HERO_PRELOAD_RADIUS, deduplicated), so the next switch starts at once.
  */
 export function HeroBackground({ appId, detailsVersion, neighbours = [] }: { appId: number | null; detailsVersion: number; neighbours?: number[] }) {
+    const artworkVersion = useArtworkVersion();
     const [layers, setLayers] = useState<Array<HeroLayer<Art>>>([]);
     const nextId = useRef(0);
     const shown = useRef<Art | undefined>(undefined);
@@ -142,7 +147,7 @@ export function HeroBackground({ appId, detailsVersion, neighbours = [] }: { app
             active = false;
             if (prune !== undefined) clearTimeout(prune);
         };
-    }, [appId, detailsVersion]);
+    }, [appId, detailsVersion, artworkVersion]);
 
     const neighbourKey = neighbours.join(',');
     useEffect(() => {

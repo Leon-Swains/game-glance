@@ -1,4 +1,5 @@
 import { CSSProperties, useEffect, useMemo, useState } from 'react';
+import { useArtworkVersion } from '../home/artwork';
 import { forgetLogo, knownLogo, lastLogo, LogoChoice, logoFit } from '../home/logo';
 import { logoList, resolveLogo } from '../home/logoArt';
 
@@ -32,8 +33,9 @@ function logoStyle(choice: LogoChoice, unit: (n: number) => string): CSSProperti
  * none loading, or no app id (Home's library tile). Shared by Home and the game page.
  */
 export function GameTitle({ appId, name, logo, className, logoClassName, unit, version = 0 }: Props) {
+    const artworkVersion = useArtworkVersion();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const list = useMemo(() => (logo ? logoList(appId) : { urls: [], key: '' }), [logo, appId, version]);
+    const list = useMemo(() => (logo ? logoList(appId) : { urls: [], key: '' }), [logo, appId, version, artworkVersion]);
     const known = logo ? knownLogo(appId, list.key) : null;
     const [resolved, setResolved] = useState<{ appId: number; key: string; choice: LogoChoice | null } | null>(null);
     const [retry, setRetry] = useState(0);
@@ -48,7 +50,7 @@ export function GameTitle({ appId, name, logo, className, logoClassName, unit, v
             live = false;
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [logo, appId, list.key, retry]);
+    }, [logo, appId, list.key, retry, artworkVersion]);
 
     const fresh = known !== undefined ? known : resolved && resolved.appId === appId && resolved.key === list.key ? resolved.choice : undefined;
     // While a better source loads (Steam just listed the local file), the logo it had stays up.

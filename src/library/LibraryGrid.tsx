@@ -6,7 +6,9 @@ import {
     heroUrls as getHeroUrls,
     landscapeUrls as getLandscapeUrls,
     logoUrls as getLogoUrls,
+    registerArtworkCacheClearer,
     soundtrackCoverUrls as getSoundtrackCoverUrls,
+    useArtworkVersion,
 } from '../home/artwork';
 import { LibraryCollectionItem, LibraryGameItem } from './libraryData';
 
@@ -43,6 +45,10 @@ export type ResolvedCardArt =
 
 export const cardArtMemo = new Map<number, ResolvedCardArt>();
 const inFlightArt = new Map<number, Promise<ResolvedCardArt>>();
+registerArtworkCacheClearer(() => {
+    cardArtMemo.clear();
+    inFlightArt.clear();
+});
 
 function checkImageLoads(url: string, timeoutMs = 2500): Promise<boolean> {
     if (!url) return Promise.resolve(false);
@@ -162,6 +168,7 @@ export function resolveGameArt(game: LibraryGameItem): Promise<ResolvedCardArt> 
 
 export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDoubleClick, onContextMenu }: BannerCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
+    const artworkVersion = useArtworkVersion();
 
     // Initial state directly from memo: instantaneous if already visited!
     const [art, setArt] = React.useState<ResolvedCardArt>(() => cardArtMemo.get(game.appId) ?? { mode: 'none' });
@@ -181,7 +188,7 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
         return () => {
             active = false;
         };
-    }, [game.appId, game.landscapeUrl, game.heroUrl, game.logoUrl, game.capsuleUrl, game.isSoundtrack]);
+    }, [game.appId, game.landscapeUrl, game.heroUrl, game.logoUrl, game.capsuleUrl, game.isSoundtrack, artworkVersion]);
 
     // Ensure focused card scrolls into view vertically within the grid panel (never scrolls parent layout)
     useEffect(() => {
@@ -287,12 +294,13 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
 }
 
 function MiniCover({ game, className }: { game?: LibraryGameItem; className: string }) {
+    const artworkVersion = useArtworkVersion();
     const candidates = React.useMemo(() => {
         if (!game) return [];
         if (game.capsuleUrl) return [game.capsuleUrl];
         if (game.isSoundtrack) return getSoundtrackCoverUrls(game.appId, browserStores);
         return getCapsuleUrls(game.appId, browserStores);
-    }, [game]);
+    }, [game, artworkVersion]);
 
     const [src, setSrc] = React.useState<string>(candidates[0] ?? '');
     const [idx, setIdx] = React.useState(0);
