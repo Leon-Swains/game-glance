@@ -117,6 +117,16 @@ export const LIBRARY_CSS = `
     display: none;
 }
 
+.sgl-tabs.sgl-tabs-dragging {
+    cursor: grabbing;
+    user-select: none;
+    scroll-behavior: auto;
+}
+
+.sgl-tabs.sgl-tabs-dragging .sgl-tab {
+    cursor: grabbing;
+}
+
 .sgl-tab {
     position: relative;
     white-space: nowrap;

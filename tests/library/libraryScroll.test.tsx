@@ -17,6 +17,7 @@ describe('Library Scroll & Touch Navigation', () => {
 
         it('includes touch-action pan-x on sgl-tabs', () => {
             expect(LIBRARY_CSS).toContain('touch-action: pan-x');
+            expect(LIBRARY_CSS).toContain('.sgl-tabs.sgl-tabs-dragging');
         });
 
         it('defines slim scrollbar styling on sgl-grid-panel', () => {
@@ -168,6 +169,29 @@ describe('Library Scroll & Touch Navigation', () => {
             );
             expect(html).toContain('sgl-card');
             expect(html).toContain('data-app-id="105600"');
+        });
+    });
+
+    describe('LibraryCategoryBar drag & scroll', () => {
+        const dummyCategories = [
+            { id: 'installed', name: 'Installed', count: 12, games: [] },
+            { id: 'all', name: 'All Games', count: 45, games: [] },
+            { id: 'favorites', name: 'Favorites', count: 5, games: [] },
+        ];
+
+        it('renders category tabs with sgl-tabs and tab buttons', async () => {
+            const { LibraryCategoryBar } = await import('../../src/library/LibraryCategoryBar');
+            const html = renderToString(
+                <LibraryCategoryBar
+                    categories={dummyCategories}
+                    activeCategoryId="installed"
+                    onSelectCategory={() => {}}
+                />
+            );
+            expect(html).toContain('sgl-tabs');
+            expect(html).toContain('Installed');
+            expect(html).toContain('All Games');
+            expect(html).toContain('Favorites');
         });
     });
 });
