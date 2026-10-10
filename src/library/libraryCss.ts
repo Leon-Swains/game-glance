@@ -109,6 +109,8 @@ export const LIBRARY_CSS = `
     scroll-behavior: smooth;
     padding: 2px 8px 4px;
     max-width: 100%;
+    touch-action: pan-x;
+    -webkit-overflow-scrolling: touch;
 }
 
 .sgl-tabs::-webkit-scrollbar {
@@ -265,6 +267,8 @@ export const LIBRARY_CSS = `
     background: linear-gradient(90deg, rgba(7, 10, 16, 0.54) 0%, rgba(7, 10, 16, 0.32) 100%);
     backdrop-filter: blur(20px);
     box-sizing: border-box;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
 }
 
 .sgl-inspector::-webkit-scrollbar {
@@ -555,13 +559,40 @@ export const LIBRARY_CSS = `
     padding: 22px 28px 28px 24px;
     min-width: 0;
     overflow-y: auto;
-    scrollbar-width: none;
-    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.16) transparent;
     box-sizing: border-box;
+    touch-action: pan-y;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+}
+
+.sgl-grid-panel.sgl-dragging {
+    cursor: grabbing;
+    user-select: none;
 }
 
 .sgl-grid-panel::-webkit-scrollbar {
-    display: none;
+    width: 6px;
+}
+
+.sgl-grid-panel::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.sgl-grid-panel::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.16);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+}
+
+.sgl-grid-panel:hover::-webkit-scrollbar-thumb,
+.sgl-grid-panel.sgl-scrolling::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.32);
+}
+
+.sgl-grid-panel::-webkit-scrollbar-thumb:hover {
+    background: var(--accent, #58a6ff);
 }
 
 .sgl-grid {
@@ -643,6 +674,9 @@ export const LIBRARY_CSS = `
     object-fit: cover;
     display: block;
     transition: filter 0.2s ease;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .sgl-card-fallback {
@@ -663,6 +697,9 @@ export const LIBRARY_CSS = `
     height: 100%;
     object-fit: cover;
     z-index: 1;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .sgl-card-fallback-overlay {
@@ -679,6 +716,9 @@ export const LIBRARY_CSS = `
     max-height: 60%;
     object-fit: contain;
     filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .sgl-card-fallback-title {
@@ -803,6 +843,9 @@ export const LIBRARY_CSS = `
     height: 100%;
     object-fit: cover;
     display: block;
+    user-select: none;
+    -webkit-user-drag: none;
+    pointer-events: none;
 }
 
 .sgl-col-card-far-left {

@@ -30,6 +30,39 @@ function runGameId(appId: number, shortcutGameId: string | undefined): string {
     return typeof shortcutGameId === 'string' && shortcutGameId.length > 0 ? shortcutGameId : String(appId);
 }
 
+/**
+ * If the user scrolled the library grid using mouse wheel or touch gestures, the currently
+ * selected card may have moved out of the viewport. When resuming keyboard/gamepad navigation,
+ * this reconciles the active focus to the topmost visible card instead of abruptly jumping back.
+ */
+export function getReconciledSelectedIndex(currentIdx: number, totalCount: number): number {
+    if (typeof document === 'undefined' || totalCount <= 0) return currentIdx;
+    const container = document.querySelector('.sgl-grid-panel');
+    if (!container) return currentIdx;
+
+    const cards = container.querySelectorAll('.sgl-card, .sgl-card-collection');
+    if (cards.length === 0) return currentIdx;
+
+    const currentCard = cards[currentIdx];
+    if (currentCard) {
+        const cRect = container.getBoundingClientRect();
+        const elRect = currentCard.getBoundingClientRect();
+        if (elRect.bottom >= cRect.top + 20 && elRect.top <= cRect.bottom - 20) {
+            return currentIdx;
+        }
+    }
+
+    const cRect = container.getBoundingClientRect();
+    for (let i = 0; i < cards.length; i++) {
+        const cardRect = cards[i].getBoundingClientRect();
+        if (cardRect.bottom > cRect.top + 20 && cardRect.top < cRect.bottom - 20) {
+            return i;
+        }
+    }
+
+    return currentIdx;
+}
+
 export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) {
     const currentSettings = useSettings();
     const columns = Math.min(7, Math.max(3, currentSettings.libraryGridColumns ?? 3));
@@ -103,6 +136,10 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         setActiveCategoryId(id);
         setSelectedCollectionId(null);
         setSelectedGameIdx(0);
+        const gridPanel = document.querySelector('.sgl-grid-panel');
+        if (gridPanel) {
+            gridPanel.scrollTop = 0;
+        }
         playNavSound();
     }, []);
 
@@ -153,6 +190,10 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         if (!col) return;
         setSelectedCollectionId(col.id);
         setSelectedGameIdx(0);
+        const gridPanel = document.querySelector('.sgl-grid-panel');
+        if (gridPanel) {
+            gridPanel.scrollTop = 0;
+        }
         playNavSound();
     }, [selectedCollectionItem]);
 
@@ -427,8 +468,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 evt.stopPropagation?.();
                 if (focusZone === 'tabs') {
                     cycleCategory(-1);
-                } else if (totalItemsCount > 0 && selectedGameIdx > 0) {
-                    handleSelectGame(selectedGameIdx - 1);
+                } else if (totalItemsCount > 0) {
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx > 0) {
+                        handleSelectGame(baseIdx - 1);
+                    }
                 }
                 return;
             }
@@ -438,8 +482,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 evt.stopPropagation?.();
                 if (focusZone === 'tabs') {
                     cycleCategory(1);
-                } else if (totalItemsCount > 0 && selectedGameIdx < totalItemsCount - 1) {
-                    handleSelectGame(selectedGameIdx + 1);
+                } else if (totalItemsCount > 0) {
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx < totalItemsCount - 1) {
+                        handleSelectGame(baseIdx + 1);
+                    }
                 }
                 return;
             }
@@ -448,8 +495,9 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 if (focusZone === 'grid') {
                     evt.preventDefault?.();
                     evt.stopPropagation?.();
-                    if (selectedGameIdx >= columns) {
-                        handleSelectGame(selectedGameIdx - columns);
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx >= columns) {
+                        handleSelectGame(baseIdx - columns);
                     } else {
                         setFocusZone('tabs');
                         playNavSound();
@@ -468,10 +516,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                     setFocusZone('grid');
                     playNavSound();
                 } else if (totalItemsCount > 0) {
-                    if (selectedGameIdx + columns < totalItemsCount) {
-                        handleSelectGame(selectedGameIdx + columns);
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx + columns < totalItemsCount) {
+                        handleSelectGame(baseIdx + columns);
                     } else {
-                        const curRow = Math.floor(selectedGameIdx / columns);
+                        const curRow = Math.floor(baseIdx / columns);
                         const lastRow = Math.floor((totalItemsCount - 1) / columns);
                         if (curRow < lastRow) {
                             handleSelectGame(totalItemsCount - 1);
@@ -559,29 +608,31 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
             // In Grid
             if (totalItemsCount === 0) return;
 
+            const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+
             if (e.key === 'ArrowLeft') {
-                if (selectedGameIdx > 0) {
-                    handleSelectGame(selectedGameIdx - 1);
+                if (baseIdx > 0) {
+                    handleSelectGame(baseIdx - 1);
                 }
                 e.preventDefault();
             } else if (e.key === 'ArrowRight') {
-                if (selectedGameIdx < totalItemsCount - 1) {
-                    handleSelectGame(selectedGameIdx + 1);
+                if (baseIdx < totalItemsCount - 1) {
+                    handleSelectGame(baseIdx + 1);
                 }
                 e.preventDefault();
             } else if (e.key === 'ArrowUp') {
-                if (selectedGameIdx >= columns) {
-                    handleSelectGame(selectedGameIdx - columns);
+                if (baseIdx >= columns) {
+                    handleSelectGame(baseIdx - columns);
                 } else {
                     setFocusZone('tabs');
                     playNavSound();
                 }
                 e.preventDefault();
             } else if (e.key === 'ArrowDown') {
-                if (selectedGameIdx + columns < totalItemsCount) {
-                    handleSelectGame(selectedGameIdx + columns);
+                if (baseIdx + columns < totalItemsCount) {
+                    handleSelectGame(baseIdx + columns);
                 } else {
-                    const currentRow = Math.floor(selectedGameIdx / columns);
+                    const currentRow = Math.floor(baseIdx / columns);
                     const lastRow = Math.floor((totalItemsCount - 1) / columns);
                     if (currentRow < lastRow) {
                         handleSelectGame(totalItemsCount - 1);

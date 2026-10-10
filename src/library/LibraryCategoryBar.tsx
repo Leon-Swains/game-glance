@@ -71,7 +71,17 @@ export function LibraryCategoryBar({
             ) : (
                 <div className="sgl-tabs-container">
                     <span className="sgl-bumper-badge">L1</span>
-                    <nav className="sgl-tabs" role="tablist" ref={navRef}>
+                    <nav
+                        className="sgl-tabs"
+                        role="tablist"
+                        ref={navRef}
+                        onWheel={(e) => {
+                            const nav = navRef.current;
+                            if (!nav) return;
+                            const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+                            nav.scrollLeft += delta;
+                        }}
+                    >
                         {categories.map((cat, idx) => {
                             const isActive = cat.id === activeCategoryId;
                             const isFocused = isHeaderFocused && idx === focusedIndex;
