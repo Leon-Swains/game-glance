@@ -66,6 +66,20 @@ export function wheelStep(delta: number, threshold = 15): -1 | 1 | 0 {
     return delta > 0 ? 1 : -1;
 }
 
+/** Returns true if an activation event is from a pointer or mouse click (which should be ignored by the Focusable container). Pure. */
+export function isPointerActivation(e?: unknown): boolean {
+    if (e && typeof e === 'object') {
+        const evt = e as { type?: string; clientX?: number; clientY?: number; pointerType?: string };
+        if (evt.type === 'click' || evt.pointerType === 'mouse' || evt.pointerType === 'touch') {
+            return true;
+        }
+        if (typeof evt.clientX === 'number' && typeof evt.clientY === 'number' && (evt.clientX > 0 || evt.clientY > 0)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 /**
  * One recents card. Memoized on plain props, so an L1/R1 step re-renders only the cards whose place or state changed;
  * its art urls are read from Steam's stores only when the game or its expanded state changes.
@@ -85,7 +99,7 @@ const GameCapsule = memo(function GameCapsule({
     dim: boolean;
     wide: boolean;
     blur: boolean;
-    onClick?: () => void;
+    onClick?: (e: React.MouseEvent) => void;
 }) {
     const artworkVersion = useArtworkVersion();
     const appId = game.appId;
@@ -147,6 +161,7 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
     const [isDragging, setIsDragging] = useState(false);
     const pointerStart = useRef<{ x: number; y: number; time: number } | null>(null);
     const wasDragged = useRef(false);
+    const dragEndTime = useRef(0);
     const lastWheelTime = useRef(0);
 
     const onPointerDown = (e: React.PointerEvent) => {
@@ -190,6 +205,8 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
 
         if (isDragging) {
             setIsDragging(false);
+            dragEndTime.current = Date.now();
+            wasDragged.current = true;
             try {
                 e.currentTarget.releasePointerCapture?.(e.pointerId);
             } catch {
@@ -209,7 +226,7 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
 
             setTimeout(() => {
                 wasDragged.current = false;
-            }, 120);
+            }, 400);
         } else {
             setDragOffset(0);
         }
@@ -219,7 +236,11 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
         pointerStart.current = null;
         if (isDragging) {
             setIsDragging(false);
+            dragEndTime.current = Date.now();
             setDragOffset(0);
+            setTimeout(() => {
+                wasDragged.current = false;
+            }, 400);
         }
     };
 
@@ -241,8 +262,22 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
         }
     };
 
-    const handleCardClick = (index: number) => {
-        if (wasDragged.current) return;
+    /**
+     * Focusable onActivate handler. Steam / Decky UI triggers Focusable.onActivate on synthetic
+     * and bubbling mouse/touch click events. We guard against any pointer/mouse click so that:
+     * 1) Gamepad 'A' press still activates the selected game as expected.
+     * 2) Mouse or touch clicks (on cards, other screen elements like news articles, or drag release)
+     *    never accidentally activate/open the game view.
+     */
+    const handleFocusableActivate = (e?: unknown) => {
+        if (isPointerActivation(e)) return;
+        nav.onActivate();
+    };
+
+    const handleCardClick = (e: React.MouseEvent, index: number) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (wasDragged.current || Date.now() - dragEndTime.current < 400) return;
         if (index === at) {
             nav.onActivate();
         } else {
@@ -250,8 +285,10 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
         }
     };
 
-    const handleGhostClick = (ghostIndex: number) => {
-        if (wasDragged.current) return;
+    const handleGhostClick = (e: React.MouseEvent, ghostIndex: number) => {
+        e.preventDefault();
+        e.stopPropagation();
+        if (wasDragged.current || Date.now() - dragEndTime.current < 400) return;
         nav.onSelect?.(ghostIndex === 0 ? 0 : Math.min(count, ghostIndex));
     };
 
@@ -265,7 +302,8 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
             onFocus={nav.onFocus}
             onGamepadFocus={nav.onFocus}
             onButtonDown={nav.onButtonDown}
-            onActivate={nav.onActivate}
+            onActivate={handleFocusableActivate}
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
             onPointerDown={onPointerDown}
             onPointerMove={onPointerMove}
             onPointerUp={onPointerUp}
@@ -290,13 +328,13 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
                         dim={layout.items[i].dim}
                         wide={!onLibrary && i === at}
                         blur={capsuleBlur(i, at)}
-                        onClick={() => handleCardClick(i)}
+                        onClick={(e) => handleCardClick(e, i)}
                     />
                 ))}
                 <div
                     className={`gh-cap gh-cap-lib${onLibrary ? ' gh-cap-lib-on' : ''}`}
                     style={{ left: `${library.left}px`, width: `${library.width}px` }}
-                    onClick={() => handleCardClick(count)}
+                    onClick={(e) => handleCardClick(e, count)}
                     role="button"
                     tabIndex={-1}
                     aria-label={tr('viewLibrary')}
@@ -318,7 +356,7 @@ export function RecentsRow({ games, selected, geometry, nav }: { games: HomeGame
                         className="gh-cap gh-ghost"
                         aria-hidden="true"
                         style={{ left: `${ghost.left}px`, width: `${geometry.capsuleW}px`, opacity: ghost.opacity }}
-                        onClick={() => handleGhostClick(j)}
+                        onClick={(e) => handleGhostClick(e, j)}
                     >
                         {/* Cover only: a ghost is exactly the portrait's width, so a blur base would be fully hidden. */}
                         <div className="gh-cap-cover" style={backgrounds(ghostCovers[j] ?? [])} />

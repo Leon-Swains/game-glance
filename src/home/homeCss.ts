@@ -303,6 +303,7 @@ export function homeCss(cardScale: number = CARD_SCALE_HANDHELD): string {
         // Every size here derives from recentsGeometry; left, width, dim and ghost opacity are inline. The row is one
         // gamepad focusable (RecentsRow); mouse and touch support enabled for wheel, swipe and direct card clicks.
         rule('.gh-recents', `position: absolute; left: var(--gh-row, ${SIDE_INSET.handheld - ROW_OFFSET}px); right: 0; top: calc(${geo.top}px - var(--gh-top)); height: ${geo.capsuleH}px; margin: 0; padding: 0; pointer-events: auto; user-select: none; -webkit-user-select: none; touch-action: pan-y`),
+        rule('.gh-page-up .gh-recents', 'pointer-events: none'),
         rule('.gh-recents-dragging', 'cursor: grabbing'),
         rule('.gh-recents-track', `position: absolute; inset: 0; transition: transform ${SLIDE}`),
         rule('.gh-cap', `position: absolute; top: 0; height: ${geo.capsuleH}px; margin: 0; padding: 0; border-radius: ${k(8)}px; overflow: hidden; background: #111;

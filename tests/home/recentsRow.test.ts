@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { capsuleBlur, cardStepFromDrag, isDragGesture, wheelStep } from '../../src/home/RecentsRow';
+import { capsuleBlur, cardStepFromDrag, isDragGesture, isPointerActivation, wheelStep } from '../../src/home/RecentsRow';
 
 describe('capsuleBlur', () => {
     it('only the selected card and its neighbours draw the blurred base (a narrow card\'s portrait covers it)', () => {
@@ -70,5 +70,20 @@ describe('mouse & touch gesture helpers (RecentsRow)', () => {
             expect(wheelStep(NaN)).toBe(0);
         });
     });
+
+    describe('isPointerActivation', () => {
+        it('returns false for undefined or Gamepad button events', () => {
+            expect(isPointerActivation(undefined)).toBe(false);
+            expect(isPointerActivation(null)).toBe(false);
+            expect(isPointerActivation({ detail: { button: 0 } })).toBe(false);
+        });
+        it('returns true for mouse and pointer click events', () => {
+            expect(isPointerActivation({ type: 'click' })).toBe(true);
+            expect(isPointerActivation({ pointerType: 'mouse' })).toBe(true);
+            expect(isPointerActivation({ pointerType: 'touch' })).toBe(true);
+            expect(isPointerActivation({ clientX: 100, clientY: 250 })).toBe(true);
+        });
+    });
 });
+
 
