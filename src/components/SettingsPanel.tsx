@@ -8,6 +8,7 @@ import { settings, useSettings } from '../data/settings';
 import { installUpdate, UpdateState, useUpdate } from '../data/update';
 import { checkOverride } from '../logic/hltbId';
 import { PLUGIN_NAME } from '../constants';
+import { reloadArtworkCache } from '../home/artwork';
 import { RECENT_ROW, ROW_SORTS, RowSort, rowSortLabel, sortByLabel, steamHomeCollections } from '../home/collections';
 import { tr } from '../i18n/steamText';
 
@@ -268,8 +269,22 @@ export function SettingsPanel() {
                 <PanelSectionRow>
                     <ButtonItem
                         layout="below"
+                        description="Refreshes heroes, logos, and banners if you changed artwork via SteamGridDB or Steam."
+                        onClick={() => {
+                            reloadArtworkCache();
+                            toaster.toast({ title: PLUGIN_NAME, body: 'Artwork reloaded.' });
+                        }}
+                    >
+                        Reload Steam artwork
+                    </ButtonItem>
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ButtonItem
+                        layout="below"
+                        description="Clears all cached HowLongToBeat, descriptions, and accent data, and reloads artwork."
                         onClick={async () => {
                             await cache.clear();
+                            reloadArtworkCache();
                             toaster.toast({ title: PLUGIN_NAME, body: 'Cached data cleared.' });
                         }}
                     >

@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { memoDetails } from './detailsMemo';
 
 export interface SteamStores {
@@ -91,7 +92,8 @@ export function heroUrls(appId: number, stores: SteamStores): string[] {
     const hero = guarded(() => stores.details(appId))?.libraryAssets?.strHeroImage;
     const overview = guarded(() => stores.overview(appId));
     const guessed = !hero && overview?.app_type === GAME_APP_TYPE ? guessedHeroUrls(appId) : [];
-    return [...new Set([...custom, ...toUrls(appId, [hero]), ...guessed, ...toUrls(appId, [overview?.header_filename, overview?.library_capsule_filename])])];
+    const list = [...new Set([...custom, ...toUrls(appId, [hero]), ...guessed, ...toUrls(appId, [overview?.header_filename, overview?.library_capsule_filename])])];
+    return currentArtworkVersion ? list.map((u) => withArtworkVersion(u)) : list;
 }
 
 /**
@@ -106,7 +108,8 @@ export function logoUrls(appId: number, stores: SteamStores): string[] {
     const logo = guarded(() => stores.details(appId))?.libraryAssets?.strLogoImage;
     const steamGame = guarded(() => stores.overview(appId))?.app_type === GAME_APP_TYPE;
     const remote = steamGame ? [`https://shared.steamstatic.com/store_item_assets/steam/apps/${appId}/logo.png`] : [];
-    return [...new Set([...custom, ...toUrls(appId, [logo]), ...remote])];
+    const list = [...new Set([...custom, ...toUrls(appId, [logo]), ...remote])];
+    return currentArtworkVersion ? list.map((u) => withArtworkVersion(u)) : list;
 }
 
 /**
@@ -150,7 +153,7 @@ export function soundtrackCoverUrls(appId: number, stores: SteamStores): string[
               ]
             : [];
 
-    return [
+    const list = [
         ...new Set([
             ...custom,
             ...toUrls(appId, coverFiles),
@@ -159,13 +162,15 @@ export function soundtrackCoverUrls(appId: number, stores: SteamStores): string[
             ...toUrls(appId, [overview?.header_filename]),
         ]),
     ];
+    return currentArtworkVersion ? list.map((u) => withArtworkVersion(u)) : list;
 }
 
 /** Custom portrait art first (`appStore.GetCustomVerticalCapsuleURLs`: `/customimages/<id>p.jpg|.png`), then the assets. */
 export function capsuleUrls(appId: number, stores: SteamStores): string[] {
     const custom = listed(() => stores.customCapsule?.(appId));
     const overview = guarded(() => stores.overview(appId));
-    return [...new Set([...custom, ...toUrls(appId, [overview?.library_capsule_filename, overview?.header_filename])])];
+    const list = [...new Set([...custom, ...toUrls(appId, [overview?.library_capsule_filename, overview?.header_filename])])];
+    return currentArtworkVersion ? list.map((u) => withArtworkVersion(u)) : list;
 }
 
 /**
@@ -180,10 +185,14 @@ export function landscapeUrls(appId: number, stores: SteamStores): string[] {
     const all = listed(() => stores.landscape?.(appId));
     const local = all.filter(isLocal);
     const fromSteam = local.length > 0 ? local : all;
-    if (fromSteam.length > 0) return [...new Set(fromSteam)];
+    if (fromSteam.length > 0) {
+        const list = [...new Set(fromSteam)];
+        return currentArtworkVersion ? list.map((u) => withArtworkVersion(u)) : list;
+    }
     const header = guarded(() => stores.details(appId))?.libraryAssets?.strHeaderImage;
     const overview = guarded(() => stores.overview(appId));
-    return [...new Set(toUrls(appId, [header, overview?.header_filename]))];
+    const list = [...new Set(toUrls(appId, [header, overview?.header_filename]))];
+    return currentArtworkVersion ? list.map((u) => withArtworkVersion(u)) : list;
 }
 
 interface StoreGlobals {
@@ -231,17 +240,10 @@ export const browserStores: SteamStores = {
         const g = globals();
         const overview = getOverviewWithFallback(id);
         const steamUrls: string[] = [];
-        if (overview) {
-            const headers = g.appDetailsStore?.GetHeaderImages?.(overview, false);
-            if (Array.isArray(headers)) steamUrls.push(...headers);
-            const customPath = (overview as Record<string, unknown>).strCustomHeaderPath ?? (overview as Record<string, unknown>).m_strCustomHeaderPath;
-            if (typeof customPath === 'string' && customPath) steamUrls.push(customPath);
-        }
 
         // Direct custom horizontal images from Steam's config/grid folder (served at /customimages/)
-        // Windows Steam and SteamGridDB save custom artwork directly here for shortcuts
-        const isShortcut = !overview || overview.app_type !== 1 || (id < 0 || id > 0x7fffffff) || Boolean((overview as Record<string, unknown>).m_gameid);
-        if (isShortcut && (g.appStore || g.appDetailsStore)) {
+        // Windows Steam and SteamGridDB save custom artwork directly here for any game
+        if (g.appStore || g.appDetailsStore) {
             steamUrls.push(`/customimages/${id}.png`, `/customimages/${id}.jpg`);
             if (id < 0) {
                 const unsigned = id >>> 0;
@@ -256,6 +258,13 @@ export const browserStores: SteamStores = {
             }
         }
 
+        if (overview) {
+            const customPath = (overview as Record<string, unknown>).strCustomHeaderPath ?? (overview as Record<string, unknown>).m_strCustomHeaderPath;
+            if (typeof customPath === 'string' && customPath) steamUrls.push(customPath);
+            const headers = g.appDetailsStore?.GetHeaderImages?.(overview, false);
+            if (Array.isArray(headers)) steamUrls.push(...headers);
+        }
+
         return steamUrls.length > 0 ? steamUrls : undefined;
     },
     customHero: (id) => {
@@ -268,8 +277,7 @@ export const browserStores: SteamStores = {
             const customPath = (overview as Record<string, unknown>).strCustomHeroPath ?? (overview as Record<string, unknown>).m_strCustomHeroPath;
             if (typeof customPath === 'string' && customPath) steamUrls.push(customPath);
         }
-        const isShortcut = !overview || overview.app_type !== 1 || (id < 0 || id > 0x7fffffff) || Boolean((overview as Record<string, unknown>).m_gameid);
-        if (isShortcut && store) {
+        if (store || globals().appDetailsStore) {
             steamUrls.push(`/customimages/${id}_hero.jpg`, `/customimages/${id}_hero.png`);
             const gid = (overview as Record<string, unknown> | undefined)?.m_gameid;
             if (gid && String(gid) !== String(id)) {
@@ -294,9 +302,7 @@ export const browserStores: SteamStores = {
         }
 
         // Direct custom portrait images in config/grid (served at /customimages/)
-        // Windows Steam and SteamGridDB save custom artwork directly here
-        const isShortcut = !overview || overview.app_type !== 1 || (id < 0 || id > 0x7fffffff) || Boolean((overview as Record<string, unknown>).m_gameid);
-        if (isShortcut && store) {
+        if (store || globals().appDetailsStore) {
             steamUrls.push(`/customimages/${id}p.png`, `/customimages/${id}p.jpg`);
             if (id < 0) {
                 const unsigned = id >>> 0;
@@ -323,8 +329,7 @@ export const browserStores: SteamStores = {
             const customPath = (overview as Record<string, unknown>).strCustomLogoPath ?? (overview as Record<string, unknown>).m_strCustomLogoPath;
             if (typeof customPath === 'string' && customPath) steamUrls.push(customPath);
         }
-        const isShortcut = !overview || overview.app_type !== 1 || (id < 0 || id > 0x7fffffff) || Boolean((overview as Record<string, unknown>).m_gameid);
-        if (isShortcut && store) {
+        if (store || globals().appDetailsStore) {
             steamUrls.push(`/customimages/${id}_logo.png`);
             const gid = (overview as Record<string, unknown> | undefined)?.m_gameid;
             if (gid && String(gid) !== String(id)) {
@@ -341,7 +346,7 @@ export const browserStores: SteamStores = {
             const customPath = (overview as Record<string, unknown>).strCustomCapsulePath ?? (overview as Record<string, unknown>).m_strCustomCapsulePath;
             if (typeof customPath === 'string' && customPath) steamUrls.push(customPath);
         }
-        if (store) {
+        if (store || globals().appDetailsStore) {
             steamUrls.push(`/customimages/${id}p.jpg`, `/customimages/${id}p.png`, `/customimages/${id}.jpg`, `/customimages/${id}.png`);
         }
         return steamUrls.length > 0 ? steamUrls : undefined;
@@ -375,6 +380,71 @@ export function getCachedCoverUrl(appId: number): string | undefined {
 
 export function setCachedCoverUrl(appId: number, url: string): void {
     workingCoverUrlCache.set(appId, url);
+}
+
+export function clearArtworkUrlCache(): void {
+    workingGridUrlCache.clear();
+    workingCoverUrlCache.clear();
+}
+
+let currentArtworkVersion = 0;
+
+export function getArtworkVersion(): number {
+    return currentArtworkVersion;
+}
+
+export function setArtworkVersion(version: number): void {
+    currentArtworkVersion = version;
+}
+
+export function withArtworkVersion(url: string, version = currentArtworkVersion): string {
+    if (!version || !url || url.startsWith('data:')) return url;
+    if (url.includes('gg_v=')) {
+        return url.replace(/([?&])gg_v=\d+/, `$1gg_v=${version}`);
+    }
+    const sep = url.includes('?') ? '&' : '?';
+    return `${url}${sep}gg_v=${version}`;
+}
+
+const cacheClearers = new Set<() => void>();
+
+export function registerArtworkCacheClearer(clearer: () => void): () => void {
+    cacheClearers.add(clearer);
+    return () => {
+        cacheClearers.delete(clearer);
+    };
+}
+
+export function reloadArtworkCache(): number {
+    currentArtworkVersion = Date.now();
+    clearArtworkUrlCache();
+    for (const clearer of cacheClearers) {
+        try {
+            clearer();
+        } catch {
+            // Ignore clearer error
+        }
+    }
+    if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('game-glance:reload-artwork', {
+            detail: { version: currentArtworkVersion },
+        }));
+    }
+    return currentArtworkVersion;
+}
+
+export function useArtworkVersion(): number {
+    const [version, setVersion] = useState<number>(currentArtworkVersion);
+    useEffect(() => {
+        if (typeof window === 'undefined') return undefined;
+        const handler = (e: Event) => {
+            const v = (e as CustomEvent<{ version: number }>).detail?.version ?? Date.now();
+            setVersion(v);
+        };
+        window.addEventListener('game-glance:reload-artwork', handler);
+        return () => window.removeEventListener('game-glance:reload-artwork', handler);
+    }, []);
+    return version;
 }
 
 

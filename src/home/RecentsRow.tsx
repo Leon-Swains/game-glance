@@ -1,7 +1,7 @@
 import { Focusable } from '@decky/ui';
 import type { GamepadEvent } from '@decky/ui';
 import { memo, Ref, useMemo } from 'react';
-import { browserStores, capsuleUrls, heroUrls, landscapeUrls } from './artwork';
+import { browserStores, capsuleUrls, heroUrls, landscapeUrls, useArtworkVersion } from './artwork';
 import { wideArt } from './homeView';
 import { clampFocus, isLibraryFocus, MAX_GHOSTS, RecentsGeometry, recentsLayout } from './recentsLayout';
 import type { HomeGame } from './useHomeData';
@@ -51,11 +51,12 @@ export function capsuleBlur(i: number, selected: number): boolean {
  * its art urls are read from Steam's stores only when the game or its expanded state changes.
  */
 const GameCapsule = memo(function GameCapsule({ game, left, width, dim, wide, blur }: { game: HomeGame; left: number; width: number; dim: boolean; wide: boolean; blur: boolean }) {
+    const artworkVersion = useArtworkVersion();
     const appId = game.appId;
-    const cover = useMemo(() => urls(() => capsuleUrls(appId, browserStores)), [appId]);
+    const cover = useMemo(() => urls(() => capsuleUrls(appId, browserStores)), [appId, artworkVersion]);
     const art = useMemo(
         () => (wide ? wideArt(urls(() => landscapeUrls(appId, browserStores)), urls(() => heroUrls(appId, browserStores)), cover) : null),
-        [appId, wide, cover],
+        [appId, wide, cover, artworkVersion],
     );
     return (
         <div className={`gh-cap${wide ? ' gh-cap-wide' : ''}`} style={{ left: `${left}px`, width: `${width}px`, opacity: dim ? 0.35 : 1 }}>

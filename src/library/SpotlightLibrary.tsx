@@ -8,7 +8,7 @@ import { getDescription, peekSteamLanguage } from '../data/steam';
 import { openGameActions } from '../home/ActionRow';
 import { accentFor, DEFAULT_ACCENT, legibleAccent } from '../home/accent';
 import { sampleAccent } from '../home/accentSample';
-import { browserStores, guessedHeroUrls, heroUrls as getHeroUrls } from '../home/artwork';
+import { browserStores, guessedHeroUrls, heroUrls as getHeroUrls, useArtworkVersion } from '../home/artwork';
 import { playNavSound } from '../home/navSound';
 import { LibraryBackground } from './LibraryBackground';
 import { LibraryCategoryBar } from './LibraryCategoryBar';
@@ -177,6 +177,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
     }, [activeCategoryId, selectedCollectionId, selectedGame?.appId, selectedGameIdx, isCollectionsTab, focusZone]);
 
     // Asynchronous details for selected game (HLTB, Description, Accent)
+    const artworkVersion = useArtworkVersion();
     const [gameAccent, setGameAccent] = useState<string>(selectedGame?.accent ?? DEFAULT_ACCENT);
     const [gameDesc, setGameDesc] = useState<string | null>(selectedGame?.description ?? null);
     const [gameHltb, setGameHltb] = useState<HltbResult | null>(null);
@@ -194,7 +195,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         if (selectedGame.heroUrl) return [selectedGame.heroUrl];
         const heroes = getHeroUrls(selectedGame.appId, browserStores);
         return [...heroes, ...guessedHeroUrls(selectedGame.appId)];
-    }, [selectedGame, isCollectionsTab, isInsideSubCollection, selectedCollectionItem]);
+    }, [selectedGame, isCollectionsTab, isInsideSubCollection, selectedCollectionItem, artworkVersion]);
 
     // Keep parent containers pinned at scrollLeft 0 (guards against layout shifts)
     useEffect(() => {
@@ -251,7 +252,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         return () => {
             cancelled = true;
         };
-    }, [selectedGame]);
+    }, [selectedGame, artworkVersion]);
 
     // Primary action: Open game details (A button)
     const handleDetails = useCallback((gameToShow: LibraryGameItem | null = selectedGame) => {

@@ -1,6 +1,6 @@
 import { loadWithTimeout } from './accentSample';
-import { browserStores, logoUrls } from './artwork';
-import { alphaBounds, knownLogo, LogoChoice, LogoTrim, measureSize, rememberLogo, scaleTrim } from './logo';
+import { browserStores, logoUrls, registerArtworkCacheClearer } from './artwork';
+import { alphaBounds, knownLogo, LogoChoice, LogoTrim, measureSize, rememberLogo, resetLogoMemo, scaleTrim } from './logo';
 
 /**
  * Game logos, resolved the way HeroBackground resolves hero art: once per game (the urls tried in order, the first that
@@ -12,6 +12,10 @@ const LOAD_TIMEOUT_MS = 4000;
 
 /** Lookups in flight, by game and url list, so a pre-load and the selection share one load. */
 const inFlight = new Map<string, Promise<LogoChoice | null>>();
+registerArtworkCacheClearer(() => {
+    resetLogoMemo();
+    inFlight.clear();
+});
 
 /** The url list for a game's logo and its memo key. */
 export function logoList(appId: number): { urls: string[]; key: string } {

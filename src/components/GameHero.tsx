@@ -10,6 +10,7 @@ import { mergePlaytime } from '../data/unifideckPlaytime';
 import { getDescription, getSteamLanguage, peekSteamLanguage, readGameInfo } from '../data/steam';
 import { accentFor } from '../home/accent';
 import { sampleAccent } from '../home/accentSample';
+import { registerArtworkCacheClearer, useArtworkVersion } from '../home/artwork';
 import { homeMode } from '../home/mode';
 import { formatLastPlayed } from '../home/recents';
 import { useAsync } from '../hooks/useAsync';
@@ -48,10 +49,13 @@ interface Props {
 
 /** Accents resolved this session, so a page opened again starts on its game's colour instead of the default. */
 const accentMemo = new Map<number, string>();
+registerArtworkCacheClearer(() => {
+    accentMemo.clear();
+});
 
 /** The game's accent (same source and cache as Spotlight Home), only while restyled; undefined until known. */
-function useGameAccent(appId: number, active: boolean): string | undefined {
-    const loaded = useAsync(active && appId !== 0 ? `accent:${appId}` : null, async () => {
+function useGameAccent(appId: number, active: boolean, version = 0): string | undefined {
+    const loaded = useAsync(active && appId !== 0 ? `accent:${appId}:${version}` : null, async () => {
         const color = await accentFor(appId, { cache, sample: sampleAccent });
         accentMemo.set(appId, color);
         return color;
@@ -94,7 +98,8 @@ function Hero({ overview, details, restyle, clean }: Props & { restyle: boolean;
     );
 
     const { homeStatusBar: statusBar, gameLogo } = useSettings();
-    const accent = useGameAccent(game.appId, restyle);
+    const artworkVersion = useArtworkVersion();
+    const accent = useGameAccent(game.appId, restyle, artworkVersion);
     // Restyled only: the Play pill fills with Steam's download progress (hooks run either way; the CSS only when restyled).
     const { download } = useDownload(restyle && game.appId !== 0 ? game.appId : null);
     // Restyled only (where Unifideck's own size item is hidden): a Unifideck game's install / download size in our card.

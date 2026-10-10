@@ -9,6 +9,7 @@ import {
     logoUrls as getLogoUrls,
     setCachedCoverUrl,
     soundtrackCoverUrls as getSoundtrackCoverUrls,
+    useArtworkVersion,
 } from '../home/artwork';
 import { Chip, gameChips } from '../home/chips';
 import { formatHours, minutesToHours, steamLanguageToLocale } from '../logic/format';
@@ -30,12 +31,13 @@ interface LibraryInspectorProps {
 }
 
 function InspectorFanCover({ game, className }: { game?: LibraryGameItem; className: string }) {
+    const artworkVersion = useArtworkVersion();
     const candidates = React.useMemo(() => {
         if (!game) return [];
         if (game.capsuleUrl) return [game.capsuleUrl];
         if (game.isSoundtrack) return getSoundtrackCoverUrls(game.appId, browserStores);
         return getCapsuleUrls(game.appId, browserStores);
-    }, [game]);
+    }, [game, artworkVersion]);
 
     const [src, setSrc] = React.useState<string>(candidates[0] ?? '');
     const [idx, setIdx] = React.useState(0);
@@ -75,6 +77,7 @@ function InspectorFanCover({ game, className }: { game?: LibraryGameItem; classN
 }
 
 function InspectorGameCover({ game }: { game: LibraryGameItem }) {
+    const artworkVersion = useArtworkVersion();
     // 1. Primary: Square cover for soundtracks (1:1), Vertical capsule art for games (2:3)
     const posterCandidates = React.useMemo(() => {
         if (game.capsuleUrl) return [game.capsuleUrl];
@@ -84,7 +87,7 @@ function InspectorGameCover({ game }: { game: LibraryGameItem }) {
             return getSoundtrackCoverUrls(game.appId, browserStores);
         }
         return getCapsuleUrls(game.appId, browserStores);
-    }, [game.appId, game.capsuleUrl, game.isSoundtrack]);
+    }, [game.appId, game.capsuleUrl, game.isSoundtrack, artworkVersion]);
 
     const [posterSrc, setPosterSrc] = useState<string>(posterCandidates[0] ?? '');
     const [posterIdx, setPosterIdx] = useState(0);
@@ -122,7 +125,7 @@ function InspectorGameCover({ game }: { game: LibraryGameItem }) {
         const heroes = game.heroUrl ? [game.heroUrl] : getHeroUrls(game.appId, browserStores);
         const landscapes = game.landscapeUrl ? [game.landscapeUrl] : getLandscapeUrls(game.appId, browserStores);
         return [...new Set([...heroes, ...landscapes])];
-    }, [isPosterAvailable, game.appId, game.heroUrl, game.landscapeUrl]);
+    }, [isPosterAvailable, game.appId, game.heroUrl, game.landscapeUrl, artworkVersion]);
 
     const [bgSrc, setBgSrc] = useState<string>(bgCandidates[0] ?? '');
     const [bgIdx, setBgIdx] = useState(0);
@@ -145,7 +148,7 @@ function InspectorGameCover({ game }: { game: LibraryGameItem }) {
         if (isPosterAvailable) return [];
         if (game.logoUrl) return [game.logoUrl];
         return getLogoUrls(game.appId, browserStores);
-    }, [isPosterAvailable, game.appId, game.logoUrl]);
+    }, [isPosterAvailable, game.appId, game.logoUrl, artworkVersion]);
 
     const [logoSrc, setLogoSrc] = useState<string>(logoCandidates[0] ?? '');
     const [logoIdx, setLogoIdx] = useState(0);
@@ -174,7 +177,7 @@ function InspectorGameCover({ game }: { game: LibraryGameItem }) {
         if (isPosterAvailable || isLogoAvailable) return [];
         if (game.landscapeUrl) return [game.landscapeUrl];
         return getLandscapeUrls(game.appId, browserStores);
-    }, [isPosterAvailable, isLogoAvailable, game.appId, game.landscapeUrl]);
+    }, [isPosterAvailable, isLogoAvailable, game.appId, game.landscapeUrl, artworkVersion]);
 
     const [bannerSrc, setBannerSrc] = useState<string>(bannerCandidates[0] ?? '');
     const [bannerIdx, setBannerIdx] = useState(0);

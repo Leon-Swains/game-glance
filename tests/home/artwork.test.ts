@@ -261,5 +261,57 @@ describe('browserStores custom artwork resolution for shortcuts', () => {
         expect(logos).toContain(`/customimages/${shortcutId}_logo.png`);
         expect(logos).toContain(`/customimages/${gameIdStr}_logo.png`);
     });
+
+    it('resolves direct /customimages/ paths for regular Steam games too', () => {
+        const steamAppId = 730;
+        g.appStore = {
+            GetAppOverviewByAppID: (id: number) => {
+                if (id === steamAppId) {
+                    return { appid: steamAppId, app_type: 1 };
+                }
+                return undefined;
+            },
+        };
+
+        const capsules = browserStores.customCapsule?.(steamAppId);
+        expect(capsules).toBeDefined();
+        expect(capsules).toContain(`/customimages/${steamAppId}p.png`);
+
+        const landscapes = browserStores.landscape?.(steamAppId);
+        expect(landscapes).toBeDefined();
+        expect(landscapes).toContain(`/customimages/${steamAppId}.png`);
+
+        const heroes = browserStores.customHero?.(steamAppId);
+        expect(heroes).toBeDefined();
+        expect(heroes).toContain(`/customimages/${steamAppId}_hero.jpg`);
+
+        const logos = browserStores.customLogo?.(steamAppId);
+        expect(logos).toBeDefined();
+        expect(logos).toContain(`/customimages/${steamAppId}_logo.png`);
+    });
 });
+
+describe('reloadArtworkCache and withArtworkVersion', () => {
+    it('appends gg_v query parameter when version is active and updates URLs', async () => {
+        const { reloadArtworkCache, setArtworkVersion, withArtworkVersion, registerArtworkCacheClearer } = await import('../../src/home/artwork');
+        let cleared = false;
+        const unregister = registerArtworkCacheClearer(() => {
+            cleared = true;
+        });
+
+        expect(withArtworkVersion('https://example.com/art.png', 0)).toBe('https://example.com/art.png');
+        expect(withArtworkVersion('https://example.com/art.png', 123)).toBe('https://example.com/art.png?gg_v=123');
+        expect(withArtworkVersion('https://example.com/art.png?foo=bar', 123)).toBe('https://example.com/art.png?foo=bar&gg_v=123');
+        expect(withArtworkVersion('https://example.com/art.png?foo=bar&gg_v=100', 123)).toBe('https://example.com/art.png?foo=bar&gg_v=123');
+
+        const v = reloadArtworkCache();
+        expect(v).toBeGreaterThan(0);
+        expect(cleared).toBe(true);
+        unregister();
+
+        // Reset version for clean state in subsequent tests
+        setArtworkVersion(0);
+    });
+});
+
 
