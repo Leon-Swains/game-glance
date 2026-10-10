@@ -18,6 +18,12 @@ export const LIBRARY_CSS = `
     z-index: 1;
 }
 
+.sgl-root[data-gh-leaving] {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease;
+}
+
 .sgl-root * {
     box-sizing: border-box;
 }

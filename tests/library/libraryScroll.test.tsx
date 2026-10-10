@@ -30,6 +30,11 @@ describe('Library Scroll & Touch Navigation', () => {
             expect(LIBRARY_CSS).toContain('-webkit-user-drag: none');
             expect(LIBRARY_CSS).toContain('pointer-events: none');
         });
+
+        it('defines data-gh-leaving fade transition on sgl-root', () => {
+            expect(LIBRARY_CSS).toContain('.sgl-root[data-gh-leaving]');
+            expect(LIBRARY_CSS).toContain('opacity: 0');
+        });
     });
 
     describe('getReconciledSelectedIndex', () => {
@@ -192,6 +197,52 @@ describe('Library Scroll & Touch Navigation', () => {
             expect(html).toContain('Installed');
             expect(html).toContain('All Games');
             expect(html).toContain('Favorites');
+        });
+    });
+
+    describe('libraryOpenArt & openLibraryGameDetails', () => {
+        const dummyGame: LibraryGameItem = {
+            appId: 105600,
+            name: 'Terraria',
+            isShortcut: false,
+            installed: true,
+            running: false,
+            playedMinutes: 500,
+            achievements: null,
+            heroic: null,
+            source: 'Steam',
+            landscapeUrl: 'https://example.com/terraria-header.jpg',
+            heroUrl: 'https://example.com/terraria-hero.jpg',
+        };
+
+        it('returns candidate art urls including landscape and hero urls', async () => {
+            const { libraryOpenArt } = await import('../../src/library/SpotlightLibrary');
+            const arts = libraryOpenArt(dummyGame);
+            expect(arts).toContain('https://example.com/terraria-header.jpg');
+            expect(arts).toContain('https://example.com/terraria-hero.jpg');
+            expect(arts.length).toBeGreaterThan(0);
+        });
+
+        it('navigates directly or with transition without throwing', async () => {
+            const { openLibraryGameDetails } = await import('../../src/library/SpotlightLibrary');
+            expect(() => openLibraryGameDetails(dummyGame)).not.toThrow();
+        });
+
+        it('renders LibraryInspector with clickable poster and details button', async () => {
+            const { LibraryInspector } = await import('../../src/library/LibraryInspector');
+            const html = renderToString(
+                <LibraryInspector
+                    game={dummyGame}
+                    accent="#ff6600"
+                    description="Dig, fight, explore, build"
+                    hltbMainHours={50}
+                    onPlay={() => {}}
+                    onDetails={() => {}}
+                />
+            );
+            expect(html).toContain('sgl-poster-wrapper');
+            expect(html).toContain('sgl-btn-details');
+            expect(html).toContain('cursor:pointer');
         });
     });
 });

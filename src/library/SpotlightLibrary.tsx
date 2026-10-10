@@ -12,7 +12,11 @@ import { browserStores, guessedHeroUrls, heroUrls as getHeroUrls, useArtworkVers
 import { playNavSound } from '../home/navSound';
 import { LibraryBackground } from './LibraryBackground';
 import { LibraryCategoryBar } from './LibraryCategoryBar';
-import { LibraryGrid } from './LibraryGrid';
+import { mountOpenOverlay } from '../home/OpenOverlay';
+import { createOpenTransition, DOMRectLike, OpenTransition, usableRect } from '../home/openTransition';
+import { gameOpenArt } from '../home/homeNav';
+import { cssLayers } from '../home/homeView';
+import { cardArtMemo, LibraryGrid } from './LibraryGrid';
 import { LibraryInspector } from './LibraryInspector';
 import { LIBRARY_CSS } from './libraryCss';
 import { buildCategories, LibraryCategory, LibraryCollectionItem, LibraryGameItem } from './libraryData';
@@ -61,6 +65,92 @@ export function getReconciledSelectedIndex(currentIdx: number, totalCount: numbe
     }
 
     return currentIdx;
+}
+
+export function libraryOpenArt(game: LibraryGameItem): string[] {
+    const urls: string[] = [];
+    const memoArt = cardArtMemo.get(game.appId);
+    if (memoArt) {
+        if (memoArt.mode === 'banner' && memoArt.url) {
+            urls.push(memoArt.url);
+        } else if (memoArt.mode === 'hero-logo' && memoArt.heroUrl) {
+            urls.push(memoArt.heroUrl);
+        } else if (memoArt.mode === 'hero' && memoArt.heroUrl) {
+            urls.push(memoArt.heroUrl);
+        } else if (memoArt.mode === 'poster' && memoArt.url) {
+            urls.push(memoArt.url);
+        }
+    }
+    if (game.landscapeUrl) urls.push(game.landscapeUrl);
+    if (game.heroUrl) urls.push(game.heroUrl);
+    if (game.capsuleUrl) urls.push(game.capsuleUrl);
+    try {
+        for (const u of gameOpenArt(game.appId)) {
+            if (!urls.includes(u)) urls.push(u);
+        }
+    } catch {
+        // fallback
+    }
+    return urls;
+}
+
+let libraryTransition: OpenTransition | null = null;
+let leavingLibraryRoot: HTMLElement | null = null;
+
+export function getLibraryTransition(): OpenTransition {
+    libraryTransition ??= createOpenTransition({
+        navigate: (path) => Navigation.Navigate(path),
+        mount: (rect, art) => {
+            if (!leavingLibraryRoot) throw new Error('no Library root');
+            return mountOpenOverlay(leavingLibraryRoot, rect, art);
+        },
+        setTimer: (fn, ms) => setTimeout(fn, ms),
+        clearTimer: (id) => clearTimeout(id as ReturnType<typeof setTimeout>),
+        warn: (message, error) => console.warn(`${LOG_PREFIX} SpotlightLibrary: ${message}`, error),
+    });
+    return libraryTransition;
+}
+
+export function openLibraryGameDetails(game: LibraryGameItem, sourceEl?: HTMLElement | null) {
+    markLeavingLibrary();
+
+    let rect: DOMRectLike | null = null;
+    try {
+        const hasDoc = typeof document !== 'undefined';
+        const root = (sourceEl?.closest?.('.sgl-root') ?? (hasDoc ? document.querySelector('.sgl-root') : null)) as HTMLElement | null;
+        leavingLibraryRoot = root;
+
+        const candidateSource = sourceEl ?? (
+            hasDoc ? (
+                document.querySelector(`.sgl-card[data-app-id="${game.appId}"]`) ??
+                document.querySelector('.sgl-card.focused') ??
+                document.querySelector('.sgl-poster-wrapper')
+            ) : null
+        ) as HTMLElement | null;
+
+        if (candidateSource && root) {
+            const r = candidateSource.getBoundingClientRect();
+            if (usableRect(r)) {
+                rect = { left: r.left, top: r.top, width: r.width, height: r.height };
+            }
+        }
+    } catch (error) {
+        console.warn(`${LOG_PREFIX} SpotlightLibrary: could not measure source element`, error);
+        rect = null;
+    }
+
+    const art = cssLayers(libraryOpenArt(game));
+
+    try {
+        getLibraryTransition().open(game.appId, rect, art);
+    } catch (error) {
+        console.warn(`${LOG_PREFIX} SpotlightLibrary: open transition failed`, error);
+        try {
+            Navigation.Navigate(`/library/app/${game.appId}`);
+        } catch {}
+    } finally {
+        leavingLibraryRoot = null;
+    }
 }
 
 export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) {
@@ -295,15 +385,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         };
     }, [selectedGame, artworkVersion]);
 
-    // Primary action: Open game details (A button)
-    const handleDetails = useCallback((gameToShow: LibraryGameItem | null = selectedGame) => {
-        if (!gameToShow) return;
-        markLeavingLibrary();
-        try {
-            Navigation.Navigate(`/library/app/${gameToShow.appId}`);
-        } catch (error) {
-            console.warn(`${LOG_PREFIX} SpotlightLibrary: Navigate failed`, error);
-        }
+    // Primary action: Open game details (A button) with zoom-into-fullscreen transition
+    const handleDetails = useCallback((gameToShow: LibraryGameItem | null = selectedGame, sourceEl?: HTMLElement | null) => {
+        const game = gameToShow ?? selectedGame;
+        if (!game) return;
+        openLibraryGameDetails(game, sourceEl);
     }, [selectedGame]);
 
     // Secondary action: Play game (Y button)
@@ -378,6 +464,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
     }, [onActivate]);
 
     const onCancel = useCallback(() => {
+        libraryTransition?.cancel();
         if (isInsideSubCollection) {
             handleBackToCollections();
             return;
@@ -721,7 +808,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                     hltbMainHours={hltbHours}
                     preferLogos={currentSettings.gameLogo}
                     onPlay={() => handlePlayGame()}
-                    onDetails={() => handleDetails()}
+                    onDetails={(sourceEl) => handleDetails(selectedGame, sourceEl)}
                     onOpenCollection={handleOpenCollection}
                 />
 

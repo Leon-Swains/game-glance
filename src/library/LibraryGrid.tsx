@@ -20,7 +20,7 @@ interface LibraryGridProps {
     accent: string;
     columns?: number;
     onSelectGame: (index: number) => void;
-    onLaunchGame?: (game: LibraryGameItem) => void;
+    onLaunchGame?: (game: LibraryGameItem, sourceEl?: HTMLElement) => void;
     onOpenCollection?: (collection: LibraryCollectionItem) => void;
     onContextMenu?: (game: LibraryGameItem, index: number, target: HTMLElement) => void;
     isGridFocused?: boolean;
@@ -31,7 +31,7 @@ interface BannerCardProps {
     isFocused: boolean;
     accent: string;
     onClick: () => void;
-    onDoubleClick: () => void;
+    onDoubleClick: (sourceEl?: HTMLElement) => void;
     onContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void;
     isDragSuppressed?: () => boolean;
 }
@@ -225,7 +225,7 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
                     return;
                 }
                 if (isFocused) {
-                    onDoubleClick();
+                    onDoubleClick(e.currentTarget);
                 } else {
                     onClick();
                 }
@@ -233,7 +233,7 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
             onDoubleClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onDoubleClick();
+                onDoubleClick(e.currentTarget);
             }}
             onContextMenu={(e) => {
                 e.preventDefault();
@@ -698,7 +698,7 @@ export function LibraryGrid({
                         isFocused={isGridFocused && idx === selectedIndex}
                         accent={accent}
                         onClick={() => onSelectGame(idx)}
-                        onDoubleClick={() => onLaunchGame?.(game)}
+                        onDoubleClick={(el) => onLaunchGame?.(game, el)}
                         onContextMenu={(e) => onContextMenu?.(game, idx, e.currentTarget)}
                         isDragSuppressed={isDragSuppressed}
                     />
