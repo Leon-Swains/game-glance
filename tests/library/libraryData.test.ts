@@ -59,11 +59,11 @@ describe('libraryData: buildCategories', () => {
         expect(item.isSoundtrack).toBe(false);
     });
 
-    it('correctly identifies soundtrack apps (app_type === 8)', () => {
+    it('correctly identifies soundtrack apps (app_type === 8192)', () => {
         const ostRaw = {
             appid: 1091500,
             display_name: 'Super Soundtrack',
-            app_type: 8,
+            app_type: 8192,
             installed: true,
             minutes_playtime_forever: 60,
         };
@@ -71,6 +71,19 @@ describe('libraryData: buildCategories', () => {
         expect(item.isSoundtrack).toBe(true);
         expect(item.source).toBe('Soundtrack');
         expect(item.achievements).toBeNull();
+    });
+
+    it('correctly identifies game demos (app_type === 8) as regular games', () => {
+        const demoRaw = {
+            appid: 2032011,
+            display_name: 'NORCO Demo',
+            app_type: 8,
+            installed: true,
+            minutes_playtime_forever: 30,
+        };
+        const item = rawAppToItem(demoRaw, false);
+        expect(item.isSoundtrack).toBe(false);
+        expect(item.source).toBe('Steam');
     });
 
     it('creates SOUNDTRACKS category when soundtrack games exist in mock list and separates them from regular games', () => {
@@ -127,11 +140,12 @@ describe('libraryData: buildCategories', () => {
 
     it('identifies game vs non-game apps with isGameOrShortcutApp', () => {
         expect(isGameOrShortcutApp({ appid: 1, app_type: 4, display_name: 'Tool' })).toBe(false);
-        expect(isGameOrShortcutApp({ appid: 2, app_type: 8, display_name: 'OST' })).toBe(false);
+        expect(isGameOrShortcutApp({ appid: 2, app_type: 8192, display_name: 'OST' })).toBe(false);
         expect(isGameOrShortcutApp({ appid: 3, app_type: 1, display_name: 'Game' })).toBe(true);
         expect(isGameOrShortcutApp({ appid: 4, app_type: 1073741824, display_name: 'Shortcut' })).toBe(true);
-        expect(isGameOrShortcutApp({ appid: 5, app_type: 64, display_name: 'Demo' })).toBe(true);
-        expect(isGameOrShortcutApp({ appid: 6, display_name: 'Alien Swarm SDK' })).toBe(false);
+        expect(isGameOrShortcutApp({ appid: 5, app_type: 8, display_name: 'Demo' })).toBe(true);
+        expect(isGameOrShortcutApp({ appid: 6, app_type: 65536, display_name: 'Playtest Beta' })).toBe(true);
+        expect(isGameOrShortcutApp({ appid: 7, display_name: 'Alien Swarm SDK' })).toBe(false);
     });
 
     it('identifies shortcut and steam apps with isShortcutApp and isSteamGameApp', () => {

@@ -63,6 +63,14 @@ describe('pickCollectionGames', () => {
             throw new Error('x');
         }, 'name').map((g) => g.appId)).toEqual([2, 1]);
     });
+    it('includes game demos (app_type 8)', () => {
+        const demoApps = [
+            app(10, 'Full Game', { rt_last_time_played: 100 }),
+            { appid: 20, display_name: 'Game Demo', app_type: 8, rt_last_time_played: 200 },
+            { appid: 30, display_name: 'OST', app_type: 8192, rt_last_time_played: 300 },
+        ];
+        expect(pickCollectionGames(demoApps, () => false, 'lastPlayed').map((g) => g.appId)).toEqual([20, 10]);
+    });
 });
 
 describe('rowSortOf / collectionEyebrow', () => {

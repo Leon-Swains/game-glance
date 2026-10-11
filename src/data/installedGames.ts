@@ -3,6 +3,8 @@ import { HeroicRef, parseHeroicLaunch } from '../logic/heroic';
 import type { HltbGame } from './hltb';
 
 export const GAME_APP_TYPE = 1;
+export const DEMO_APP_TYPE = 8;
+export const BETA_APP_TYPE = 65536;
 export const SHORTCUT_APP_TYPE = 1073741824;
 
 export interface LibraryApp {

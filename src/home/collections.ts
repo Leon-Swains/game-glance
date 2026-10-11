@@ -1,4 +1,4 @@
-import { GAME_APP_TYPE, SHORTCUT_APP_TYPE } from '../data/installedGames';
+import { BETA_APP_TYPE, DEMO_APP_TYPE, GAME_APP_TYPE, SHORTCUT_APP_TYPE } from '../data/installedGames';
 import { PhraseKey, tr } from '../i18n/steamText';
 import { addedTime, RawApp, RECENTS_LIMIT, RecentGame } from './recents';
 
@@ -59,7 +59,11 @@ export function homeCollections(collections: unknown): HomeCollection[] {
     return list.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));
 }
 
-const isGameOrShortcut = (a: RawApp) => a.app_type === GAME_APP_TYPE || a.app_type === SHORTCUT_APP_TYPE;
+const isGameOrShortcut = (a: RawApp) =>
+    a.app_type === GAME_APP_TYPE ||
+    a.app_type === DEMO_APP_TYPE ||
+    a.app_type === BETA_APP_TYPE ||
+    a.app_type === SHORTCUT_APP_TYPE;
 const sortName = (a: RawApp & { sort_as?: unknown }) => (typeof a.sort_as === 'string' && a.sort_as ? a.sort_as : a.display_name ?? '').toLowerCase();
 
 /**
