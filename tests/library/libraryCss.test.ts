@@ -4,8 +4,8 @@ import { LIBRARY_CSS } from '../../src/library/libraryCss';
 describe('libraryCss: Handheld and responsive layout rules', () => {
     it('contains base sgl-poster-wrapper styling with clamped height to prevent panel overflow', () => {
         expect(LIBRARY_CSS).toContain('.sgl-poster-wrapper');
-        expect(LIBRARY_CSS).toContain('clamp(140px, 26vh, 205px)');
-        expect(LIBRARY_CSS).toContain('max-height: 205px');
+        expect(LIBRARY_CSS).toContain('clamp(90px, 16vh, 130px)');
+        expect(LIBRARY_CSS).toContain('max-height: 130px');
     });
 
     it('contains responsive media query for handheld screens (Steam Deck <=1366px / <=850px)', () => {
@@ -19,11 +19,11 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
 
     it('defines optimized inspector width to preserve grid space and prevent overflow', () => {
         expect(LIBRARY_CSS).toContain('.sgl-inspector');
-        expect(LIBRARY_CSS).toContain('width: 320px !important;');
+        expect(LIBRARY_CSS).toContain('width: 275px !important;');
     });
 
-    it('defines compact 48px header ribbon for handhelds', () => {
-        expect(LIBRARY_CSS).toContain('height: 48px');
+    it('defines compact 44px header ribbon for handhelds', () => {
+        expect(LIBRARY_CSS).toContain('height: 44px');
     });
 
     it('provides explicit .sgl-compact modifier rules for device mode toggle', () => {
@@ -50,7 +50,7 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
 
     it('locks navbar, inspector, description, action buttons, and card typography with high-specificity rules', () => {
         expect(LIBRARY_CSS).toContain('.sgl-tab-label');
-        expect(LIBRARY_CSS).toContain('font-size: 12.5px !important;');
+        expect(LIBRARY_CSS).toContain('font-size: 11px !important;');
         expect(LIBRARY_CSS).toContain('.sgl-brand');
         expect(LIBRARY_CSS).toContain('.sgl-title-text');
         expect(LIBRARY_CSS).toContain('.sgl-description');
@@ -61,9 +61,9 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
     });
 
     it('enforces clamped poster dimensions across base, handheld, and compact viewports', () => {
-        expect(LIBRARY_CSS).toContain('max-width: 130px !important;');
-        expect(LIBRARY_CSS).toContain('height: clamp(120px, 24vh, 195px) !important;');
-        expect(LIBRARY_CSS).toContain('max-height: 195px !important;');
+        expect(LIBRARY_CSS).toContain('max-width: 87px !important;');
+        expect(LIBRARY_CSS).toContain('height: clamp(90px, 16vh, 130px) !important;');
+        expect(LIBRARY_CSS).toContain('max-height: 130px !important;');
     });
 
     it('includes fast compositor-optimized grayscale and dimmed styling for uninstalled games', () => {

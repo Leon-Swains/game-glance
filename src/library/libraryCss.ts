@@ -65,26 +65,26 @@ export const LIBRARY_CSS = `
 
 /* Top Header / Categories Ribbon */
 .sgl-header {
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 32px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    background: rgba(10, 14, 22, 0.6);
-    backdrop-filter: blur(20px);
-    z-index: 20;
-    flex-shrink: 0;
+    height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 0 20px !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: rgba(10, 14, 22, 0.6) !important;
+    backdrop-filter: blur(20px) !important;
+    z-index: 20 !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 15px !important;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    color: #ffffff;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    font-size: 12px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.06em !important;
+    color: #ffffff !important;
 }
 
 .sgl-brand-icon {
@@ -92,41 +92,41 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-tabs-container {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-    flex: 1;
-    justify-content: center;
-    max-width: 860px;
-    overflow: hidden;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    min-width: 0 !important;
+    flex: 1 !important;
+    justify-content: center !important;
+    max-width: 860px !important;
+    overflow: hidden !important;
 }
 
 .sgl-bumper-badge {
-    font-size: 10px !important;
+    font-size: 8.5px !important;
     line-height: 1 !important;
-    font-weight: 800;
-    padding: 2px 6px !important;
-    border-radius: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    letter-spacing: 0.5px;
-    flex-shrink: 0;
+    font-weight: 800 !important;
+    padding: 1.5px 5px !important;
+    border-radius: 4px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    letter-spacing: 0.4px !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-tabs {
-    display: flex;
-    align-items: center;
-    gap: 26px;
-    position: relative;
-    overflow-x: auto;
-    scrollbar-width: none;
-    scroll-behavior: smooth;
-    padding: 2px 8px 4px;
-    max-width: 100%;
-    touch-action: pan-x;
-    -webkit-overflow-scrolling: touch;
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    position: relative !important;
+    overflow-x: auto !important;
+    scrollbar-width: none !important;
+    scroll-behavior: smooth !important;
+    padding: 2px 4px 4px !important;
+    max-width: 100% !important;
+    touch-action: pan-x !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 
 .sgl-tabs::-webkit-scrollbar {
@@ -147,28 +147,30 @@ export const LIBRARY_CSS = `
     position: relative !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
-    padding: 8px 2px 10px !important;
-    font-size: 13px !important;
+    padding: 6px 2px 8px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
     font-weight: 700 !important;
-    letter-spacing: 0.14em !important;
+    letter-spacing: 0.05em !important;
     cursor: pointer !important;
     display: flex !important;
     align-items: center !important;
-    gap: 8px !important;
+    gap: 5px !important;
     border: none !important;
     background: transparent !important;
     color: rgba(255, 255, 255, 0.6) !important;
     transition: color 0.2s ease !important;
     outline: none !important;
     text-transform: uppercase !important;
+    height: auto !important;
+    min-height: 0 !important;
 }
 
 .sgl-tab-label {
-    font-size: 13px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
     font-weight: 700 !important;
-    letter-spacing: 0.14em !important;
+    letter-spacing: 0.05em !important;
     text-transform: uppercase !important;
     white-space: nowrap !important;
 }
@@ -304,23 +306,21 @@ export const LIBRARY_CSS = `
 
 /* Left Panel: Inspector */
 .sgl-inspector {
-    width: 320px !important;
-    min-width: 300px !important;
-    max-width: 340px !important;
+    width: 275px !important;
+    min-width: 260px !important;
+    max-width: 285px !important;
     flex-shrink: 0 !important;
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    padding: 16px 20px !important;
-    gap: 10px !important;
-    overflow-y: auto !important;
+    padding: 12px 14px !important;
+    gap: 6px !important;
+    overflow-y: hidden !important;
     scrollbar-width: none !important;
     border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
     background: linear-gradient(90deg, rgba(7, 10, 16, 0.54) 0%, rgba(7, 10, 16, 0.32) 100%) !important;
     backdrop-filter: blur(20px) !important;
     box-sizing: border-box !important;
-    touch-action: pan-y !important;
-    -webkit-overflow-scrolling: touch !important;
 }
 
 .sgl-inspector::-webkit-scrollbar {
@@ -331,24 +331,24 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-shrink: 0 !important;
     flex-grow: 0 !important;
-    height: clamp(140px, 26vh, 205px) !important;
-    max-height: 205px !important;
+    height: clamp(90px, 16vh, 130px) !important;
+    max-height: 130px !important;
     width: auto !important;
-    max-width: 140px !important;
+    max-width: 87px !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
-    border-radius: 12px !important;
+    border-radius: 8px !important;
     overflow: hidden !important;
-    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.75) !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
     border: 1px solid rgba(255, 255, 255, 0.14) !important;
     position: relative !important;
     background: #11141c !important;
 }
 
 .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(130px, 22vh, 175px) !important;
-    max-height: 175px !important;
-    max-width: 175px !important;
+    height: clamp(85px, 15vh, 115px) !important;
+    max-height: 115px !important;
+    max-width: 115px !important;
     aspect-ratio: 1 / 1 !important;
 }
 
@@ -417,210 +417,228 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-poster-fallback-title {
-    font-size: 14px !important;
+    font-size: 13px !important;
     font-weight: 800 !important;
     line-height: 1.35 !important;
     text-align: center !important;
     color: #ffffff !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9) !important;
-    padding: 12px !important;
+    padding: 10px !important;
 }
 
 .sgl-title-box {
-    min-height: 40px !important;
+    min-height: 24px !important;
+    max-height: 38px !important;
     display: flex !important;
     align-items: center !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-title-text {
-    font-size: 18.5px !important;
-    font-weight: 800 !important;
-    line-height: 1.25 !important;
+    font-size: 15px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
     color: #ffffff !important;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
-    max-height: 2.5em !important;
+    max-height: 2.4em !important;
 }
 
 .sgl-meta-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    flex-wrap: wrap !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-source-pill {
-    font-size: 11px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
-    font-weight: 700;
-    padding: 3px 8px !important;
-    border-radius: 12px;
-    background: rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    font-weight: 700 !important;
+    padding: 2px 6px !important;
+    border-radius: 10px !important;
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    border: 1px solid rgba(255, 255, 255, 0.12) !important;
 }
 
 .sgl-status-pill {
-    font-size: 11px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
-    font-weight: 700;
-    padding: 3px 8px !important;
-    border-radius: 12px;
-    background: rgba(46, 160, 67, 0.2);
-    color: #3fb950;
-    border: 1px solid rgba(46, 160, 67, 0.35);
+    font-weight: 700 !important;
+    padding: 2px 6px !important;
+    border-radius: 10px !important;
+    background: rgba(46, 160, 67, 0.2) !important;
+    color: #3fb950 !important;
+    border: 1px solid rgba(46, 160, 67, 0.35) !important;
 }
 
 /* Stats / Chips Grid */
 .sgl-stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-stat-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    padding: 8px 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    border-radius: 6px !important;
+    padding: 3px 6px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1px !important;
 }
 
 .sgl-stat-label {
-    font-size: 10.5px !important;
-    line-height: 1.2 !important;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.5);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+    font-weight: 600 !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
 }
 
 .sgl-stat-value {
-    font-size: 13.5px !important;
-    line-height: 1.2 !important;
-    font-weight: 700;
-    color: #ffffff;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
 }
 
 .sgl-stat-bar {
-    height: 3px;
-    border-radius: 2px;
-    background: rgba(255, 255, 255, 0.12);
-    margin-top: 4px;
-    overflow: hidden;
+    height: 2px !important;
+    border-radius: 2px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    margin-top: 2px !important;
+    overflow: hidden !important;
 }
 
 .sgl-stat-fill {
-    height: 100%;
-    border-radius: 2px;
-    background: var(--accent, #58a6ff);
+    height: 100% !important;
+    border-radius: 2px !important;
+    background: var(--accent, #58a6ff) !important;
 }
 
 /* Description */
 .sgl-description {
-    font-size: 11.5px !important;
-    line-height: 1.4 !important;
-    color: rgba(255, 255, 255, 0.7);
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+    color: rgba(255, 255, 255, 0.7) !important;
     display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
+    -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
-    max-height: 4.2em !important;
+    max-height: 2.6em !important;
+    flex-shrink: 0 !important;
 }
 
 /* Action Buttons */
 .sgl-actions {
-    display: flex;
-    gap: 10px;
-    margin-top: auto;
-    padding-top: 6px;
+    display: flex !important;
+    gap: 6px !important;
+    margin-top: auto !important;
+    padding-top: 4px !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-btn-details {
-    flex: 1;
-    padding: 8px 16px !important;
-    border-radius: 999px;
-    font-size: 13px !important;
+    flex: 1 !important;
+    padding: 4px 10px !important;
+    border-radius: 999px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
-    height: 42px !important;
-    min-height: 42px !important;
-    max-height: 42px !important;
-    font-weight: 800;
-    background: var(--accent, #58a6ff);
-    color: #0b0d10;
-    border: 1px solid var(--accent, #58a6ff);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.35s ease;
-    outline: none;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    font-weight: 700 !important;
+    background: var(--accent, #58a6ff) !important;
+    color: #0b0d10 !important;
+    border: 1px solid var(--accent, #58a6ff) !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35) !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.35s ease !important;
+    outline: none !important;
+}
+
+.sgl-btn-details .sgl-btn-text,
+.sgl-btn-details span {
+    font-size: 11px !important;
+    line-height: 1 !important;
 }
 
 .sgl-btn-details:hover,
 .sgl-btn-details:focus-visible {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 12px 30px -6px var(--accent, #58a6ff);
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.9), 0 12px 30px -6px var(--accent, #58a6ff) !important;
 }
 
 .sgl-btn-play {
-    flex: 1;
-    padding: 8px 14px !important;
-    border-radius: 999px;
-    font-size: 12.5px !important;
+    flex: 1 !important;
+    padding: 4px 10px !important;
+    border-radius: 999px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
-    height: 42px !important;
-    min-height: 42px !important;
-    max-height: 42px !important;
-    font-weight: 700;
-    background: rgba(12, 16, 22, 0.45);
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    backdrop-filter: blur(12px);
-    color: #ffffff;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
-    outline: none;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
+    font-weight: 700 !important;
+    background: rgba(12, 16, 22, 0.45) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+    backdrop-filter: blur(12px) !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease !important;
+    outline: none !important;
+}
+
+.sgl-btn-play .sgl-btn-text,
+.sgl-btn-play span {
+    font-size: 11px !important;
+    line-height: 1 !important;
 }
 
 .sgl-btn-play:hover,
 .sgl-btn-play:focus-visible {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.35);
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8), 0 8px 24px rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: rgba(255, 255, 255, 0.35) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.8), 0 8px 24px rgba(0, 0, 0, 0.5) !important;
 }
 
 .sgl-btn-badge {
-    font-size: 10px !important;
+    font-size: 8.5px !important;
     line-height: 1 !important;
-    font-weight: 800;
-    padding: 1px 6px !important;
-    border-radius: 6px;
-    letter-spacing: 0.5px;
+    font-weight: 800 !important;
+    padding: 1px 4px !important;
+    border-radius: 4px !important;
+    letter-spacing: 0.5px !important;
 }
 
 .sgl-btn-details .sgl-btn-badge {
-    background: rgba(0, 0, 0, 0.22);
-    color: #0b0d10;
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    background: rgba(0, 0, 0, 0.22) !important;
+    color: #0b0d10 !important;
+    border: 1px solid rgba(0, 0, 0, 0.12) !important;
 }
 
 .sgl-btn-play .sgl-btn-badge {
-    background: rgba(255, 255, 255, 0.14);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.14) !important;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
 }
 
 /* Right Panel: Game Grid */
@@ -983,107 +1001,108 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-col-footer {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 4px;
-    padding: 8px 12px;
-    background: rgba(10, 14, 22, 0.88);
-    backdrop-filter: blur(14px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    z-index: 4;
-    box-sizing: border-box;
-    width: 100%;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    gap: 2px !important;
+    padding: 4px 6px !important;
+    background: rgba(10, 14, 22, 0.88) !important;
+    backdrop-filter: blur(14px) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+    z-index: 4 !important;
+    box-sizing: border-box !important;
+    width: 100% !important;
 }
 
 .sgl-col-footer-title {
-    font-size: 13px !important;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: 0.2px;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+    font-size: 10px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    letter-spacing: 0.1px !important;
+    display: block !important;
     overflow: hidden !important;
-    text-overflow: ellipsis;
-    word-break: break-word;
-    line-height: 1.25 !important;
-    max-height: 2.6em !important;
-    width: 100%;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    line-height: 1.15 !important;
+    max-height: 1.25em !important;
+    width: 100% !important;
 }
 
 .sgl-col-footer-badge {
-    font-size: 9.5px !important;
+    font-size: 7.5px !important;
     line-height: 1 !important;
-    font-weight: 700;
-    padding: 1.5px 6px !important;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, 0.12);
-    color: rgba(255, 255, 255, 0.85);
-    white-space: nowrap;
-    letter-spacing: 0.5px;
-    align-self: flex-start;
-    margin-left: 0;
+    font-weight: 700 !important;
+    padding: 1px 4px !important;
+    border-radius: 4px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    color: rgba(255, 255, 255, 0.85) !important;
+    white-space: nowrap !important;
+    letter-spacing: 0.4px !important;
+    align-self: flex-start !important;
+    margin-left: 0 !important;
 }
 
 /* Inspector 5-Card Fan for Collections */
 .sgl-inspector-col-fan {
-    width: 100%;
-    max-width: 310px;
-    height: 180px;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    margin-bottom: 6px;
+    width: 100% !important;
+    max-width: 200px !important;
+    height: 100px !important;
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    align-self: center !important;
+    margin-bottom: 4px !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-insp-col-card {
-    position: absolute;
-    width: 78px;
-    height: 117px;
-    border-radius: 7px;
-    overflow: hidden;
-    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.16);
-    background: #11141c;
-    transition: transform 0.25s ease;
+    position: absolute !important;
+    width: 48px !important;
+    height: 72px !important;
+    border-radius: 5px !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.16) !important;
+    background: #11141c !important;
+    transition: transform 0.25s ease !important;
 }
 
 .sgl-insp-col-card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    display: block !important;
 }
 
 .sgl-insp-col-card-far-left {
-    transform: translateX(-76px) translateY(12px) rotate(-16deg) scale(0.82);
-    z-index: 1;
+    transform: translateX(-50px) translateY(7px) rotate(-14deg) scale(0.82) !important;
+    z-index: 1 !important;
 }
 
 .sgl-insp-col-card-left {
-    transform: translateX(-38px) translateY(5px) rotate(-8deg) scale(0.91);
-    z-index: 2;
+    transform: translateX(-25px) translateY(2px) rotate(-7deg) scale(0.91) !important;
+    z-index: 2 !important;
 }
 
 .sgl-insp-col-card-right {
-    transform: translateX(38px) translateY(5px) rotate(8deg) scale(0.91);
-    z-index: 2;
+    transform: translateX(25px) translateY(2px) rotate(7deg) scale(0.91) !important;
+    z-index: 2 !important;
 }
 
 .sgl-insp-col-card-far-right {
-    transform: translateX(76px) translateY(12px) rotate(16deg) scale(0.82);
-    z-index: 1;
+    transform: translateX(50px) translateY(7px) rotate(14deg) scale(0.82) !important;
+    z-index: 1 !important;
 }
 
 .sgl-insp-col-card-center {
-    transform: translateX(0) translateY(-4px) rotate(0deg) scale(1);
-    z-index: 3;
-    box-shadow: 0 18px 36px rgba(0, 0, 0, 0.85);
-    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateX(0) translateY(-2px) rotate(0deg) scale(1) !important;
+    z-index: 3 !important;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.85) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
 }
 
 /* Empty state */
@@ -1104,75 +1123,77 @@ export const LIBRARY_CSS = `
    Responsive / Handheld Rules (Steam Deck 1280x800, ROG Ally 720p/800p, etc.)
    ========================================================================== */
 @media (max-width: 1366px), (max-height: 850px) {
-    /* Header ribbon: compact 48px to save vertical space for library items */
+    /* Header ribbon: compact 44px to save vertical space for library items */
     .sgl-header {
-        height: 48px !important;
-        padding: 0 18px !important;
+        height: 44px !important;
+        padding: 0 16px !important;
     }
 
     .sgl-brand,
     .sgl-brand span,
     .sgl-brand .sgl-brand-text {
-        font-size: 13.5px !important;
+        font-size: 12px !important;
         line-height: 1 !important;
-        gap: 8px !important;
+        gap: 6px !important;
     }
 
     .sgl-tabs-container {
-        gap: 8px !important;
+        gap: 6px !important;
     }
 
     .sgl-tabs {
-        gap: 16px !important;
+        gap: 12px !important;
         padding: 2px 4px !important;
     }
 
     .sgl-tab,
     .sgl-tab span,
     .sgl-tab-label {
-        font-size: 12px !important;
+        font-size: 11px !important;
         line-height: 1 !important;
-        padding: 6px 2px 8px !important;
-        gap: 6px !important;
+        padding: 4px 2px 6px !important;
+        gap: 5px !important;
         height: auto !important;
         min-height: 0 !important;
+        letter-spacing: 0.05em !important;
     }
 
     .sgl-tab-count {
-        font-size: 10px !important;
+        font-size: 9px !important;
         line-height: 1 !important;
-        padding: 1px 5px !important;
+        padding: 1px 4.5px !important;
     }
 
     .sgl-bumper-badge {
-        font-size: 9.5px !important;
+        font-size: 8.5px !important;
         line-height: 1 !important;
-        padding: 2px 5px !important;
+        padding: 1.5px 5px !important;
     }
 
     .sgl-breadcrumb-title {
-        font-size: 12.5px !important;
+        font-size: 11px !important;
         line-height: 1 !important;
     }
 
     .sgl-btn-back-col,
     .sgl-btn-back-col span {
-        font-size: 11px !important;
+        font-size: 10px !important;
         line-height: 1 !important;
     }
 
     .sgl-header-info {
-        font-size: 11px !important;
+        font-size: 10px !important;
         line-height: 1 !important;
     }
 
-    /* Left Panel: Inspector resized to 300px width with clamped poster */
+    /* Left Panel: Inspector compact 275px width with clamped poster */
     .sgl-inspector {
-        width: 300px !important;
-        min-width: 290px !important;
-        max-width: 310px !important;
-        padding: 14px 18px !important;
-        gap: 8px !important;
+        width: 275px !important;
+        min-width: 260px !important;
+        max-width: 285px !important;
+        padding: 12px 14px !important;
+        gap: 6px !important;
+        overflow-y: hidden !important;
         transform: translateZ(0) !important;
         will-change: transform !important;
     }
@@ -1181,138 +1202,146 @@ export const LIBRARY_CSS = `
         flex: 0 0 auto !important;
         flex-grow: 0 !important;
         flex-shrink: 0 !important;
-        height: clamp(120px, 24vh, 195px) !important;
-        max-height: 195px !important;
+        height: clamp(90px, 16vh, 130px) !important;
+        max-height: 130px !important;
         width: auto !important;
-        max-width: 130px !important;
+        max-width: 87px !important;
         aspect-ratio: 2 / 3 !important;
         align-self: center !important;
-        border-radius: 10px !important;
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75) !important;
+        border-radius: 8px !important;
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
     }
 
     .sgl-poster-wrapper.sgl-poster-square {
-        height: clamp(110px, 20vh, 165px) !important;
-        max-height: 165px !important;
-        max-width: 165px !important;
+        height: clamp(85px, 15vh, 115px) !important;
+        max-height: 115px !important;
+        max-width: 115px !important;
         aspect-ratio: 1 / 1 !important;
     }
 
     .sgl-title-box {
-        min-height: 38px !important;
-        max-height: 48px !important;
+        min-height: 24px !important;
+        max-height: 38px !important;
+        flex-shrink: 0 !important;
     }
 
     .sgl-title-text {
-        font-size: 17.5px !important;
-        line-height: 1.22 !important;
-        max-height: 2.44em !important;
+        font-size: 15px !important;
+        line-height: 1.2 !important;
+        max-height: 2.4em !important;
         overflow: hidden !important;
     }
 
     .sgl-meta-row {
         gap: 6px !important;
+        flex-shrink: 0 !important;
     }
 
     .sgl-source-pill,
     .sgl-status-pill {
-        font-size: 10px !important;
+        font-size: 9px !important;
         line-height: 1 !important;
-        padding: 2px 7px !important;
+        padding: 2px 6px !important;
     }
 
     .sgl-stats-grid {
-        gap: 6px !important;
+        gap: 4px !important;
+        flex-shrink: 0 !important;
     }
 
     .sgl-stat-card {
-        padding: 5px 8px !important;
-        gap: 2px !important;
+        padding: 3px 6px !important;
+        gap: 1px !important;
         border-radius: 6px !important;
     }
 
     .sgl-stat-label {
-        font-size: 9.5px !important;
-        line-height: 1.2 !important;
+        font-size: 8px !important;
+        line-height: 1.15 !important;
     }
 
     .sgl-stat-value {
-        font-size: 12px !important;
-        line-height: 1.2 !important;
+        font-size: 11px !important;
+        line-height: 1.15 !important;
     }
 
     .sgl-stat-bar {
-        height: 2.5px !important;
-        margin-top: 3px !important;
+        height: 2px !important;
+        margin-top: 2px !important;
     }
 
     .sgl-description {
-        font-size: 11px !important;
-        line-height: 1.35 !important;
+        font-size: 10px !important;
+        line-height: 1.3 !important;
         -webkit-line-clamp: 2 !important;
-        max-height: 2.7em !important;
+        max-height: 2.6em !important;
         overflow: hidden !important;
         text-overflow: ellipsis !important;
+        flex-shrink: 0 !important;
     }
 
     .sgl-actions {
-        gap: 8px !important;
+        gap: 6px !important;
         padding-top: 4px !important;
+        flex-shrink: 0 !important;
     }
 
     .sgl-btn-details,
-    .sgl-btn-details span {
-        padding: 8px 12px !important;
-        font-size: 12px !important;
+    .sgl-btn-details span,
+    .sgl-btn-details .sgl-btn-text {
+        padding: 4px 10px !important;
+        font-size: 11px !important;
         line-height: 1 !important;
-        height: 40px !important;
-        min-height: 40px !important;
-        max-height: 40px !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        max-height: 34px !important;
     }
 
     .sgl-btn-play,
-    .sgl-btn-play span {
-        padding: 8px 10px !important;
-        font-size: 11.5px !important;
+    .sgl-btn-play span,
+    .sgl-btn-play .sgl-btn-text {
+        padding: 4px 10px !important;
+        font-size: 11px !important;
         line-height: 1 !important;
-        height: 40px !important;
-        min-height: 40px !important;
-        max-height: 40px !important;
+        height: 34px !important;
+        min-height: 34px !important;
+        max-height: 34px !important;
     }
 
     .sgl-btn-badge {
-        font-size: 9px !important;
+        font-size: 8.5px !important;
         line-height: 1 !important;
-        padding: 1px 5px !important;
+        padding: 1px 4px !important;
     }
 
     /* Inspector Collection Fan */
     .sgl-inspector-col-fan {
-        max-width: 240px !important;
-        height: 135px !important;
+        max-width: 200px !important;
+        height: 100px !important;
         margin-bottom: 4px !important;
+        flex-shrink: 0 !important;
     }
 
     .sgl-insp-col-card {
-        width: 62px !important;
-        height: 93px !important;
-        border-radius: 6px !important;
+        width: 48px !important;
+        height: 72px !important;
+        border-radius: 5px !important;
     }
 
     .sgl-insp-col-card-far-left {
-        transform: translateX(-60px) translateY(10px) rotate(-16deg) scale(0.82) !important;
+        transform: translateX(-50px) translateY(7px) rotate(-14deg) scale(0.82) !important;
     }
 
     .sgl-insp-col-card-left {
-        transform: translateX(-30px) translateY(4px) rotate(-8deg) scale(0.91) !important;
+        transform: translateX(-25px) translateY(2px) rotate(-7deg) scale(0.91) !important;
     }
 
     .sgl-insp-col-card-right {
-        transform: translateX(30px) translateY(4px) rotate(8deg) scale(0.91) !important;
+        transform: translateX(25px) translateY(2px) rotate(7deg) scale(0.91) !important;
     }
 
     .sgl-insp-col-card-far-right {
-        transform: translateX(60px) translateY(10px) rotate(16deg) scale(0.82) !important;
+        transform: translateX(50px) translateY(7px) rotate(14deg) scale(0.82) !important;
     }
 
     /* Right Panel: Game Grid */
@@ -1327,14 +1356,15 @@ export const LIBRARY_CSS = `
 
     /* Cards in Grid */
     .sgl-card-fallback-title {
-        font-size: 12px !important;
+        font-size: 11px !important;
         line-height: 1.3 !important;
         max-height: 2.6em !important;
     }
 
     .sgl-card-running-badge,
-    .sgl-card-running-badge span {
-        font-size: 9px !important;
+    .sgl-card-running-badge span,
+    .sgl-card-running-badge .sgl-card-running-text {
+        font-size: 8.5px !important;
         line-height: 1 !important;
     }
 
@@ -1370,71 +1400,79 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-col-footer {
-        padding: 6px 10px !important;
+        padding: 4px 6px !important;
+        gap: 2px !important;
     }
 
     .sgl-col-footer-title {
-        font-size: 12px !important;
-        line-height: 1.25 !important;
-        max-height: 2.5em !important;
+        font-size: 10px !important;
+        line-height: 1.15 !important;
+        max-height: 1.25em !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
+        white-space: nowrap !important;
+        text-overflow: ellipsis !important;
     }
 
     .sgl-col-footer-badge {
-        font-size: 9.5px !important;
+        font-size: 7.5px !important;
         line-height: 1 !important;
-        padding: 1.5px 6px !important;
+        padding: 1px 4px !important;
+        border-radius: 4px !important;
     }
 }
 
 /* Explicit compact modifier (e.g. Playground Handheld mode toggle) */
 .sgl-root.sgl-compact .sgl-header {
-    height: 48px !important;
-    padding: 0 18px !important;
+    height: 44px !important;
+    padding: 0 16px !important;
 }
 .sgl-root.sgl-compact .sgl-brand,
 .sgl-root.sgl-compact .sgl-brand span,
 .sgl-root.sgl-compact .sgl-brand .sgl-brand-text {
-    font-size: 13.5px !important;
+    font-size: 12px !important;
     line-height: 1 !important;
-    gap: 8px !important;
+    gap: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-tabs-container {
-    gap: 8px !important;
+    gap: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-tabs {
-    gap: 16px !important;
+    gap: 12px !important;
     padding: 2px 4px !important;
 }
 .sgl-root.sgl-compact .sgl-tab,
 .sgl-root.sgl-compact .sgl-tab span,
 .sgl-root.sgl-compact .sgl-tab-label {
-    font-size: 12px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
-    padding: 6px 2px 8px !important;
-    gap: 6px !important;
+    padding: 4px 2px 6px !important;
+    gap: 5px !important;
     height: auto !important;
     min-height: 0 !important;
+    letter-spacing: 0.05em !important;
 }
 .sgl-root.sgl-compact .sgl-tab-count {
-    font-size: 10px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
-    padding: 1px 5px !important;
+    padding: 1px 4.5px !important;
 }
 .sgl-root.sgl-compact .sgl-bumper-badge {
-    font-size: 9.5px !important;
+    font-size: 8.5px !important;
     line-height: 1 !important;
-    padding: 2px 5px !important;
+    padding: 1.5px 5px !important;
 }
 .sgl-root.sgl-compact .sgl-header-info {
-    font-size: 11px !important;
+    font-size: 10px !important;
     line-height: 1 !important;
 }
 .sgl-root.sgl-compact .sgl-inspector {
-    width: 300px !important;
-    min-width: 290px !important;
-    max-width: 310px !important;
-    padding: 14px 18px !important;
-    gap: 8px !important;
+    width: 275px !important;
+    min-width: 260px !important;
+    max-width: 285px !important;
+    padding: 12px 14px !important;
+    gap: 6px !important;
+    overflow-y: hidden !important;
     transform: translateZ(0) !important;
     will-change: transform !important;
 }
@@ -1442,116 +1480,124 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
-    height: clamp(120px, 24vh, 195px) !important;
-    max-height: 195px !important;
+    height: clamp(90px, 16vh, 130px) !important;
+    max-height: 130px !important;
     width: auto !important;
-    max-width: 130px !important;
+    max-width: 87px !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
-    border-radius: 10px !important;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
 }
 .sgl-root.sgl-compact .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(110px, 20vh, 165px) !important;
-    max-height: 165px !important;
-    max-width: 165px !important;
+    height: clamp(85px, 15vh, 115px) !important;
+    max-height: 115px !important;
+    max-width: 115px !important;
     aspect-ratio: 1 / 1 !important;
 }
 .sgl-root.sgl-compact .sgl-title-box {
-    min-height: 38px !important;
-    max-height: 48px !important;
+    min-height: 24px !important;
+    max-height: 38px !important;
+    flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-title-text {
-    font-size: 17.5px !important;
-    line-height: 1.22 !important;
-    max-height: 2.44em !important;
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+    max-height: 2.4em !important;
     overflow: hidden !important;
 }
 .sgl-root.sgl-compact .sgl-meta-row {
     gap: 6px !important;
+    flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-source-pill,
 .sgl-root.sgl-compact .sgl-status-pill {
-    font-size: 10px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
-    padding: 2px 7px !important;
+    padding: 2px 6px !important;
 }
 .sgl-root.sgl-compact .sgl-stats-grid {
-    gap: 6px !important;
+    gap: 4px !important;
+    flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-stat-card {
-    padding: 5px 8px !important;
-    gap: 2px !important;
+    padding: 3px 6px !important;
+    gap: 1px !important;
     border-radius: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-stat-label {
-    font-size: 9.5px !important;
-    line-height: 1.2 !important;
+    font-size: 8px !important;
+    line-height: 1.15 !important;
 }
 .sgl-root.sgl-compact .sgl-stat-value {
-    font-size: 12px !important;
-    line-height: 1.2 !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
 }
 .sgl-root.sgl-compact .sgl-stat-bar {
-    height: 2.5px !important;
-    margin-top: 3px !important;
+    height: 2px !important;
+    margin-top: 2px !important;
 }
 .sgl-root.sgl-compact .sgl-description {
-    font-size: 11px !important;
-    line-height: 1.35 !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
     -webkit-line-clamp: 2 !important;
-    max-height: 2.7em !important;
+    max-height: 2.6em !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-actions {
-    gap: 8px !important;
+    gap: 6px !important;
     padding-top: 4px !important;
+    flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-btn-details,
-.sgl-root.sgl-compact .sgl-btn-details span {
-    padding: 8px 12px !important;
-    font-size: 12px !important;
+.sgl-root.sgl-compact .sgl-btn-details span,
+.sgl-root.sgl-compact .sgl-btn-details .sgl-btn-text {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
-    height: 40px !important;
-    min-height: 40px !important;
-    max-height: 40px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
 }
 .sgl-root.sgl-compact .sgl-btn-play,
-.sgl-root.sgl-compact .sgl-btn-play span {
-    padding: 8px 10px !important;
-    font-size: 11.5px !important;
+.sgl-root.sgl-compact .sgl-btn-play span,
+.sgl-root.sgl-compact .sgl-btn-play .sgl-btn-text {
+    padding: 4px 10px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
-    height: 40px !important;
-    min-height: 40px !important;
-    max-height: 40px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
 }
 .sgl-root.sgl-compact .sgl-btn-badge {
-    font-size: 9px !important;
+    font-size: 8.5px !important;
     line-height: 1 !important;
-    padding: 1px 5px !important;
+    padding: 1px 4px !important;
 }
 .sgl-root.sgl-compact .sgl-inspector-col-fan {
-    max-width: 240px !important;
-    height: 135px !important;
+    max-width: 200px !important;
+    height: 100px !important;
     margin-bottom: 4px !important;
+    flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card {
-    width: 62px !important;
-    height: 93px !important;
-    border-radius: 6px !important;
+    width: 48px !important;
+    height: 72px !important;
+    border-radius: 5px !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-far-left {
-    transform: translateX(-60px) translateY(10px) rotate(-16deg) scale(0.82) !important;
+    transform: translateX(-50px) translateY(7px) rotate(-14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-left {
-    transform: translateX(-30px) translateY(4px) rotate(-8deg) scale(0.91) !important;
+    transform: translateX(-25px) translateY(2px) rotate(-7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-right {
-    transform: translateX(30px) translateY(4px) rotate(8deg) scale(0.91) !important;
+    transform: translateX(25px) translateY(2px) rotate(7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-far-right {
-    transform: translateX(60px) translateY(10px) rotate(16deg) scale(0.82) !important;
+    transform: translateX(50px) translateY(7px) rotate(14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-grid-panel {
     padding: 14px 18px 20px 16px !important;
@@ -1561,13 +1607,14 @@ export const LIBRARY_CSS = `
     padding-bottom: 16px !important;
 }
 .sgl-root.sgl-compact .sgl-card-fallback-title {
-    font-size: 12px !important;
+    font-size: 11px !important;
     line-height: 1.3 !important;
     max-height: 2.6em !important;
 }
 .sgl-root.sgl-compact .sgl-card-running-badge,
-.sgl-root.sgl-compact .sgl-card-running-badge span {
-    font-size: 9px !important;
+.sgl-root.sgl-compact .sgl-card-running-badge span,
+.sgl-root.sgl-compact .sgl-card-running-badge .sgl-card-running-text {
+    font-size: 8.5px !important;
     line-height: 1 !important;
 }
 .sgl-root.sgl-compact .sgl-card-collection {
@@ -1595,49 +1642,54 @@ export const LIBRARY_CSS = `
     transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer {
-    padding: 6px 8px !important;
-    gap: 3px !important;
+    padding: 4px 6px !important;
+    gap: 2px !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer-title {
-    font-size: 11.5px !important;
-    line-height: 1.2 !important;
-    max-height: 2.4em !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    max-height: 1.25em !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer-badge {
-    font-size: 8.5px !important;
+    font-size: 7.5px !important;
     line-height: 1 !important;
-    padding: 1px 5px !important;
+    padding: 1px 4px !important;
+    border-radius: 4px !important;
 }
 
 /* Ultra-compact / 720p height optimization (e.g. 1280x720 or on-screen keyboard open) */
 @media (max-height: 720px) {
     .sgl-poster-wrapper {
-        max-width: 120px !important;
-        height: clamp(105px, 20vh, 155px) !important;
-        max-height: 155px !important;
+        max-width: 80px !important;
+        height: clamp(80px, 14vh, 115px) !important;
+        max-height: 115px !important;
     }
     .sgl-poster-wrapper.sgl-poster-square {
-        max-width: 140px !important;
-        height: clamp(95px, 18vh, 135px) !important;
-        max-height: 135px !important;
+        max-width: 100px !important;
+        height: clamp(75px, 13vh, 100px) !important;
+        max-height: 100px !important;
     }
     .sgl-inspector {
-        gap: 6px !important;
-        padding: 10px 14px !important;
+        gap: 5px !important;
+        padding: 10px 12px !important;
     }
     .sgl-title-box {
-        min-height: 32px !important;
-        max-height: 42px !important;
+        min-height: 22px !important;
+        max-height: 36px !important;
     }
     .sgl-title-text {
-        font-size: 16px !important;
+        font-size: 14px !important;
         line-height: 1.2 !important;
     }
     .sgl-stats-grid {
-        gap: 4px !important;
+        gap: 3px !important;
     }
     .sgl-stat-card {
-        padding: 4px 6px !important;
+        padding: 3px 5px !important;
     }
 }
 
@@ -1685,7 +1737,7 @@ body.LargeText .sgl-root .sgl-brand .sgl-brand-text,
 .sgl-root .sgl-brand,
 .sgl-root .sgl-brand span,
 .sgl-root .sgl-brand .sgl-brand-text {
-    font-size: 14px !important;
+    font-size: 12px !important;
     line-height: 1 !important;
 }
 
@@ -1694,9 +1746,9 @@ html body .sgl-root .sgl-bumper-badge,
 body.LargeText .sgl-root .sgl-bumper-badge,
 .LargeText .sgl-root .sgl-bumper-badge,
 .sgl-root .sgl-bumper-badge {
-    font-size: 10px !important;
+    font-size: 8.5px !important;
     line-height: 1 !important;
-    padding: 2px 6px !important;
+    padding: 1.5px 5px !important;
 }
 
 :root .sgl-root .sgl-tab,
@@ -1714,10 +1766,11 @@ body.LargeText .sgl-root .sgl-tab-label,
 .sgl-root .sgl-tab,
 .sgl-root .sgl-tab span,
 .sgl-root .sgl-tab-label {
-    font-size: 12.5px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
     height: auto !important;
     min-height: 0 !important;
+    letter-spacing: 0.05em !important;
 }
 
 :root .sgl-root .sgl-tab-count,
@@ -1725,9 +1778,9 @@ html body .sgl-root .sgl-tab-count,
 body.LargeText .sgl-root .sgl-tab-count,
 .LargeText .sgl-root .sgl-tab-count,
 .sgl-root .sgl-tab-count {
-    font-size: 10.5px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
-    padding: 1px 6px !important;
+    padding: 1px 4.5px !important;
 }
 
 :root .sgl-root .sgl-breadcrumb-title,
@@ -1735,7 +1788,7 @@ html body .sgl-root .sgl-breadcrumb-title,
 body.LargeText .sgl-root .sgl-breadcrumb-title,
 .LargeText .sgl-root .sgl-breadcrumb-title,
 .sgl-root .sgl-breadcrumb-title {
-    font-size: 13px !important;
+    font-size: 11px !important;
     line-height: 1 !important;
 }
 
@@ -1749,7 +1802,7 @@ body.LargeText .sgl-root .sgl-btn-back-col span,
 .LargeText .sgl-root .sgl-btn-back-col span,
 .sgl-root .sgl-btn-back-col,
 .sgl-root .sgl-btn-back-col span {
-    font-size: 11.5px !important;
+    font-size: 10px !important;
     line-height: 1 !important;
 }
 
@@ -1758,7 +1811,7 @@ html body .sgl-root .sgl-header-info,
 body.LargeText .sgl-root .sgl-header-info,
 .LargeText .sgl-root .sgl-header-info,
 .sgl-root .sgl-header-info {
-    font-size: 11px !important;
+    font-size: 10px !important;
     line-height: 1 !important;
 }
 
@@ -1768,11 +1821,12 @@ html body .sgl-root .sgl-inspector,
 body.LargeText .sgl-root .sgl-inspector,
 .LargeText .sgl-root .sgl-inspector,
 .sgl-root .sgl-inspector {
-    width: 310px !important;
-    min-width: 290px !important;
-    max-width: 325px !important;
-    padding: 14px 18px !important;
-    gap: 8px !important;
+    width: 275px !important;
+    min-width: 260px !important;
+    max-width: 285px !important;
+    padding: 12px 14px !important;
+    gap: 6px !important;
+    overflow-y: hidden !important;
 }
 
 :root .sgl-root .sgl-poster-wrapper,
@@ -1783,10 +1837,10 @@ body.LargeText .sgl-root .sgl-poster-wrapper,
     flex: 0 0 auto !important;
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
-    height: clamp(120px, 24vh, 195px) !important;
-    max-height: 195px !important;
+    height: clamp(90px, 16vh, 130px) !important;
+    max-height: 130px !important;
     width: auto !important;
-    max-width: 130px !important;
+    max-width: 87px !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
 }
@@ -1796,9 +1850,9 @@ html body .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 body.LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .sgl-root .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(110px, 20vh, 165px) !important;
-    max-height: 165px !important;
-    max-width: 165px !important;
+    height: clamp(85px, 15vh, 115px) !important;
+    max-height: 115px !important;
+    max-width: 115px !important;
     aspect-ratio: 1 / 1 !important;
 }
 
@@ -1807,8 +1861,9 @@ html body .sgl-root .sgl-title-box,
 body.LargeText .sgl-root .sgl-title-box,
 .LargeText .sgl-root .sgl-title-box,
 .sgl-root .sgl-title-box {
-    min-height: 36px !important;
-    max-height: 50px !important;
+    min-height: 24px !important;
+    max-height: 38px !important;
+    flex-shrink: 0 !important;
 }
 
 :root .sgl-root .sgl-title-text,
@@ -1816,9 +1871,9 @@ html body .sgl-root .sgl-title-text,
 body.LargeText .sgl-root .sgl-title-text,
 .LargeText .sgl-root .sgl-title-text,
 .sgl-root .sgl-title-text {
-    font-size: 18px !important;
-    line-height: 1.22 !important;
-    max-height: 2.44em !important;
+    font-size: 15px !important;
+    line-height: 1.2 !important;
+    max-height: 2.4em !important;
     display: -webkit-box !important;
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
@@ -1835,9 +1890,10 @@ body.LargeText .sgl-root .sgl-status-pill,
 .LargeText .sgl-root .sgl-status-pill,
 .sgl-root .sgl-source-pill,
 .sgl-root .sgl-status-pill {
-    font-size: 10.5px !important;
+    font-size: 9px !important;
     line-height: 1 !important;
-    padding: 2.5px 7px !important;
+    padding: 2px 6px !important;
+    flex-shrink: 0 !important;
 }
 
 :root .sgl-root .sgl-stat-label,
@@ -1845,8 +1901,8 @@ html body .sgl-root .sgl-stat-label,
 body.LargeText .sgl-root .sgl-stat-label,
 .LargeText .sgl-root .sgl-stat-label,
 .sgl-root .sgl-stat-label {
-    font-size: 9.5px !important;
-    line-height: 1.2 !important;
+    font-size: 8px !important;
+    line-height: 1.15 !important;
 }
 
 :root .sgl-root .sgl-stat-value,
@@ -1854,8 +1910,8 @@ html body .sgl-root .sgl-stat-value,
 body.LargeText .sgl-root .sgl-stat-value,
 .LargeText .sgl-root .sgl-stat-value,
 .sgl-root .sgl-stat-value {
-    font-size: 12.5px !important;
-    line-height: 1.2 !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
 }
 
 :root .sgl-root .sgl-description,
@@ -1863,14 +1919,26 @@ html body .sgl-root .sgl-description,
 body.LargeText .sgl-root .sgl-description,
 .LargeText .sgl-root .sgl-description,
 .sgl-root .sgl-description {
-    font-size: 11.5px !important;
-    line-height: 1.4 !important;
-    max-height: 4.2em !important;
+    font-size: 10px !important;
+    line-height: 1.3 !important;
+    max-height: 2.6em !important;
     display: -webkit-box !important;
-    -webkit-line-clamp: 3 !important;
+    -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
     text-overflow: ellipsis !important;
+    flex-shrink: 0 !important;
+}
+
+:root .sgl-root .sgl-actions,
+html body .sgl-root .sgl-actions,
+body.LargeText .sgl-root .sgl-actions,
+.LargeText .sgl-root .sgl-actions,
+.sgl-root .sgl-actions {
+    gap: 6px !important;
+    margin-top: auto !important;
+    padding-top: 4px !important;
+    flex-shrink: 0 !important;
 }
 
 :root .sgl-root .sgl-btn-play,
@@ -1888,11 +1956,12 @@ body.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
 .sgl-root .sgl-btn-play,
 .sgl-root .sgl-btn-play span,
 .sgl-root .sgl-btn-play .sgl-btn-text {
-    font-size: 12px !important;
-    height: 40px !important;
-    min-height: 40px !important;
-    max-height: 40px !important;
+    font-size: 11px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
     line-height: 1 !important;
+    padding: 4px 10px !important;
 }
 
 :root .sgl-root .sgl-btn-details,
@@ -1910,11 +1979,12 @@ body.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
 .sgl-root .sgl-btn-details,
 .sgl-root .sgl-btn-details span,
 .sgl-root .sgl-btn-details .sgl-btn-text {
-    font-size: 12.5px !important;
-    height: 40px !important;
-    min-height: 40px !important;
-    max-height: 40px !important;
+    font-size: 11px !important;
+    height: 34px !important;
+    min-height: 34px !important;
+    max-height: 34px !important;
     line-height: 1 !important;
+    padding: 4px 10px !important;
 }
 
 :root .sgl-root .sgl-btn-badge,
@@ -1922,8 +1992,9 @@ html body .sgl-root .sgl-btn-badge,
 body.LargeText .sgl-root .sgl-btn-badge,
 .LargeText .sgl-root .sgl-btn-badge,
 .sgl-root .sgl-btn-badge {
-    font-size: 9.5px !important;
+    font-size: 8.5px !important;
     line-height: 1 !important;
+    padding: 1px 4px !important;
 }
 
 /* Right Grid (Cards) */
@@ -1932,7 +2003,7 @@ html body .sgl-root .sgl-card-fallback-title,
 body.LargeText .sgl-root .sgl-card-fallback-title,
 .LargeText .sgl-root .sgl-card-fallback-title,
 .sgl-root .sgl-card-fallback-title {
-    font-size: 12px !important;
+    font-size: 11px !important;
     line-height: 1.3 !important;
     max-height: 2.6em !important;
     display: -webkit-box !important;
@@ -1956,8 +2027,17 @@ body.LargeText .sgl-root .sgl-card-running-badge .sgl-card-running-text,
 .sgl-root .sgl-card-running-badge,
 .sgl-root .sgl-card-running-badge span,
 .sgl-root .sgl-card-running-badge .sgl-card-running-text {
-    font-size: 9px !important;
+    font-size: 8.5px !important;
     line-height: 1 !important;
+}
+
+:root .sgl-root .sgl-col-footer,
+html body .sgl-root .sgl-col-footer,
+body.LargeText .sgl-root .sgl-col-footer,
+.LargeText .sgl-root .sgl-col-footer,
+.sgl-root .sgl-col-footer {
+    padding: 4px 6px !important;
+    gap: 2px !important;
 }
 
 :root .sgl-root .sgl-col-footer-title,
@@ -1965,13 +2045,15 @@ html body .sgl-root .sgl-col-footer-title,
 body.LargeText .sgl-root .sgl-col-footer-title,
 .LargeText .sgl-root .sgl-col-footer-title,
 .sgl-root .sgl-col-footer-title {
-    font-size: 12px !important;
-    line-height: 1.25 !important;
-    max-height: 2.5em !important;
-    display: -webkit-box !important;
-    -webkit-line-clamp: 2 !important;
-    -webkit-box-orient: vertical !important;
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    max-height: 1.25em !important;
+    display: block !important;
     overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    overflow-wrap: normal !important;
 }
 
 :root .sgl-root .sgl-col-footer-badge,
@@ -1979,8 +2061,32 @@ html body .sgl-root .sgl-col-footer-badge,
 body.LargeText .sgl-root .sgl-col-footer-badge,
 .LargeText .sgl-root .sgl-col-footer-badge,
 .sgl-root .sgl-col-footer-badge {
-    font-size: 9px !important;
+    font-size: 7.5px !important;
     line-height: 1 !important;
+    padding: 1px 4px !important;
+    border-radius: 4px !important;
+}
+
+/* Inspector 5-Card Fan for Collections in Immunity Block */
+:root .sgl-root .sgl-inspector-col-fan,
+html body .sgl-root .sgl-inspector-col-fan,
+body.LargeText .sgl-root .sgl-inspector-col-fan,
+.LargeText .sgl-root .sgl-inspector-col-fan,
+.sgl-root .sgl-inspector-col-fan {
+    max-width: 200px !important;
+    height: 100px !important;
+    margin-bottom: 4px !important;
+    flex-shrink: 0 !important;
+}
+
+:root .sgl-root .sgl-insp-col-card,
+html body .sgl-root .sgl-insp-col-card,
+body.LargeText .sgl-root .sgl-insp-col-card,
+.LargeText .sgl-root .sgl-insp-col-card,
+.sgl-root .sgl-insp-col-card {
+    width: 48px !important;
+    height: 72px !important;
+    border-radius: 5px !important;
 }
 `;
 

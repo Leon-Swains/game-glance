@@ -226,7 +226,7 @@ export function LibraryCategoryBar({
                     </button>
                 ) : (
                     <>
-                        <FaGamepad className="sgl-brand-icon" size={18} />
+                        <FaGamepad className="sgl-brand-icon" size={14} />
                         <span className="sgl-brand-text">LIBRARY</span>
                     </>
                 )}

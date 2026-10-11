@@ -317,17 +317,17 @@ export function LibraryInspector({
                     ) : (
                         <div
                             style={{
-                                width: 78,
-                                height: 117,
+                                width: 48,
+                                height: 72,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 background: '#161b24',
-                                borderRadius: 7,
+                                borderRadius: 5,
                                 border: '1px solid rgba(255,255,255,0.15)',
                             }}
                         >
-                            <FaFolderOpen size={32} color="var(--accent, #58a6ff)" />
+                            <FaFolderOpen size={20} color="var(--accent, #58a6ff)" />
                         </div>
                     )}
                 </div>
@@ -362,7 +362,7 @@ export function LibraryInspector({
                         }}
                         style={{ width: '100%' }}
                     >
-                        <FaFolderOpen size={13} />
+                        <FaFolderOpen size={11} />
                         <span className="sgl-btn-text">Open Collection</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
@@ -478,7 +478,7 @@ export function LibraryInspector({
                         }}
                         style={{ width: '100%' }}
                     >
-                        <FaMusic size={12} />
+                        <FaMusic size={11} />
                         <span className="sgl-btn-text">Open Soundtrack</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
@@ -494,7 +494,7 @@ export function LibraryInspector({
                             onDetails?.(poster ?? e.currentTarget);
                         }}
                     >
-                        <FaInfoCircle size={13} />
+                        <FaInfoCircle size={11} />
                         <span className="sgl-btn-text">Details</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
@@ -506,7 +506,7 @@ export function LibraryInspector({
                             onPlay?.();
                         }}
                     >
-                        <FaPlay size={11} />
+                        <FaPlay size={9} />
                         <span className="sgl-btn-text">{playLabel}</span>
                         <span className="sgl-btn-badge">Y</span>
                     </button>
