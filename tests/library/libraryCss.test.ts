@@ -1,11 +1,18 @@
 import { describe, expect, it } from 'vitest';
-import { LIBRARY_CSS } from '../../src/library/libraryCss';
+import { d, LIBRARY_CSS } from '../../src/library/libraryCss';
 
-describe('libraryCss: Handheld and responsive layout rules', () => {
-    it('contains base sgl-poster-wrapper styling with clamped height to prevent panel overflow', () => {
+describe('libraryCss: Handheld and responsive layout rules with proportional font & panel scaling', () => {
+    it('defines base scale unit matching Spotlight Home and Game View formulas', () => {
+        expect(LIBRARY_CSS).toContain('--sgl-d: calc(100vw / 1440);');
+        expect(LIBRARY_CSS).toContain('@media (max-aspect-ratio: 17/10) {');
+        expect(LIBRARY_CSS).toContain('--sgl-d: calc(100vw / 1280);');
+        expect(d(275)).toBe('calc(275 * var(--sgl-d))');
+    });
+
+    it('contains base sgl-poster-wrapper styling with dynamically clamped height to prevent panel overflow', () => {
         expect(LIBRARY_CSS).toContain('.sgl-poster-wrapper');
-        expect(LIBRARY_CSS).toContain('clamp(90px, 16vh, 130px)');
-        expect(LIBRARY_CSS).toContain('max-height: 130px');
+        expect(LIBRARY_CSS).toContain('clamp(calc(90 * var(--sgl-d)), 16vh, calc(130 * var(--sgl-d)))');
+        expect(LIBRARY_CSS).toContain('max-height: calc(130 * var(--sgl-d))');
     });
 
     it('contains responsive media query for handheld screens (Steam Deck <=1366px / <=850px)', () => {
@@ -17,13 +24,15 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
         expect(LIBRARY_CSS).toContain('aspect-ratio: 1 / 1'); // square soundtrack cover
     });
 
-    it('defines optimized inspector width to preserve grid space and prevent overflow', () => {
+    it('defines dynamically scaled inspector width matching Home View proportions (never exceeding 21.5% screen)', () => {
         expect(LIBRARY_CSS).toContain('.sgl-inspector');
-        expect(LIBRARY_CSS).toContain('width: 275px !important;');
+        expect(LIBRARY_CSS).toContain('width: calc(275 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('min-width: calc(250 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('max-width: calc(285 * var(--sgl-d)) !important;');
     });
 
-    it('defines compact 44px header ribbon for handhelds', () => {
-        expect(LIBRARY_CSS).toContain('height: 44px');
+    it('defines compact dynamically scaled header ribbon for handhelds', () => {
+        expect(LIBRARY_CSS).toContain('height: calc(44 * var(--sgl-d)) !important;');
     });
 
     it('provides explicit .sgl-compact modifier rules for device mode toggle', () => {
@@ -35,25 +44,28 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
         expect(LIBRARY_CSS).toContain('@media (max-height: 720px)');
     });
 
-    it('sets 40% reduced top padding inset (42px) to optimize screen real estate', () => {
-        expect(LIBRARY_CSS).toContain('padding-top: var(--sgl-top-inset, 42px) !important;');
+    it('sets scaled top padding inset to optimize screen real estate', () => {
+        expect(LIBRARY_CSS).toContain('padding-top: var(--sgl-top-inset, calc(42 * var(--sgl-d))) !important;');
     });
 
     it('includes font-size and text-size-adjust locking to protect against Steam Large Text mode distortion', () => {
         expect(LIBRARY_CSS).toContain('-webkit-text-size-adjust: 100% !important;');
-        expect(LIBRARY_CSS).toContain('font-size: 14px !important;');
+        expect(LIBRARY_CSS).toContain('font-size: calc(14 * var(--sgl-d)) !important;');
         expect(LIBRARY_CSS).toContain('html.LargeText .sgl-root');
         expect(LIBRARY_CSS).toContain('body.LargeText .sgl-root');
         expect(LIBRARY_CSS).toContain(':root .sgl-root');
         expect(LIBRARY_CSS).toContain('html body .sgl-root');
     });
 
-    it('locks navbar, inspector, description, action buttons, and card typography with high-specificity rules', () => {
+    it('locks navbar, inspector, description, action buttons, and card typography with dynamically scaled rules', () => {
         expect(LIBRARY_CSS).toContain('.sgl-tab-label');
-        expect(LIBRARY_CSS).toContain('font-size: 11px !important;');
+        expect(LIBRARY_CSS).toContain('font-size: calc(11 * var(--sgl-d)) !important;');
         expect(LIBRARY_CSS).toContain('.sgl-brand');
+        expect(LIBRARY_CSS).toContain('font-size: calc(12 * var(--sgl-d)) !important;');
         expect(LIBRARY_CSS).toContain('.sgl-title-text');
+        expect(LIBRARY_CSS).toContain('font-size: calc(15 * var(--sgl-d)) !important;');
         expect(LIBRARY_CSS).toContain('.sgl-description');
+        expect(LIBRARY_CSS).toContain('font-size: calc(10 * var(--sgl-d)) !important;');
         expect(LIBRARY_CSS).toContain('.sgl-btn-details');
         expect(LIBRARY_CSS).toContain('.sgl-btn-play');
         expect(LIBRARY_CSS).toContain('.sgl-card-fallback-title');
@@ -61,9 +73,9 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
     });
 
     it('enforces clamped poster dimensions across base, handheld, and compact viewports', () => {
-        expect(LIBRARY_CSS).toContain('max-width: 87px !important;');
-        expect(LIBRARY_CSS).toContain('height: clamp(90px, 16vh, 130px) !important;');
-        expect(LIBRARY_CSS).toContain('max-height: 130px !important;');
+        expect(LIBRARY_CSS).toContain('max-width: calc(87 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('height: clamp(calc(90 * var(--sgl-d)), 16vh, calc(130 * var(--sgl-d))) !important;');
+        expect(LIBRARY_CSS).toContain('max-height: calc(130 * var(--sgl-d)) !important;');
     });
 
     it('includes fast compositor-optimized grayscale and dimmed styling for uninstalled games', () => {
@@ -72,4 +84,3 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
         expect(LIBRARY_CSS).toContain('opacity: 0.55;');
     });
 });
-

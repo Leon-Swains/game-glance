@@ -1,4 +1,28 @@
+/**
+ * A size from the design handoff, in its px, scaled exactly like Spotlight Home (home/scale.ts) and Game View (styles/themeCss.ts):
+ * The canvas's 1440px width fills a 16:9 screen, its 1280px one a 16:10 screen (aspect ratio <= 1.7).
+ * Pure.
+ */
+export const d = (px: number) => `calc(${px} * var(--sgl-d))`;
+
 export const LIBRARY_CSS = `
+:root {
+    --sgl-d: calc(100vw / 1440);
+}
+@media (max-aspect-ratio: 17/10) {
+    :root {
+        --sgl-d: calc(100vw / 1280);
+    }
+}
+.sgl-root {
+    --sgl-d: calc(100vw / 1440);
+}
+@media (max-aspect-ratio: 17/10) {
+    .sgl-root {
+        --sgl-d: calc(100vw / 1280);
+    }
+}
+
 .sgl-root,
 .sgl-root *,
 .sgl-root *::before,
@@ -14,8 +38,8 @@ export const LIBRARY_CSS = `
     width: 100% !important;
     height: 100% !important;
     box-sizing: border-box !important;
-    padding-top: var(--sgl-top-inset, 42px) !important;
-    padding-bottom: var(--sgl-bottom-inset, 58px) !important;
+    padding-top: var(--sgl-top-inset, ${d(42)}) !important;
+    padding-bottom: var(--sgl-bottom-inset, ${d(58)}) !important;
     overflow: hidden !important;
     overflow: clip !important;
     display: flex !important;
@@ -23,7 +47,7 @@ export const LIBRARY_CSS = `
     background: #06090e !important;
     color: #f0f6fc !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
-    font-size: 14px !important;
+    font-size: ${d(14)} !important;
     line-height: normal !important;
     letter-spacing: normal !important;
     text-transform: none !important;
@@ -65,7 +89,7 @@ export const LIBRARY_CSS = `
 
 /* Top Header / Categories Ribbon */
 .sgl-header {
-    height: 44px !important;
+    height: ${d(44)} !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
@@ -81,7 +105,7 @@ export const LIBRARY_CSS = `
     display: flex !important;
     align-items: center !important;
     gap: 6px !important;
-    font-size: 12px !important;
+    font-size: ${d(12)} !important;
     font-weight: 700 !important;
     letter-spacing: 0.06em !important;
     color: #ffffff !important;
@@ -98,12 +122,12 @@ export const LIBRARY_CSS = `
     min-width: 0 !important;
     flex: 1 !important;
     justify-content: center !important;
-    max-width: 860px !important;
+    max-width: ${d(860)} !important;
     overflow: hidden !important;
 }
 
 .sgl-bumper-badge {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     font-weight: 800 !important;
     padding: 1.5px 5px !important;
@@ -148,7 +172,7 @@ export const LIBRARY_CSS = `
     white-space: nowrap !important;
     flex-shrink: 0 !important;
     padding: 6px 2px 8px !important;
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
     font-weight: 700 !important;
     letter-spacing: 0.05em !important;
@@ -167,7 +191,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-tab-label {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
     font-weight: 700 !important;
     letter-spacing: 0.05em !important;
@@ -220,7 +244,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-tab-count {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
     font-weight: 600;
     letter-spacing: 0.04em;
@@ -250,7 +274,7 @@ export const LIBRARY_CSS = `
     gap: 6px;
     padding: 5px 12px;
     border-radius: 8px;
-    font-size: 11.5px !important;
+    font-size: ${d(11.5)} !important;
     line-height: 1 !important;
     font-weight: 700;
     background: rgba(255, 255, 255, 0.08);
@@ -279,7 +303,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-breadcrumb-title {
-    font-size: 13px !important;
+    font-size: ${d(13)} !important;
     line-height: 1 !important;
     font-weight: 800;
     letter-spacing: 0.8px;
@@ -288,7 +312,7 @@ export const LIBRARY_CSS = `
 
 
 .sgl-header-info {
-    font-size: 11.5px !important;
+    font-size: ${d(11.5)} !important;
     line-height: 1 !important;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.45);
@@ -306,9 +330,9 @@ export const LIBRARY_CSS = `
 
 /* Left Panel: Inspector */
 .sgl-inspector {
-    width: 275px !important;
-    min-width: 260px !important;
-    max-width: 285px !important;
+    width: ${d(275)} !important;
+    min-width: ${d(250)} !important;
+    max-width: ${d(285)} !important;
     flex-shrink: 0 !important;
     height: 100% !important;
     display: flex !important;
@@ -331,10 +355,10 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-shrink: 0 !important;
     flex-grow: 0 !important;
-    height: clamp(90px, 16vh, 130px) !important;
-    max-height: 130px !important;
+    height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
+    max-height: ${d(130)} !important;
     width: auto !important;
-    max-width: 87px !important;
+    max-width: ${d(87)} !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
     border-radius: 8px !important;
@@ -346,9 +370,9 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(85px, 15vh, 115px) !important;
-    max-height: 115px !important;
-    max-width: 115px !important;
+    height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
+    max-height: ${d(115)} !important;
+    max-width: ${d(115)} !important;
     aspect-ratio: 1 / 1 !important;
 }
 
@@ -417,7 +441,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-poster-fallback-title {
-    font-size: 13px !important;
+    font-size: ${d(13)} !important;
     font-weight: 800 !important;
     line-height: 1.35 !important;
     text-align: center !important;
@@ -427,15 +451,15 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-title-box {
-    min-height: 24px !important;
-    max-height: 38px !important;
+    min-height: ${d(24)} !important;
+    max-height: ${d(38)} !important;
     display: flex !important;
     align-items: center !important;
     flex-shrink: 0 !important;
 }
 
 .sgl-title-text {
-    font-size: 15px !important;
+    font-size: ${d(15)} !important;
     font-weight: 700 !important;
     line-height: 1.2 !important;
     color: #ffffff !important;
@@ -456,7 +480,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-source-pill {
-    font-size: 9px !important;
+    font-size: ${d(9)} !important;
     line-height: 1 !important;
     font-weight: 700 !important;
     padding: 2px 6px !important;
@@ -467,7 +491,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-status-pill {
-    font-size: 9px !important;
+    font-size: ${d(9)} !important;
     line-height: 1 !important;
     font-weight: 700 !important;
     padding: 2px 6px !important;
@@ -496,7 +520,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-stat-label {
-    font-size: 8px !important;
+    font-size: ${d(8)} !important;
     line-height: 1.15 !important;
     font-weight: 600 !important;
     color: rgba(255, 255, 255, 0.5) !important;
@@ -505,7 +529,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-stat-value {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1.15 !important;
     font-weight: 700 !important;
     color: #ffffff !important;
@@ -527,7 +551,7 @@ export const LIBRARY_CSS = `
 
 /* Description */
 .sgl-description {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1.3 !important;
     color: rgba(255, 255, 255, 0.7) !important;
     display: -webkit-box !important;
@@ -552,11 +576,11 @@ export const LIBRARY_CSS = `
     flex: 1 !important;
     padding: 4px 10px !important;
     border-radius: 999px !important;
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
+    height: ${d(34)} !important;
+    min-height: ${d(34)} !important;
+    max-height: ${d(34)} !important;
     font-weight: 700 !important;
     background: var(--accent, #58a6ff) !important;
     color: #0b0d10 !important;
@@ -573,7 +597,7 @@ export const LIBRARY_CSS = `
 
 .sgl-btn-details .sgl-btn-text,
 .sgl-btn-details span {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
 }
 
@@ -587,11 +611,11 @@ export const LIBRARY_CSS = `
     flex: 1 !important;
     padding: 4px 10px !important;
     border-radius: 999px !important;
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
+    height: ${d(34)} !important;
+    min-height: ${d(34)} !important;
+    max-height: ${d(34)} !important;
     font-weight: 700 !important;
     background: rgba(12, 16, 22, 0.45) !important;
     border: 1px solid rgba(255, 255, 255, 0.18) !important;
@@ -608,7 +632,7 @@ export const LIBRARY_CSS = `
 
 .sgl-btn-play .sgl-btn-text,
 .sgl-btn-play span {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
 }
 
@@ -621,7 +645,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-btn-badge {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     font-weight: 800 !important;
     padding: 1px 4px !important;
@@ -814,7 +838,7 @@ export const LIBRARY_CSS = `
 .sgl-card-fallback-title {
     position: relative !important;
     z-index: 3 !important;
-    font-size: 12.5px !important;
+    font-size: ${d(12.5)} !important;
     font-weight: 700 !important;
     line-height: 1.3 !important;
     color: #ffffff !important;
@@ -863,7 +887,7 @@ export const LIBRARY_CSS = `
     right: 7px;
     background: rgba(46, 160, 67, 0.85);
     color: #ffffff;
-    font-size: 9.5px;
+    font-size: ${d(9.5)};
     font-weight: 800;
     padding: 2px 6px;
     border-radius: 8px;
@@ -949,8 +973,8 @@ export const LIBRARY_CSS = `
 
 .sgl-col-fan-card {
     position: absolute;
-    width: 52px;
-    height: 78px;
+    width: ${d(52)};
+    height: ${d(78)};
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.7);
@@ -970,22 +994,22 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-col-card-far-left {
-    transform: translateX(-52px) translateY(8px) rotate(-14deg) scale(0.82);
+    transform: translateX(${d(-52)}) translateY(${d(8)}) rotate(-14deg) scale(0.82);
     z-index: 1;
 }
 
 .sgl-col-card-left {
-    transform: translateX(-26px) translateY(3px) rotate(-7deg) scale(0.91);
+    transform: translateX(${d(-26)}) translateY(${d(3)}) rotate(-7deg) scale(0.91);
     z-index: 2;
 }
 
 .sgl-col-card-right {
-    transform: translateX(26px) translateY(3px) rotate(7deg) scale(0.91);
+    transform: translateX(${d(26)}) translateY(${d(3)}) rotate(7deg) scale(0.91);
     z-index: 2;
 }
 
 .sgl-col-card-far-right {
-    transform: translateX(52px) translateY(8px) rotate(14deg) scale(0.82);
+    transform: translateX(${d(52)}) translateY(${d(8)}) rotate(14deg) scale(0.82);
     z-index: 1;
 }
 
@@ -1016,7 +1040,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-col-footer-title {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     font-weight: 700 !important;
     color: #ffffff !important;
     letter-spacing: 0.1px !important;
@@ -1032,7 +1056,7 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-col-footer-badge {
-    font-size: 7.5px !important;
+    font-size: ${d(7.5)} !important;
     line-height: 1 !important;
     font-weight: 700 !important;
     padding: 1px 4px !important;
@@ -1048,8 +1072,8 @@ export const LIBRARY_CSS = `
 /* Inspector 5-Card Fan for Collections */
 .sgl-inspector-col-fan {
     width: 100% !important;
-    max-width: 200px !important;
-    height: 100px !important;
+    max-width: ${d(200)} !important;
+    height: ${d(100)} !important;
     position: relative !important;
     display: flex !important;
     align-items: center !important;
@@ -1061,8 +1085,8 @@ export const LIBRARY_CSS = `
 
 .sgl-insp-col-card {
     position: absolute !important;
-    width: 48px !important;
-    height: 72px !important;
+    width: ${d(48)} !important;
+    height: ${d(72)} !important;
     border-radius: 5px !important;
     overflow: hidden !important;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.75) !important;
@@ -1079,22 +1103,22 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-insp-col-card-far-left {
-    transform: translateX(-50px) translateY(7px) rotate(-14deg) scale(0.82) !important;
+    transform: translateX(${d(-50)}) translateY(${d(7)}) rotate(-14deg) scale(0.82) !important;
     z-index: 1 !important;
 }
 
 .sgl-insp-col-card-left {
-    transform: translateX(-25px) translateY(2px) rotate(-7deg) scale(0.91) !important;
+    transform: translateX(${d(-25)}) translateY(${d(2)}) rotate(-7deg) scale(0.91) !important;
     z-index: 2 !important;
 }
 
 .sgl-insp-col-card-right {
-    transform: translateX(25px) translateY(2px) rotate(7deg) scale(0.91) !important;
+    transform: translateX(${d(25)}) translateY(${d(2)}) rotate(7deg) scale(0.91) !important;
     z-index: 2 !important;
 }
 
 .sgl-insp-col-card-far-right {
-    transform: translateX(50px) translateY(7px) rotate(14deg) scale(0.82) !important;
+    transform: translateX(${d(50)}) translateY(${d(7)}) rotate(14deg) scale(0.82) !important;
     z-index: 1 !important;
 }
 
@@ -1114,7 +1138,7 @@ export const LIBRARY_CSS = `
     justify-content: center;
     padding: 60px 20px;
     color: rgba(255, 255, 255, 0.4);
-    font-size: 15px;
+    font-size: ${d(15)};
     font-weight: 600;
     gap: 8px;
 }
@@ -1125,14 +1149,14 @@ export const LIBRARY_CSS = `
 @media (max-width: 1366px), (max-height: 850px) {
     /* Header ribbon: compact 44px to save vertical space for library items */
     .sgl-header {
-        height: 44px !important;
+        height: ${d(44)} !important;
         padding: 0 16px !important;
     }
 
     .sgl-brand,
     .sgl-brand span,
     .sgl-brand .sgl-brand-text {
-        font-size: 12px !important;
+        font-size: ${d(12)} !important;
         line-height: 1 !important;
         gap: 6px !important;
     }
@@ -1149,7 +1173,7 @@ export const LIBRARY_CSS = `
     .sgl-tab,
     .sgl-tab span,
     .sgl-tab-label {
-        font-size: 11px !important;
+        font-size: ${d(11)} !important;
         line-height: 1 !important;
         padding: 4px 2px 6px !important;
         gap: 5px !important;
@@ -1159,38 +1183,38 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-tab-count {
-        font-size: 9px !important;
+        font-size: ${d(9)} !important;
         line-height: 1 !important;
         padding: 1px 4.5px !important;
     }
 
     .sgl-bumper-badge {
-        font-size: 8.5px !important;
+        font-size: ${d(8.5)} !important;
         line-height: 1 !important;
         padding: 1.5px 5px !important;
     }
 
     .sgl-breadcrumb-title {
-        font-size: 11px !important;
+        font-size: ${d(11)} !important;
         line-height: 1 !important;
     }
 
     .sgl-btn-back-col,
     .sgl-btn-back-col span {
-        font-size: 10px !important;
+        font-size: ${d(10)} !important;
         line-height: 1 !important;
     }
 
     .sgl-header-info {
-        font-size: 10px !important;
+        font-size: ${d(10)} !important;
         line-height: 1 !important;
     }
 
     /* Left Panel: Inspector compact 275px width with clamped poster */
     .sgl-inspector {
-        width: 275px !important;
-        min-width: 260px !important;
-        max-width: 285px !important;
+        width: ${d(275)} !important;
+        min-width: ${d(250)} !important;
+        max-width: ${d(285)} !important;
         padding: 12px 14px !important;
         gap: 6px !important;
         overflow-y: hidden !important;
@@ -1202,10 +1226,10 @@ export const LIBRARY_CSS = `
         flex: 0 0 auto !important;
         flex-grow: 0 !important;
         flex-shrink: 0 !important;
-        height: clamp(90px, 16vh, 130px) !important;
-        max-height: 130px !important;
+        height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
+        max-height: ${d(130)} !important;
         width: auto !important;
-        max-width: 87px !important;
+        max-width: ${d(87)} !important;
         aspect-ratio: 2 / 3 !important;
         align-self: center !important;
         border-radius: 8px !important;
@@ -1213,20 +1237,20 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-poster-wrapper.sgl-poster-square {
-        height: clamp(85px, 15vh, 115px) !important;
-        max-height: 115px !important;
-        max-width: 115px !important;
+        height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
+        max-height: ${d(115)} !important;
+        max-width: ${d(115)} !important;
         aspect-ratio: 1 / 1 !important;
     }
 
     .sgl-title-box {
-        min-height: 24px !important;
-        max-height: 38px !important;
+        min-height: ${d(24)} !important;
+        max-height: ${d(38)} !important;
         flex-shrink: 0 !important;
     }
 
     .sgl-title-text {
-        font-size: 15px !important;
+        font-size: ${d(15)} !important;
         line-height: 1.2 !important;
         max-height: 2.4em !important;
         overflow: hidden !important;
@@ -1239,7 +1263,7 @@ export const LIBRARY_CSS = `
 
     .sgl-source-pill,
     .sgl-status-pill {
-        font-size: 9px !important;
+        font-size: ${d(9)} !important;
         line-height: 1 !important;
         padding: 2px 6px !important;
     }
@@ -1256,12 +1280,12 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-stat-label {
-        font-size: 8px !important;
+        font-size: ${d(8)} !important;
         line-height: 1.15 !important;
     }
 
     .sgl-stat-value {
-        font-size: 11px !important;
+        font-size: ${d(11)} !important;
         line-height: 1.15 !important;
     }
 
@@ -1271,7 +1295,7 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-description {
-        font-size: 10px !important;
+        font-size: ${d(10)} !important;
         line-height: 1.3 !important;
         -webkit-line-clamp: 2 !important;
         max-height: 2.6em !important;
@@ -1290,58 +1314,58 @@ export const LIBRARY_CSS = `
     .sgl-btn-details span,
     .sgl-btn-details .sgl-btn-text {
         padding: 4px 10px !important;
-        font-size: 11px !important;
+        font-size: ${d(11)} !important;
         line-height: 1 !important;
-        height: 34px !important;
-        min-height: 34px !important;
-        max-height: 34px !important;
+        height: ${d(34)} !important;
+        min-height: ${d(34)} !important;
+        max-height: ${d(34)} !important;
     }
 
     .sgl-btn-play,
     .sgl-btn-play span,
     .sgl-btn-play .sgl-btn-text {
         padding: 4px 10px !important;
-        font-size: 11px !important;
+        font-size: ${d(11)} !important;
         line-height: 1 !important;
-        height: 34px !important;
-        min-height: 34px !important;
-        max-height: 34px !important;
+        height: ${d(34)} !important;
+        min-height: ${d(34)} !important;
+        max-height: ${d(34)} !important;
     }
 
     .sgl-btn-badge {
-        font-size: 8.5px !important;
+        font-size: ${d(8.5)} !important;
         line-height: 1 !important;
         padding: 1px 4px !important;
     }
 
     /* Inspector Collection Fan */
     .sgl-inspector-col-fan {
-        max-width: 200px !important;
-        height: 100px !important;
+        max-width: ${d(200)} !important;
+        height: ${d(100)} !important;
         margin-bottom: 4px !important;
         flex-shrink: 0 !important;
     }
 
     .sgl-insp-col-card {
-        width: 48px !important;
-        height: 72px !important;
+        width: ${d(48)} !important;
+        height: ${d(72)} !important;
         border-radius: 5px !important;
     }
 
     .sgl-insp-col-card-far-left {
-        transform: translateX(-50px) translateY(7px) rotate(-14deg) scale(0.82) !important;
+        transform: translateX(${d(-50)}) translateY(${d(7)}) rotate(-14deg) scale(0.82) !important;
     }
 
     .sgl-insp-col-card-left {
-        transform: translateX(-25px) translateY(2px) rotate(-7deg) scale(0.91) !important;
+        transform: translateX(${d(-25)}) translateY(${d(2)}) rotate(-7deg) scale(0.91) !important;
     }
 
     .sgl-insp-col-card-right {
-        transform: translateX(25px) translateY(2px) rotate(7deg) scale(0.91) !important;
+        transform: translateX(${d(25)}) translateY(${d(2)}) rotate(7deg) scale(0.91) !important;
     }
 
     .sgl-insp-col-card-far-right {
-        transform: translateX(50px) translateY(7px) rotate(14deg) scale(0.82) !important;
+        transform: translateX(${d(50)}) translateY(${d(7)}) rotate(14deg) scale(0.82) !important;
     }
 
     /* Right Panel: Game Grid */
@@ -1356,7 +1380,7 @@ export const LIBRARY_CSS = `
 
     /* Cards in Grid */
     .sgl-card-fallback-title {
-        font-size: 11px !important;
+        font-size: ${d(11)} !important;
         line-height: 1.3 !important;
         max-height: 2.6em !important;
     }
@@ -1364,7 +1388,7 @@ export const LIBRARY_CSS = `
     .sgl-card-running-badge,
     .sgl-card-running-badge span,
     .sgl-card-running-badge .sgl-card-running-text {
-        font-size: 8.5px !important;
+        font-size: ${d(8.5)} !important;
         line-height: 1 !important;
     }
 
@@ -1375,28 +1399,28 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-col-fan-stage {
-        height: 90px !important;
+        height: ${d(90)} !important;
     }
 
     .sgl-col-fan-card {
-        width: 54px !important;
-        height: 81px !important;
+        width: ${d(54)} !important;
+        height: ${d(81)} !important;
     }
 
     .sgl-col-card-far-left {
-        transform: translateX(-44px) translateY(6px) rotate(-14deg) scale(0.82) !important;
+        transform: translateX(${d(-44)}) translateY(${d(6)}) rotate(-14deg) scale(0.82) !important;
     }
 
     .sgl-col-card-left {
-        transform: translateX(-22px) translateY(2px) rotate(-7deg) scale(0.91) !important;
+        transform: translateX(${d(-22)}) translateY(${d(2)}) rotate(-7deg) scale(0.91) !important;
     }
 
     .sgl-col-card-right {
-        transform: translateX(22px) translateY(2px) rotate(7deg) scale(0.91) !important;
+        transform: translateX(${d(22)}) translateY(${d(2)}) rotate(7deg) scale(0.91) !important;
     }
 
     .sgl-col-card-far-right {
-        transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82) !important;
+        transform: translateX(${d(44)}) translateY(${d(6)}) rotate(14deg) scale(0.82) !important;
     }
 
     .sgl-col-footer {
@@ -1405,7 +1429,7 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-col-footer-title {
-        font-size: 10px !important;
+        font-size: ${d(10)} !important;
         line-height: 1.15 !important;
         max-height: 1.25em !important;
         word-break: normal !important;
@@ -1415,7 +1439,7 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-col-footer-badge {
-        font-size: 7.5px !important;
+        font-size: ${d(7.5)} !important;
         line-height: 1 !important;
         padding: 1px 4px !important;
         border-radius: 4px !important;
@@ -1424,13 +1448,13 @@ export const LIBRARY_CSS = `
 
 /* Explicit compact modifier (e.g. Playground Handheld mode toggle) */
 .sgl-root.sgl-compact .sgl-header {
-    height: 44px !important;
+    height: ${d(44)} !important;
     padding: 0 16px !important;
 }
 .sgl-root.sgl-compact .sgl-brand,
 .sgl-root.sgl-compact .sgl-brand span,
 .sgl-root.sgl-compact .sgl-brand .sgl-brand-text {
-    font-size: 12px !important;
+    font-size: ${d(12)} !important;
     line-height: 1 !important;
     gap: 6px !important;
 }
@@ -1444,7 +1468,7 @@ export const LIBRARY_CSS = `
 .sgl-root.sgl-compact .sgl-tab,
 .sgl-root.sgl-compact .sgl-tab span,
 .sgl-root.sgl-compact .sgl-tab-label {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
     padding: 4px 2px 6px !important;
     gap: 5px !important;
@@ -1453,23 +1477,23 @@ export const LIBRARY_CSS = `
     letter-spacing: 0.05em !important;
 }
 .sgl-root.sgl-compact .sgl-tab-count {
-    font-size: 9px !important;
+    font-size: ${d(9)} !important;
     line-height: 1 !important;
     padding: 1px 4.5px !important;
 }
 .sgl-root.sgl-compact .sgl-bumper-badge {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     padding: 1.5px 5px !important;
 }
 .sgl-root.sgl-compact .sgl-header-info {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1 !important;
 }
 .sgl-root.sgl-compact .sgl-inspector {
-    width: 275px !important;
-    min-width: 260px !important;
-    max-width: 285px !important;
+    width: ${d(275)} !important;
+    min-width: ${d(250)} !important;
+    max-width: ${d(285)} !important;
     padding: 12px 14px !important;
     gap: 6px !important;
     overflow-y: hidden !important;
@@ -1480,28 +1504,28 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
-    height: clamp(90px, 16vh, 130px) !important;
-    max-height: 130px !important;
+    height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
+    max-height: ${d(130)} !important;
     width: auto !important;
-    max-width: 87px !important;
+    max-width: ${d(87)} !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
     border-radius: 8px !important;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
 }
 .sgl-root.sgl-compact .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(85px, 15vh, 115px) !important;
-    max-height: 115px !important;
-    max-width: 115px !important;
+    height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
+    max-height: ${d(115)} !important;
+    max-width: ${d(115)} !important;
     aspect-ratio: 1 / 1 !important;
 }
 .sgl-root.sgl-compact .sgl-title-box {
-    min-height: 24px !important;
-    max-height: 38px !important;
+    min-height: ${d(24)} !important;
+    max-height: ${d(38)} !important;
     flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-title-text {
-    font-size: 15px !important;
+    font-size: ${d(15)} !important;
     line-height: 1.2 !important;
     max-height: 2.4em !important;
     overflow: hidden !important;
@@ -1512,7 +1536,7 @@ export const LIBRARY_CSS = `
 }
 .sgl-root.sgl-compact .sgl-source-pill,
 .sgl-root.sgl-compact .sgl-status-pill {
-    font-size: 9px !important;
+    font-size: ${d(9)} !important;
     line-height: 1 !important;
     padding: 2px 6px !important;
 }
@@ -1526,11 +1550,11 @@ export const LIBRARY_CSS = `
     border-radius: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-stat-label {
-    font-size: 8px !important;
+    font-size: ${d(8)} !important;
     line-height: 1.15 !important;
 }
 .sgl-root.sgl-compact .sgl-stat-value {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1.15 !important;
 }
 .sgl-root.sgl-compact .sgl-stat-bar {
@@ -1538,7 +1562,7 @@ export const LIBRARY_CSS = `
     margin-top: 2px !important;
 }
 .sgl-root.sgl-compact .sgl-description {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1.3 !important;
     -webkit-line-clamp: 2 !important;
     max-height: 2.6em !important;
@@ -1555,49 +1579,49 @@ export const LIBRARY_CSS = `
 .sgl-root.sgl-compact .sgl-btn-details span,
 .sgl-root.sgl-compact .sgl-btn-details .sgl-btn-text {
     padding: 4px 10px !important;
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
+    height: ${d(34)} !important;
+    min-height: ${d(34)} !important;
+    max-height: ${d(34)} !important;
 }
 .sgl-root.sgl-compact .sgl-btn-play,
 .sgl-root.sgl-compact .sgl-btn-play span,
 .sgl-root.sgl-compact .sgl-btn-play .sgl-btn-text {
     padding: 4px 10px !important;
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
+    height: ${d(34)} !important;
+    min-height: ${d(34)} !important;
+    max-height: ${d(34)} !important;
 }
 .sgl-root.sgl-compact .sgl-btn-badge {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     padding: 1px 4px !important;
 }
 .sgl-root.sgl-compact .sgl-inspector-col-fan {
-    max-width: 200px !important;
-    height: 100px !important;
+    max-width: ${d(200)} !important;
+    height: ${d(100)} !important;
     margin-bottom: 4px !important;
     flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card {
-    width: 48px !important;
-    height: 72px !important;
+    width: ${d(48)} !important;
+    height: ${d(72)} !important;
     border-radius: 5px !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-far-left {
-    transform: translateX(-50px) translateY(7px) rotate(-14deg) scale(0.82) !important;
+    transform: translateX(${d(-50)}) translateY(${d(7)}) rotate(-14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-left {
-    transform: translateX(-25px) translateY(2px) rotate(-7deg) scale(0.91) !important;
+    transform: translateX(${d(-25)}) translateY(${d(2)}) rotate(-7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-right {
-    transform: translateX(25px) translateY(2px) rotate(7deg) scale(0.91) !important;
+    transform: translateX(${d(25)}) translateY(${d(2)}) rotate(7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-far-right {
-    transform: translateX(50px) translateY(7px) rotate(14deg) scale(0.82) !important;
+    transform: translateX(${d(50)}) translateY(${d(7)}) rotate(14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-grid-panel {
     padding: 14px 18px 20px 16px !important;
@@ -1607,14 +1631,14 @@ export const LIBRARY_CSS = `
     padding-bottom: 16px !important;
 }
 .sgl-root.sgl-compact .sgl-card-fallback-title {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1.3 !important;
     max-height: 2.6em !important;
 }
 .sgl-root.sgl-compact .sgl-card-running-badge,
 .sgl-root.sgl-compact .sgl-card-running-badge span,
 .sgl-root.sgl-compact .sgl-card-running-badge .sgl-card-running-text {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
 }
 .sgl-root.sgl-compact .sgl-card-collection {
@@ -1623,30 +1647,30 @@ export const LIBRARY_CSS = `
     contain: paint !important;
 }
 .sgl-root.sgl-compact .sgl-col-fan-stage {
-    height: 90px !important;
+    height: ${d(90)} !important;
 }
 .sgl-root.sgl-compact .sgl-col-fan-card {
-    width: 54px !important;
-    height: 81px !important;
+    width: ${d(54)} !important;
+    height: ${d(81)} !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-far-left {
-    transform: translateX(-44px) translateY(6px) rotate(-14deg) scale(0.82) !important;
+    transform: translateX(${d(-44)}) translateY(${d(6)}) rotate(-14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-left {
-    transform: translateX(-22px) translateY(2px) rotate(-7deg) scale(0.91) !important;
+    transform: translateX(${d(-22)}) translateY(${d(2)}) rotate(-7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-right {
-    transform: translateX(22px) translateY(2px) rotate(7deg) scale(0.91) !important;
+    transform: translateX(${d(22)}) translateY(${d(2)}) rotate(7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-far-right {
-    transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82) !important;
+    transform: translateX(${d(44)}) translateY(${d(6)}) rotate(14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer {
     padding: 4px 6px !important;
     gap: 2px !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer-title {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1.15 !important;
     max-height: 1.25em !important;
     word-break: normal !important;
@@ -1655,7 +1679,7 @@ export const LIBRARY_CSS = `
     text-overflow: ellipsis !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer-badge {
-    font-size: 7.5px !important;
+    font-size: ${d(7.5)} !important;
     line-height: 1 !important;
     padding: 1px 4px !important;
     border-radius: 4px !important;
@@ -1664,25 +1688,25 @@ export const LIBRARY_CSS = `
 /* Ultra-compact / 720p height optimization (e.g. 1280x720 or on-screen keyboard open) */
 @media (max-height: 720px) {
     .sgl-poster-wrapper {
-        max-width: 80px !important;
-        height: clamp(80px, 14vh, 115px) !important;
-        max-height: 115px !important;
+        max-width: ${d(80)} !important;
+        height: clamp(${d(80)}, 14vh, ${d(115)}) !important;
+        max-height: ${d(115)} !important;
     }
     .sgl-poster-wrapper.sgl-poster-square {
-        max-width: 100px !important;
-        height: clamp(75px, 13vh, 100px) !important;
-        max-height: 100px !important;
+        max-width: ${d(100)} !important;
+        height: clamp(${d(75)}, 13vh, ${d(100)}) !important;
+        max-height: ${d(100)} !important;
     }
     .sgl-inspector {
         gap: 5px !important;
         padding: 10px 12px !important;
     }
     .sgl-title-box {
-        min-height: 22px !important;
-        max-height: 36px !important;
+        min-height: ${d(22)} !important;
+        max-height: ${d(36)} !important;
     }
     .sgl-title-text {
-        font-size: 14px !important;
+        font-size: ${d(14)} !important;
         line-height: 1.2 !important;
     }
     .sgl-stats-grid {
@@ -1705,7 +1729,7 @@ html.LargeText .sgl-root,
 body.LargeText .sgl-root,
 .LargeText .sgl-root,
 .sgl-root.sgl-root {
-    font-size: 14px !important;
+    font-size: ${d(14)} !important;
     line-height: normal !important;
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
@@ -1737,7 +1761,7 @@ body.LargeText .sgl-root .sgl-brand .sgl-brand-text,
 .sgl-root .sgl-brand,
 .sgl-root .sgl-brand span,
 .sgl-root .sgl-brand .sgl-brand-text {
-    font-size: 12px !important;
+    font-size: ${d(12)} !important;
     line-height: 1 !important;
 }
 
@@ -1746,7 +1770,7 @@ html body .sgl-root .sgl-bumper-badge,
 body.LargeText .sgl-root .sgl-bumper-badge,
 .LargeText .sgl-root .sgl-bumper-badge,
 .sgl-root .sgl-bumper-badge {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     padding: 1.5px 5px !important;
 }
@@ -1766,7 +1790,7 @@ body.LargeText .sgl-root .sgl-tab-label,
 .sgl-root .sgl-tab,
 .sgl-root .sgl-tab span,
 .sgl-root .sgl-tab-label {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
     height: auto !important;
     min-height: 0 !important;
@@ -1778,7 +1802,7 @@ html body .sgl-root .sgl-tab-count,
 body.LargeText .sgl-root .sgl-tab-count,
 .LargeText .sgl-root .sgl-tab-count,
 .sgl-root .sgl-tab-count {
-    font-size: 9px !important;
+    font-size: ${d(9)} !important;
     line-height: 1 !important;
     padding: 1px 4.5px !important;
 }
@@ -1788,7 +1812,7 @@ html body .sgl-root .sgl-breadcrumb-title,
 body.LargeText .sgl-root .sgl-breadcrumb-title,
 .LargeText .sgl-root .sgl-breadcrumb-title,
 .sgl-root .sgl-breadcrumb-title {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
 }
 
@@ -1802,7 +1826,7 @@ body.LargeText .sgl-root .sgl-btn-back-col span,
 .LargeText .sgl-root .sgl-btn-back-col span,
 .sgl-root .sgl-btn-back-col,
 .sgl-root .sgl-btn-back-col span {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1 !important;
 }
 
@@ -1811,7 +1835,7 @@ html body .sgl-root .sgl-header-info,
 body.LargeText .sgl-root .sgl-header-info,
 .LargeText .sgl-root .sgl-header-info,
 .sgl-root .sgl-header-info {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1 !important;
 }
 
@@ -1821,9 +1845,9 @@ html body .sgl-root .sgl-inspector,
 body.LargeText .sgl-root .sgl-inspector,
 .LargeText .sgl-root .sgl-inspector,
 .sgl-root .sgl-inspector {
-    width: 275px !important;
-    min-width: 260px !important;
-    max-width: 285px !important;
+    width: ${d(275)} !important;
+    min-width: ${d(250)} !important;
+    max-width: ${d(285)} !important;
     padding: 12px 14px !important;
     gap: 6px !important;
     overflow-y: hidden !important;
@@ -1837,10 +1861,10 @@ body.LargeText .sgl-root .sgl-poster-wrapper,
     flex: 0 0 auto !important;
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
-    height: clamp(90px, 16vh, 130px) !important;
-    max-height: 130px !important;
+    height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
+    max-height: ${d(130)} !important;
     width: auto !important;
-    max-width: 87px !important;
+    max-width: ${d(87)} !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
 }
@@ -1850,9 +1874,9 @@ html body .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 body.LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .sgl-root .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(85px, 15vh, 115px) !important;
-    max-height: 115px !important;
-    max-width: 115px !important;
+    height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
+    max-height: ${d(115)} !important;
+    max-width: ${d(115)} !important;
     aspect-ratio: 1 / 1 !important;
 }
 
@@ -1861,8 +1885,8 @@ html body .sgl-root .sgl-title-box,
 body.LargeText .sgl-root .sgl-title-box,
 .LargeText .sgl-root .sgl-title-box,
 .sgl-root .sgl-title-box {
-    min-height: 24px !important;
-    max-height: 38px !important;
+    min-height: ${d(24)} !important;
+    max-height: ${d(38)} !important;
     flex-shrink: 0 !important;
 }
 
@@ -1871,7 +1895,7 @@ html body .sgl-root .sgl-title-text,
 body.LargeText .sgl-root .sgl-title-text,
 .LargeText .sgl-root .sgl-title-text,
 .sgl-root .sgl-title-text {
-    font-size: 15px !important;
+    font-size: ${d(15)} !important;
     line-height: 1.2 !important;
     max-height: 2.4em !important;
     display: -webkit-box !important;
@@ -1890,7 +1914,7 @@ body.LargeText .sgl-root .sgl-status-pill,
 .LargeText .sgl-root .sgl-status-pill,
 .sgl-root .sgl-source-pill,
 .sgl-root .sgl-status-pill {
-    font-size: 9px !important;
+    font-size: ${d(9)} !important;
     line-height: 1 !important;
     padding: 2px 6px !important;
     flex-shrink: 0 !important;
@@ -1901,7 +1925,7 @@ html body .sgl-root .sgl-stat-label,
 body.LargeText .sgl-root .sgl-stat-label,
 .LargeText .sgl-root .sgl-stat-label,
 .sgl-root .sgl-stat-label {
-    font-size: 8px !important;
+    font-size: ${d(8)} !important;
     line-height: 1.15 !important;
 }
 
@@ -1910,7 +1934,7 @@ html body .sgl-root .sgl-stat-value,
 body.LargeText .sgl-root .sgl-stat-value,
 .LargeText .sgl-root .sgl-stat-value,
 .sgl-root .sgl-stat-value {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1.15 !important;
 }
 
@@ -1919,7 +1943,7 @@ html body .sgl-root .sgl-description,
 body.LargeText .sgl-root .sgl-description,
 .LargeText .sgl-root .sgl-description,
 .sgl-root .sgl-description {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1.3 !important;
     max-height: 2.6em !important;
     display: -webkit-box !important;
@@ -1956,10 +1980,10 @@ body.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
 .sgl-root .sgl-btn-play,
 .sgl-root .sgl-btn-play span,
 .sgl-root .sgl-btn-play .sgl-btn-text {
-    font-size: 11px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
+    font-size: ${d(11)} !important;
+    height: ${d(34)} !important;
+    min-height: ${d(34)} !important;
+    max-height: ${d(34)} !important;
     line-height: 1 !important;
     padding: 4px 10px !important;
 }
@@ -1979,10 +2003,10 @@ body.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
 .sgl-root .sgl-btn-details,
 .sgl-root .sgl-btn-details span,
 .sgl-root .sgl-btn-details .sgl-btn-text {
-    font-size: 11px !important;
-    height: 34px !important;
-    min-height: 34px !important;
-    max-height: 34px !important;
+    font-size: ${d(11)} !important;
+    height: ${d(34)} !important;
+    min-height: ${d(34)} !important;
+    max-height: ${d(34)} !important;
     line-height: 1 !important;
     padding: 4px 10px !important;
 }
@@ -1992,7 +2016,7 @@ html body .sgl-root .sgl-btn-badge,
 body.LargeText .sgl-root .sgl-btn-badge,
 .LargeText .sgl-root .sgl-btn-badge,
 .sgl-root .sgl-btn-badge {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     padding: 1px 4px !important;
 }
@@ -2003,7 +2027,7 @@ html body .sgl-root .sgl-card-fallback-title,
 body.LargeText .sgl-root .sgl-card-fallback-title,
 .LargeText .sgl-root .sgl-card-fallback-title,
 .sgl-root .sgl-card-fallback-title {
-    font-size: 11px !important;
+    font-size: ${d(11)} !important;
     line-height: 1.3 !important;
     max-height: 2.6em !important;
     display: -webkit-box !important;
@@ -2027,7 +2051,7 @@ body.LargeText .sgl-root .sgl-card-running-badge .sgl-card-running-text,
 .sgl-root .sgl-card-running-badge,
 .sgl-root .sgl-card-running-badge span,
 .sgl-root .sgl-card-running-badge .sgl-card-running-text {
-    font-size: 8.5px !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
 }
 
@@ -2045,7 +2069,7 @@ html body .sgl-root .sgl-col-footer-title,
 body.LargeText .sgl-root .sgl-col-footer-title,
 .LargeText .sgl-root .sgl-col-footer-title,
 .sgl-root .sgl-col-footer-title {
-    font-size: 10px !important;
+    font-size: ${d(10)} !important;
     line-height: 1.15 !important;
     max-height: 1.25em !important;
     display: block !important;
@@ -2061,7 +2085,7 @@ html body .sgl-root .sgl-col-footer-badge,
 body.LargeText .sgl-root .sgl-col-footer-badge,
 .LargeText .sgl-root .sgl-col-footer-badge,
 .sgl-root .sgl-col-footer-badge {
-    font-size: 7.5px !important;
+    font-size: ${d(7.5)} !important;
     line-height: 1 !important;
     padding: 1px 4px !important;
     border-radius: 4px !important;
@@ -2073,8 +2097,8 @@ html body .sgl-root .sgl-inspector-col-fan,
 body.LargeText .sgl-root .sgl-inspector-col-fan,
 .LargeText .sgl-root .sgl-inspector-col-fan,
 .sgl-root .sgl-inspector-col-fan {
-    max-width: 200px !important;
-    height: 100px !important;
+    max-width: ${d(200)} !important;
+    height: ${d(100)} !important;
     margin-bottom: 4px !important;
     flex-shrink: 0 !important;
 }
@@ -2084,8 +2108,8 @@ html body .sgl-root .sgl-insp-col-card,
 body.LargeText .sgl-root .sgl-insp-col-card,
 .LargeText .sgl-root .sgl-insp-col-card,
 .sgl-root .sgl-insp-col-card {
-    width: 48px !important;
-    height: 72px !important;
+    width: ${d(48)} !important;
+    height: ${d(72)} !important;
     border-radius: 5px !important;
 }
 `;

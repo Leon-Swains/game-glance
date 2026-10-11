@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Focusable, GamepadButton, GamepadEvent, Navigation } from '@decky/ui';
 import { LOG_PREFIX } from '../constants';
 import { cache } from '../data/cache';
@@ -15,12 +15,63 @@ import { LibraryCategoryBar } from './LibraryCategoryBar';
 import { mountOpenOverlay } from '../home/OpenOverlay';
 import { createOpenTransition, DOMRectLike, OpenTransition, usableRect } from '../home/openTransition';
 import { gameOpenArt } from '../home/homeNav';
-import { cssLayers } from '../home/homeView';
+import { cssLayers, usableSize } from '../home/homeView';
+import { homeCanvas } from '../home/scale';
 import { cardArtMemo, LibraryGrid } from './LibraryGrid';
 import { LibraryInspector } from './LibraryInspector';
 import { LIBRARY_CSS } from './libraryCss';
 import { buildCategories, LibraryCategory, LibraryCollectionItem, LibraryGameItem } from './libraryData';
 import { markLeavingLibrary, noteLibrary, resetLibraryMemory, takeLibraryRestore } from './libraryMemory';
+
+interface BoxSize {
+    width: number;
+    height: number;
+}
+
+function useBoxSize(ref: RefObject<HTMLDivElement | null>): BoxSize | null {
+    const [size, setSize] = useState<BoxSize | null>(null);
+    useLayoutEffect(() => {
+        const el = ref.current;
+        if (!el) return undefined;
+        const view = (el.ownerDocument?.defaultView ?? null) as (Window & { ResizeObserver?: typeof ResizeObserver }) | null;
+        const measure = () => {
+            try {
+                const rect = { width: el.offsetWidth, height: el.offsetHeight };
+                if (!usableSize(rect.width, rect.height)) return;
+                setSize((old) => (old && old.width === rect.width && old.height === rect.height ? old : { width: rect.width, height: rect.height }));
+            } catch {
+                // keep the last size
+            }
+        };
+        measure();
+        let observer: ResizeObserver | null = null;
+        try {
+            const Observer = view?.ResizeObserver ?? (typeof ResizeObserver === 'function' ? ResizeObserver : undefined);
+            if (Observer) {
+                observer = new Observer(() => measure());
+                observer.observe(el);
+            }
+        } catch {
+            observer = null;
+        }
+        if (!observer) {
+            try {
+                view?.addEventListener('resize', measure);
+            } catch {
+                // no way to follow resizes
+            }
+        }
+        return () => {
+            try {
+                if (observer) observer.disconnect();
+                else view?.removeEventListener('resize', measure);
+            } catch {
+                // window already gone
+            }
+        };
+    }, [ref]);
+    return size;
+}
 
 interface SpotlightLibraryProps {
     mockGames?: LibraryGameItem[];
@@ -163,6 +214,9 @@ export function openLibraryGameDetails(game: LibraryGameItem, sourceEl?: HTMLEle
 }
 
 export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) {
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const size = useBoxSize(rootRef);
+    const canvas = homeCanvas(size?.width ?? 0, size?.height ?? 0);
     const currentSettings = useSettings();
     const columns = Math.min(7, Math.max(3, currentSettings.libraryGridColumns ?? 3));
     const categories: LibraryCategory[] = useMemo(() => buildCategories(mockGames), [mockGames]);
@@ -791,16 +845,17 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
 
     return (
         <Focusable
+            ref={rootRef as unknown as React.Ref<HTMLDivElement>}
             className={`sgl-root${compact ? ' sgl-compact' : ''}`}
             preferredFocus={true}
             noFocusRing
             tabIndex={0}
             style={{
+                '--sgl-d': size ? `${canvas.scale}px` : undefined,
                 '--accent': gameAccent,
                 '--glance-accent': gameAccent,
                 '--glance-accent-text': legibleAccent(gameAccent),
                 '--accent-glow': `${gameAccent}55`,
-                fontSize: '14px',
                 lineHeight: 'normal',
                 WebkitTextSizeAdjust: '100%',
                 textSizeAdjust: '100%',
