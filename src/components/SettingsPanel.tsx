@@ -64,7 +64,21 @@ function UpdatesSection() {
 }
 
 export function SettingsPanel() {
-    const { enabled, autoPreload, spotlightHome, spotlightLibrary, libraryGridColumns, wishlistDeals, cleanPage, homeStatusBar, gameLogo, homeRow, homeRowSort } = useSettings();
+    const {
+        enabled,
+        autoPreload,
+        spotlightHome,
+        spotlightLibrary,
+        libraryGridColumns,
+        wishlistDeals,
+        cleanPage,
+        zoomTransition,
+        dimUninstalledGames,
+        homeStatusBar,
+        gameLogo,
+        homeRow,
+        homeRowSort,
+    } = useSettings();
     // Read when the panel opens, so a collection made since shows up.
     const collections = useMemo(steamHomeCollections, []);
     const rowChosen = collections.some((c) => c.id === homeRow) ? homeRow : RECENT_ROW;
@@ -208,6 +222,24 @@ export function SettingsPanel() {
                         />
                     </PanelSectionRow>
                 )}
+            </PanelSection>
+            <PanelSection title="Visuals & Effects">
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Zoom into full screen"
+                        description="Smoothly expands game art into full screen when opening game details from Home and Library. Off navigates directly."
+                        checked={zoomTransition}
+                        onChange={(value) => settings.setZoomTransition(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Unhighlight uninstalled games"
+                        description="Applies neutral gray accents and grayscale tones to games in the library grid that are not installed on this device."
+                        checked={dimUninstalledGames}
+                        onChange={(value) => settings.setDimUninstalledGames(value)}
+                    />
+                </PanelSectionRow>
             </PanelSection>
             <PanelSection title="HowLongToBeat match">
                 {game ? (

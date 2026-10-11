@@ -18,6 +18,7 @@ interface LibraryGridProps {
     isCollectionsView?: boolean;
     selectedIndex: number;
     accent: string;
+    dimUninstalled?: boolean;
     columns?: number;
     onSelectGame: (index: number) => void;
     onLaunchGame?: (game: LibraryGameItem, sourceEl?: HTMLElement) => void;
@@ -30,6 +31,7 @@ interface BannerCardProps {
     game: LibraryGameItem;
     isFocused: boolean;
     accent: string;
+    dimUninstalled?: boolean;
     onClick: () => void;
     onDoubleClick: (sourceEl?: HTMLElement) => void;
     onContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void;
@@ -167,7 +169,7 @@ export function resolveGameArt(game: LibraryGameItem): Promise<ResolvedCardArt> 
     return promise;
 }
 
-export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDoubleClick, onContextMenu, isDragSuppressed }: BannerCardProps) {
+export function BannerCard({ game, isFocused, accent = '#1a9fff', dimUninstalled, onClick, onDoubleClick, onContextMenu, isDragSuppressed }: BannerCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const artworkVersion = useArtworkVersion();
 
@@ -207,16 +209,19 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
         }
     }, [isFocused]);
 
+    const isUninstalled = Boolean(dimUninstalled && !game.installed);
+    const cardAccent = isUninstalled ? '#707784' : accent;
+
     return (
         <div
             ref={cardRef}
             role="button"
             tabIndex={0}
             data-app-id={game.appId}
-            className={`sgl-card${isFocused ? ' focused' : ''}`}
+            className={`sgl-card${isFocused ? ' focused' : ''}${isUninstalled ? ' sgl-card-uninstalled' : ''}`}
             style={{
-                '--accent': accent,
-                '--accent-glow': `${accent}55`,
+                '--accent': cardAccent,
+                '--accent-glow': `${cardAccent}55`,
             } as React.CSSProperties}
             onClick={(e) => {
                 e.preventDefault();
@@ -459,6 +464,7 @@ export function LibraryGrid({
     isCollectionsView = false,
     selectedIndex,
     accent,
+    dimUninstalled,
     columns = 3,
     onSelectGame,
     onLaunchGame,
@@ -697,6 +703,7 @@ export function LibraryGrid({
                         game={game}
                         isFocused={isGridFocused && idx === selectedIndex}
                         accent={accent}
+                        dimUninstalled={dimUninstalled}
                         onClick={() => onSelectGame(idx)}
                         onDoubleClick={(el) => onLaunchGame?.(game, el)}
                         onContextMenu={(e) => onContextMenu?.(game, idx, e.currentTarget)}

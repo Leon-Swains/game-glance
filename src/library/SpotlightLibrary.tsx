@@ -3,7 +3,7 @@ import { Focusable, GamepadButton, GamepadEvent, Navigation } from '@decky/ui';
 import { LOG_PREFIX } from '../constants';
 import { cache } from '../data/cache';
 import { HltbResult, lookupHltb } from '../data/hltb';
-import { useSettings } from '../data/settings';
+import { settings, useSettings } from '../data/settings';
 import { getDescription, peekSteamLanguage } from '../data/steam';
 import { openGameActions } from '../home/ActionRow';
 import { accentFor, DEFAULT_ACCENT, legibleAccent } from '../home/accent';
@@ -113,6 +113,15 @@ export function getLibraryTransition(): OpenTransition {
 
 export function openLibraryGameDetails(game: LibraryGameItem, sourceEl?: HTMLElement | null) {
     markLeavingLibrary();
+
+    if (!settings.get().zoomTransition) {
+        try {
+            Navigation.Navigate(`/library/app/${game.appId}`);
+        } catch {
+            // ignore
+        }
+        return;
+    }
 
     let rect: DOMRectLike | null = null;
     try {
@@ -460,18 +469,21 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
             return;
         }
 
-        handleDetails();
-    }, [handleDetails, handleOpenCollection, isCollectionsTab, isInsideSubCollection]);
+        const sourceCard = (
+            document.querySelector('.sgl-card.focused') ??
+            document.querySelector(`.sgl-card[data-app-id="${selectedGame?.appId}"]`) ??
+            document.querySelector('.sgl-poster-wrapper')
+        ) as HTMLElement | null;
+
+        handleDetails(selectedGame, sourceCard);
+    }, [handleDetails, handleOpenCollection, isCollectionsTab, isInsideSubCollection, selectedGame]);
 
     // Activation on the Focusable root container. Guard against synthetic/bubbled mouse pointer clicks
     // so mouse clicks on background or items never trigger an accidental launch of the selected game.
     const handleRootActivate = useCallback((e?: unknown) => {
         if (e && typeof e === 'object') {
-            const evt = e as { type?: string; clientX?: number; clientY?: number; pointerType?: string };
-            if (evt.type === 'click' || evt.pointerType === 'mouse') {
-                return;
-            }
-            if (typeof evt.clientX === 'number' && typeof evt.clientY === 'number' && (evt.clientX > 0 || evt.clientY > 0)) {
+            const evt = e as { type?: string; pointerType?: string };
+            if (evt.type === 'click' && evt.pointerType === 'mouse') {
                 return;
             }
         }
@@ -548,8 +560,8 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 return;
             }
 
-            // A Button: Details / Open Collection (OK = 1)
-            if (btn === GamepadButton.OK || btn === 1) {
+            // A Button: Details / Open Collection (OK = 1 in GamepadButton, or 0 in ControllerInputGamepadButton / raw Gamepad API)
+            if (btn === GamepadButton.OK || btn === 1 || btn === 0) {
                 evt.preventDefault?.();
                 evt.stopPropagation?.();
                 onActivate();
@@ -844,6 +856,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                     isCollectionsView={isCollectionsTab && !isInsideSubCollection}
                     selectedIndex={selectedGameIdx}
                     accent={gameAccent}
+                    dimUninstalled={Boolean(currentSettings.dimUninstalledGames)}
                     columns={columns}
                     isGridFocused={focusZone === 'grid'}
                     onSelectGame={handleSelectGame}

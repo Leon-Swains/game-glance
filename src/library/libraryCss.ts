@@ -763,6 +763,50 @@ export const LIBRARY_CSS = `
     padding: 0 8px;
 }
 
+/* Uninstalled Games Muted / Grayscale Style */
+.sgl-card.sgl-card-uninstalled {
+    opacity: 0.85;
+}
+
+.sgl-card.sgl-card-uninstalled .sgl-card-img,
+.sgl-card.sgl-card-uninstalled .sgl-card-fallback-bg {
+    filter: grayscale(85%) brightness(0.72) contrast(0.95);
+    transition: filter 0.22s ease, opacity 0.22s ease;
+}
+
+.sgl-card.sgl-card-uninstalled .sgl-card-fallback-logo {
+    filter: grayscale(65%) opacity(0.85) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
+    transition: filter 0.22s ease, opacity 0.22s ease;
+}
+
+.sgl-card.sgl-card-uninstalled .sgl-card-fallback-title {
+    color: rgba(220, 225, 235, 0.7);
+}
+
+.sgl-card.sgl-card-uninstalled:hover {
+    opacity: 0.95;
+}
+
+.sgl-card.sgl-card-uninstalled:hover .sgl-card-img,
+.sgl-card.sgl-card-uninstalled:hover .sgl-card-fallback-bg {
+    filter: grayscale(60%) brightness(0.85);
+}
+
+.sgl-card.sgl-card-uninstalled.focused,
+.sgl-card.sgl-card-uninstalled:focus-visible {
+    opacity: 1;
+    box-shadow: 0 0 0 1.5px rgba(200, 208, 220, 0.85), 0 16px 36px -10px rgba(100, 110, 125, 0.5) !important;
+}
+
+.sgl-card.sgl-card-uninstalled.focused .sgl-card-img,
+.sgl-card.sgl-card-uninstalled.focused .sgl-card-fallback-bg {
+    filter: grayscale(40%) brightness(0.92);
+}
+
+.sgl-card.sgl-card-uninstalled.focused .sgl-card-fallback-logo {
+    filter: grayscale(25%) opacity(1) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
+}
+
 .sgl-card-running-badge {
     position: absolute;
     top: 7px;
@@ -796,7 +840,7 @@ export const LIBRARY_CSS = `
 
 /* Steam Deck-Style Collection Card with Multi-Cover Fan Collage */
 .sgl-card-collection {
-    aspect-ratio: 460 / 215;
+    aspect-ratio: 1 / 1;
     border-radius: 12px;
     overflow: hidden;
     position: relative;
@@ -809,6 +853,7 @@ export const LIBRARY_CSS = `
     outline: none;
     display: flex;
     flex-direction: column;
+    contain: paint;
 }
 
 .sgl-card-collection::after {
@@ -907,35 +952,46 @@ export const LIBRARY_CSS = `
 
 .sgl-col-footer {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 14px;
-    background: rgba(10, 14, 22, 0.85);
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(10, 14, 22, 0.88);
     backdrop-filter: blur(14px);
     border-top: 1px solid rgba(255, 255, 255, 0.08);
     z-index: 4;
+    box-sizing: border-box;
+    width: 100%;
 }
 
 .sgl-col-footer-title {
     font-size: 13px;
     font-weight: 700;
     color: #ffffff;
-    white-space: nowrap;
+    letter-spacing: 0.2px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-    letter-spacing: 0.3px;
+    word-break: break-word;
+    line-height: 1.25;
+    max-height: 2.6em;
+    width: 100%;
 }
 
 .sgl-col-footer-badge {
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 10px;
+    padding: 1.5px 6px;
+    border-radius: 8px;
     background: rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.85);
     white-space: nowrap;
-    margin-left: 8px;
     letter-spacing: 0.5px;
+    align-self: flex-start;
+    margin-left: 0;
 }
 
 /* Inspector 5-Card Fan for Collections */
@@ -1347,7 +1403,9 @@ export const LIBRARY_CSS = `
     padding-bottom: 16px;
 }
 .sgl-root.sgl-compact .sgl-card-collection {
-    height: 135px;
+    aspect-ratio: 1 / 1;
+    height: auto;
+    contain: paint;
 }
 .sgl-root.sgl-compact .sgl-col-fan-stage {
     height: 90px;
@@ -1369,14 +1427,17 @@ export const LIBRARY_CSS = `
     transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82);
 }
 .sgl-root.sgl-compact .sgl-col-footer {
-    padding: 6px 10px;
+    padding: 6px 8px;
+    gap: 3px;
 }
 .sgl-root.sgl-compact .sgl-col-footer-title {
-    font-size: 12px;
+    font-size: 11.5px;
+    line-height: 1.2;
+    max-height: 2.4em;
 }
 .sgl-root.sgl-compact .sgl-col-footer-badge {
-    font-size: 9.5px;
-    padding: 1.5px 6px;
+    font-size: 8.5px;
+    padding: 1px 5px;
 }
 
 /* Ultra-compact / 720p height optimization (e.g. 1280x720 or on-screen keyboard open) */

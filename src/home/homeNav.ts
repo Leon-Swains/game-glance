@@ -1,5 +1,6 @@
 import { Navigation } from '@decky/ui';
 import { LOG_PREFIX } from '../constants';
+import { settings } from '../data/settings';
 import { browserStores, capsuleUrls, heroUrls, landscapeUrls } from './artwork';
 import { markLeaving } from './homeMemory';
 import { cssLayers, openArtLayers, wideArt } from './homeView';
@@ -183,6 +184,10 @@ function controller(): OpenTransition {
  */
 export function openGame(appId: number, source: HTMLElement | null | undefined, art: string[]) {
     markLeaving();
+    if (!settings.get().zoomTransition) {
+        openPage(appId);
+        return;
+    }
     let rect: DOMRectLike | null = null;
     try {
         leavingHome = (source?.closest?.('.gh-root') as HTMLElement | null) ?? null;

@@ -10,6 +10,8 @@ export interface Settings {
     libraryGridColumns: number; // poster columns in Spotlight Library grid (3-7, default 3)
     wishlistDeals: boolean; // look up wishlist sales on Steam's public store
     cleanPage: boolean; // the Game Glance page's Clean look: one row at the bottom, no description or HowLongToBeat cards
+    zoomTransition: boolean; // animates the banner expanding into full screen when opening a game
+    dimUninstalledGames: boolean; // dim and grayscale games in the library grid that are not installed
     homeStatusBar: boolean; // Spotlight Home's status bar: clock, battery and connection in Steam's top strip
     gameLogo: boolean; // the game's logo instead of its name on Home and the game page (the name when it has none)
     homeRow: string; // Home's games row: 'recent' (Steam's recent games, with those new to the library) or a collection id
@@ -25,6 +27,8 @@ const DEFAULTS: Settings = {
     libraryGridColumns: 3,
     wishlistDeals: false,
     cleanPage: false,
+    zoomTransition: true,
+    dimUninstalledGames: false,
     homeStatusBar: true,
     gameLogo: false,
     homeRow: RECENT_ROW,
@@ -51,6 +55,8 @@ export function createSettingsStore(kv: KvBackend) {
                         : DEFAULTS.libraryGridColumns,
                 wishlistDeals: pick('wishlistDeals'),
                 cleanPage: pick('cleanPage'),
+                zoomTransition: pick('zoomTransition'),
+                dimUninstalledGames: pick('dimUninstalledGames'),
                 homeStatusBar: pick('homeStatusBar'),
                 gameLogo: pick('gameLogo'),
                 homeRow: typeof raw?.homeRow === 'string' && raw.homeRow !== '' ? raw.homeRow : DEFAULTS.homeRow,
@@ -101,6 +107,16 @@ export function createSettingsStore(kv: KvBackend) {
         },
         async setCleanPage(cleanPage: boolean): Promise<void> {
             current = { ...current, cleanPage };
+            emit();
+            await kv.set(KEY, current);
+        },
+        async setZoomTransition(zoomTransition: boolean): Promise<void> {
+            current = { ...current, zoomTransition };
+            emit();
+            await kv.set(KEY, current);
+        },
+        async setDimUninstalledGames(dimUninstalledGames: boolean): Promise<void> {
+            current = { ...current, dimUninstalledGames };
             emit();
             await kv.set(KEY, current);
         },
