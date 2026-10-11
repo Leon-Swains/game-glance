@@ -169,7 +169,8 @@ export function resolveGameArt(game: LibraryGameItem): Promise<ResolvedCardArt> 
     return promise;
 }
 
-export function BannerCard({ game, isFocused, accent = '#1a9fff', dimUninstalled, onClick, onDoubleClick, onContextMenu, isDragSuppressed }: BannerCardProps) {
+export const BannerCard = React.memo(
+    function BannerCard({ game, isFocused, accent = '#1a9fff', dimUninstalled, onClick, onDoubleClick, onContextMenu, isDragSuppressed }: BannerCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const artworkVersion = useArtworkVersion();
 
@@ -300,7 +301,16 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', dimUninstalled
             <div className="sgl-card-bar" />
         </div>
     );
-}
+},
+(prev, next) => {
+    if (prev.isFocused !== next.isFocused) return false;
+    if (prev.game.appId !== next.game.appId) return false;
+    if (prev.game.installed !== next.game.installed) return false;
+    if (prev.game.running !== next.game.running) return false;
+    if (prev.dimUninstalled !== next.dimUninstalled) return false;
+    if (next.isFocused && prev.accent !== next.accent) return false;
+    return true;
+});
 
 function MiniCover({ game, className }: { game?: LibraryGameItem; className: string }) {
     const artworkVersion = useArtworkVersion();

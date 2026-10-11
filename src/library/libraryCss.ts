@@ -292,44 +292,52 @@ export const LIBRARY_CSS = `
 
 /* Left Panel: Inspector */
 .sgl-inspector {
-    width: 370px;
-    flex-shrink: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    padding: 22px 28px;
-    gap: 13px;
-    overflow-y: auto;
-    scrollbar-width: none;
-    border-right: 1px solid rgba(255, 255, 255, 0.08);
-    background: linear-gradient(90deg, rgba(7, 10, 16, 0.54) 0%, rgba(7, 10, 16, 0.32) 100%);
-    backdrop-filter: blur(20px);
-    box-sizing: border-box;
-    touch-action: pan-y;
-    -webkit-overflow-scrolling: touch;
+    width: 320px !important;
+    min-width: 300px !important;
+    max-width: 340px !important;
+    flex-shrink: 0 !important;
+    height: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 16px 20px !important;
+    gap: 10px !important;
+    overflow-y: auto !important;
+    scrollbar-width: none !important;
+    border-right: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: linear-gradient(90deg, rgba(7, 10, 16, 0.54) 0%, rgba(7, 10, 16, 0.32) 100%) !important;
+    backdrop-filter: blur(20px) !important;
+    box-sizing: border-box !important;
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
 }
 
 .sgl-inspector::-webkit-scrollbar {
-    display: none;
+    display: none !important;
 }
 
 .sgl-poster-wrapper {
-    width: 100%;
-    max-width: 290px;
-    aspect-ratio: 2 / 3;
-    align-self: center;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 16px 38px rgba(0, 0, 0, 0.75);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    position: relative;
-    flex-shrink: 0;
-    background: #11141c;
+    flex: 0 0 auto !important;
+    flex-shrink: 0 !important;
+    flex-grow: 0 !important;
+    height: clamp(140px, 26vh, 205px) !important;
+    max-height: 205px !important;
+    width: auto !important;
+    max-width: 140px !important;
+    aspect-ratio: 2 / 3 !important;
+    align-self: center !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.75) !important;
+    border: 1px solid rgba(255, 255, 255, 0.14) !important;
+    position: relative !important;
+    background: #11141c !important;
 }
 
 .sgl-poster-wrapper.sgl-poster-square {
-    aspect-ratio: 1 / 1;
-    max-width: 260px;
+    height: clamp(130px, 22vh, 175px) !important;
+    max-height: 175px !important;
+    max-width: 175px !important;
+    aspect-ratio: 1 / 1 !important;
 }
 
 .sgl-poster-img {
@@ -720,7 +728,6 @@ export const LIBRARY_CSS = `
     height: 100%;
     object-fit: cover;
     display: block;
-    transition: filter 0.2s ease;
     user-select: none;
     -webkit-user-drag: none;
     pointer-events: none;
@@ -784,48 +791,33 @@ export const LIBRARY_CSS = `
     padding: 0 8px;
 }
 
-/* Uninstalled Games Muted / Grayscale Style */
+/* Uninstalled Games Muted / Grayscale Style - High Performance Compositor-Only */
 .sgl-card.sgl-card-uninstalled {
-    opacity: 0.85;
+    opacity: 0.55;
+    transition: opacity 0.15s ease, transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .sgl-card.sgl-card-uninstalled .sgl-card-img,
 .sgl-card.sgl-card-uninstalled .sgl-card-fallback-bg {
-    filter: grayscale(85%) brightness(0.72) contrast(0.95);
-    transition: filter 0.22s ease, opacity 0.22s ease;
+    filter: grayscale(1);
 }
 
 .sgl-card.sgl-card-uninstalled .sgl-card-fallback-logo {
-    filter: grayscale(65%) opacity(0.85) drop-shadow(0 4px 10px rgba(0, 0, 0, 0.8));
-    transition: filter 0.22s ease, opacity 0.22s ease;
+    opacity: 0.85;
 }
 
 .sgl-card.sgl-card-uninstalled .sgl-card-fallback-title {
-    color: rgba(220, 225, 235, 0.7);
+    color: rgba(200, 210, 225, 0.7);
 }
 
 .sgl-card.sgl-card-uninstalled:hover {
-    opacity: 0.95;
-}
-
-.sgl-card.sgl-card-uninstalled:hover .sgl-card-img,
-.sgl-card.sgl-card-uninstalled:hover .sgl-card-fallback-bg {
-    filter: grayscale(60%) brightness(0.85);
+    opacity: 0.85;
 }
 
 .sgl-card.sgl-card-uninstalled.focused,
 .sgl-card.sgl-card-uninstalled:focus-visible {
     opacity: 1;
     box-shadow: 0 0 0 1.5px rgba(200, 208, 220, 0.85), 0 16px 36px -10px rgba(100, 110, 125, 0.5) !important;
-}
-
-.sgl-card.sgl-card-uninstalled.focused .sgl-card-img,
-.sgl-card.sgl-card-uninstalled.focused .sgl-card-fallback-bg {
-    filter: grayscale(40%) brightness(0.92);
-}
-
-.sgl-card.sgl-card-uninstalled.focused .sgl-card-fallback-logo {
-    filter: grayscale(25%) opacity(1) drop-shadow(0 4px 12px rgba(0, 0, 0, 0.9));
 }
 
 .sgl-card-running-badge {
@@ -1483,42 +1475,75 @@ export const LIBRARY_CSS = `
 }
 
 /* Steam Large Text mode resilience: protect layout and typography */
-:global(.LargeText) .sgl-root,
 body.LargeText .sgl-root,
+html.LargeText .sgl-root,
 .LargeText .sgl-root,
 .sgl-root {
     font-size: 14px !important;
     line-height: normal !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
 }
 
-.LargeText .sgl-root .sgl-tab,
-body.LargeText .sgl-root .sgl-tab {
+body.LargeText .sgl-inspector,
+.LargeText .sgl-inspector {
+    width: 320px !important;
+    min-width: 300px !important;
+    max-width: 340px !important;
+    padding: 16px 20px !important;
+    gap: 10px !important;
+}
+
+body.LargeText .sgl-poster-wrapper,
+.LargeText .sgl-poster-wrapper {
+    flex: 0 0 auto !important;
+    flex-grow: 0 !important;
+    height: clamp(140px, 26vh, 205px) !important;
+    max-height: 205px !important;
+    width: auto !important;
+    max-width: 140px !important;
+    aspect-ratio: 2 / 3 !important;
+}
+
+body.LargeText .sgl-poster-wrapper.sgl-poster-square,
+.LargeText .sgl-poster-wrapper.sgl-poster-square {
+    height: clamp(130px, 22vh, 175px) !important;
+    max-height: 175px !important;
+    max-width: 175px !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+body.LargeText .sgl-tab,
+.LargeText .sgl-tab {
     font-size: 13px !important;
     line-height: 1 !important;
 }
 
-.LargeText .sgl-root .sgl-title-text,
-body.LargeText .sgl-root .sgl-title-text {
-    font-size: 21px !important;
-    line-height: 1.25 !important;
+body.LargeText .sgl-title-text,
+.LargeText .sgl-title-text {
+    font-size: 19px !important;
+    line-height: 1.22 !important;
+    max-height: 2.5em !important;
 }
 
-.LargeText .sgl-root .sgl-btn-play,
-body.LargeText .sgl-root .sgl-btn-play {
+body.LargeText .sgl-btn-play,
+.LargeText .sgl-btn-play {
+    font-size: 12.5px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
+}
+
+body.LargeText .sgl-btn-details,
+.LargeText .sgl-btn-details {
     font-size: 13px !important;
-    height: 46px !important;
-    min-height: 46px !important;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
 }
 
-.LargeText .sgl-root .sgl-btn-details,
-body.LargeText .sgl-root .sgl-btn-details {
-    font-size: 13.5px !important;
-    height: 46px !important;
-    min-height: 46px !important;
-}
-
-.LargeText .sgl-root .sgl-col-footer-title,
-body.LargeText .sgl-root .sgl-col-footer-title {
+body.LargeText .sgl-col-footer-title,
+.LargeText .sgl-col-footer-title {
     font-size: 13px !important;
     line-height: 1.25 !important;
     max-height: 2.6em !important;

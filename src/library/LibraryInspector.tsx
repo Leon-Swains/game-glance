@@ -203,8 +203,6 @@ function InspectorGameCover({ game, onOpen }: { game: LibraryGameItem; onOpen?: 
 
     return (
         <div
-            role={onOpen ? 'button' : undefined}
-            tabIndex={onOpen ? 0 : undefined}
             onClick={(e) => {
                 if (!onOpen) return;
                 e.preventDefault();
