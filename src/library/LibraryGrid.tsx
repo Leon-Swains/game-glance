@@ -20,7 +20,7 @@ interface LibraryGridProps {
     accent: string;
     columns?: number;
     onSelectGame: (index: number) => void;
-    onLaunchGame?: (game: LibraryGameItem) => void;
+    onLaunchGame?: (game: LibraryGameItem, sourceEl?: HTMLElement) => void;
     onOpenCollection?: (collection: LibraryCollectionItem) => void;
     onContextMenu?: (game: LibraryGameItem, index: number, target: HTMLElement) => void;
     isGridFocused?: boolean;
@@ -31,8 +31,9 @@ interface BannerCardProps {
     isFocused: boolean;
     accent: string;
     onClick: () => void;
-    onDoubleClick: () => void;
+    onDoubleClick: (sourceEl?: HTMLElement) => void;
     onContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void;
+    isDragSuppressed?: () => boolean;
 }
 
 export type ResolvedCardArt =
@@ -166,7 +167,7 @@ export function resolveGameArt(game: LibraryGameItem): Promise<ResolvedCardArt> 
     return promise;
 }
 
-export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDoubleClick, onContextMenu }: BannerCardProps) {
+export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDoubleClick, onContextMenu, isDragSuppressed }: BannerCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const artworkVersion = useArtworkVersion();
 
@@ -220,8 +221,11 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                if (isDragSuppressed?.()) {
+                    return;
+                }
                 if (isFocused) {
-                    onDoubleClick();
+                    onDoubleClick(e.currentTarget);
                 } else {
                     onClick();
                 }
@@ -229,7 +233,7 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
             onDoubleClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onDoubleClick();
+                onDoubleClick(e.currentTarget);
             }}
             onContextMenu={(e) => {
                 e.preventDefault();
@@ -345,9 +349,10 @@ interface CollectionCardProps {
     accent: string;
     onClick: () => void;
     onDoubleClick: () => void;
+    isDragSuppressed?: () => boolean;
 }
 
-function CollectionCard({ collection, isFocused, accent, onClick, onDoubleClick }: CollectionCardProps) {
+function CollectionCard({ collection, isFocused, accent, onClick, onDoubleClick, isDragSuppressed }: CollectionCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -386,6 +391,9 @@ function CollectionCard({ collection, isFocused, accent, onClick, onDoubleClick 
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+                if (isDragSuppressed?.()) {
+                    return;
+                }
                 if (isFocused) {
                     onDoubleClick();
                 } else {
@@ -458,11 +466,168 @@ export function LibraryGrid({
     onContextMenu,
     isGridFocused = true,
 }: LibraryGridProps) {
+    const gridPanelRef = useRef<HTMLElement | null>(null);
+    const [isDragging, setIsDragging] = React.useState(false);
+    const [isScrolling, setIsScrolling] = React.useState(false);
+    const pointerStartRef = useRef<{ y: number; scrollTop: number; time: number } | null>(null);
+    const lastPositionsRef = useRef<Array<{ y: number; time: number }>>([]);
+    const wasDraggedRef = useRef(false);
+    const dragEndTimeRef = useRef(0);
+    const momentumRafRef = useRef<number | null>(null);
+    const scrollTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    const isDragSuppressed = React.useCallback(() => {
+        return wasDraggedRef.current || Date.now() - dragEndTimeRef.current < 400;
+    }, []);
+
+    const stopMomentum = React.useCallback(() => {
+        if (momentumRafRef.current !== null) {
+            cancelAnimationFrame(momentumRafRef.current);
+            momentumRafRef.current = null;
+        }
+    }, []);
+
+    const startMomentum = React.useCallback((initialVelocity: number) => {
+        const panel = gridPanelRef.current;
+        if (!panel) return;
+
+        let velocity = initialVelocity * 16;
+        velocity = Math.max(-45, Math.min(45, velocity));
+
+        let lastTime = performance.now();
+        const step = (time: number) => {
+            const dt = Math.min(32, time - lastTime);
+            lastTime = time;
+            if (!gridPanelRef.current || Math.abs(velocity) < 0.5) {
+                momentumRafRef.current = null;
+                return;
+            }
+            gridPanelRef.current.scrollTop += velocity * (dt / 16);
+            velocity *= 0.93;
+            momentumRafRef.current = requestAnimationFrame(step);
+        };
+        momentumRafRef.current = requestAnimationFrame(step);
+    }, []);
+
+    const onPointerDown = (e: React.PointerEvent<HTMLElement>) => {
+        if (e.button !== 0) return;
+        const panel = gridPanelRef.current;
+        if (!panel) return;
+
+        stopMomentum();
+        pointerStartRef.current = {
+            y: e.clientY,
+            scrollTop: panel.scrollTop,
+            time: performance.now(),
+        };
+        lastPositionsRef.current = [{ y: e.clientY, time: performance.now() }];
+    };
+
+    const onPointerMove = (e: React.PointerEvent<HTMLElement>) => {
+        const start = pointerStartRef.current;
+        const panel = gridPanelRef.current;
+        if (!start || !panel) return;
+
+        const deltaY = e.clientY - start.y;
+        if (!isDragging && Math.abs(deltaY) > 8) {
+            setIsDragging(true);
+            try {
+                e.currentTarget.setPointerCapture?.(e.pointerId);
+            } catch {
+                // Ignore pointer capture errors
+            }
+        }
+
+        if (isDragging) {
+            panel.scrollTop = start.scrollTop - deltaY;
+            const now = performance.now();
+            const filtered = lastPositionsRef.current.filter((p) => now - p.time < 120);
+            filtered.push({ y: e.clientY, time: now });
+            lastPositionsRef.current = filtered;
+        }
+    };
+
+    const onPointerUp = (e: React.PointerEvent<HTMLElement>) => {
+        if (!pointerStartRef.current) return;
+        pointerStartRef.current = null;
+
+        if (isDragging) {
+            setIsDragging(false);
+            wasDraggedRef.current = true;
+            dragEndTimeRef.current = Date.now();
+
+            try {
+                e.currentTarget.releasePointerCapture?.(e.pointerId);
+            } catch {
+                // Ignore
+            }
+
+            const positions = lastPositionsRef.current;
+            if (positions.length >= 2) {
+                const first = positions[0];
+                const last = positions[positions.length - 1];
+                const dt = last.time - first.time;
+                if (dt > 10 && dt < 200) {
+                    const vy = (last.y - first.y) / dt;
+                    if (Math.abs(vy) > 0.2) {
+                        startMomentum(-vy);
+                    }
+                }
+            }
+
+            setTimeout(() => {
+                wasDraggedRef.current = false;
+            }, 400);
+        }
+    };
+
+    const onPointerCancel = () => {
+        pointerStartRef.current = null;
+        if (isDragging) {
+            setIsDragging(false);
+            wasDraggedRef.current = true;
+            dragEndTimeRef.current = Date.now();
+            setTimeout(() => {
+                wasDraggedRef.current = false;
+            }, 400);
+        }
+    };
+
+    const onWheel = (e: React.WheelEvent<HTMLElement>) => {
+        const panel = gridPanelRef.current;
+        if (!panel) return;
+        if (e.ctrlKey || e.altKey) return;
+
+        stopMomentum();
+        panel.scrollTop += e.deltaY;
+
+        setIsScrolling(true);
+        if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+        scrollTimerRef.current = setTimeout(() => {
+            setIsScrolling(false);
+        }, 600);
+    };
+
+    React.useEffect(() => {
+        return () => {
+            stopMomentum();
+            if (scrollTimerRef.current) clearTimeout(scrollTimerRef.current);
+        };
+    }, [stopMomentum]);
+
     if (isCollectionsView) {
         const cols = collections ?? [];
         if (cols.length === 0) {
             return (
-                <main className="sgl-grid-panel">
+                <main
+                    ref={gridPanelRef}
+                    className={`sgl-grid-panel${isDragging ? ' sgl-dragging' : ''}${isScrolling ? ' sgl-scrolling' : ''}`}
+                    onPointerDown={onPointerDown}
+                    onPointerMove={onPointerMove}
+                    onPointerUp={onPointerUp}
+                    onPointerCancel={onPointerCancel}
+                    onWheel={onWheel}
+                >
                     <div className="sgl-empty">
                         <span>No user collections found</span>
                     </div>
@@ -471,7 +636,15 @@ export function LibraryGrid({
         }
 
         return (
-            <main className="sgl-grid-panel">
+            <main
+                ref={gridPanelRef}
+                className={`sgl-grid-panel${isDragging ? ' sgl-dragging' : ''}${isScrolling ? ' sgl-scrolling' : ''}`}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerCancel={onPointerCancel}
+                onWheel={onWheel}
+            >
                 <div className="sgl-grid" style={{ '--sgl-columns': columns } as React.CSSProperties}>
                     {cols.map((col, idx) => (
                         <CollectionCard
@@ -481,6 +654,7 @@ export function LibraryGrid({
                             accent={accent}
                             onClick={() => onSelectGame(idx)}
                             onDoubleClick={() => onOpenCollection?.(col)}
+                            isDragSuppressed={isDragSuppressed}
                         />
                     ))}
                 </div>
@@ -490,7 +664,15 @@ export function LibraryGrid({
 
     if (games.length === 0) {
         return (
-            <main className="sgl-grid-panel">
+            <main
+                ref={gridPanelRef}
+                className={`sgl-grid-panel${isDragging ? ' sgl-dragging' : ''}${isScrolling ? ' sgl-scrolling' : ''}`}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerCancel={onPointerCancel}
+                onWheel={onWheel}
+            >
                 <div className="sgl-empty">
                     <span>No games found in this category</span>
                 </div>
@@ -499,7 +681,15 @@ export function LibraryGrid({
     }
 
     return (
-        <main className="sgl-grid-panel">
+        <main
+            ref={gridPanelRef}
+            className={`sgl-grid-panel${isDragging ? ' sgl-dragging' : ''}${isScrolling ? ' sgl-scrolling' : ''}`}
+            onPointerDown={onPointerDown}
+            onPointerMove={onPointerMove}
+            onPointerUp={onPointerUp}
+            onPointerCancel={onPointerCancel}
+            onWheel={onWheel}
+        >
             <div className="sgl-grid" style={{ '--sgl-columns': columns } as React.CSSProperties}>
                 {games.map((game, idx) => (
                     <BannerCard
@@ -508,8 +698,9 @@ export function LibraryGrid({
                         isFocused={isGridFocused && idx === selectedIndex}
                         accent={accent}
                         onClick={() => onSelectGame(idx)}
-                        onDoubleClick={() => onLaunchGame?.(game)}
+                        onDoubleClick={(el) => onLaunchGame?.(game, el)}
                         onContextMenu={(e) => onContextMenu?.(game, idx, e.currentTarget)}
+                        isDragSuppressed={isDragSuppressed}
                     />
                 ))}
             </div>

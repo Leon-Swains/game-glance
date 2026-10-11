@@ -12,7 +12,11 @@ import { browserStores, guessedHeroUrls, heroUrls as getHeroUrls, useArtworkVers
 import { playNavSound } from '../home/navSound';
 import { LibraryBackground } from './LibraryBackground';
 import { LibraryCategoryBar } from './LibraryCategoryBar';
-import { LibraryGrid } from './LibraryGrid';
+import { mountOpenOverlay } from '../home/OpenOverlay';
+import { createOpenTransition, DOMRectLike, OpenTransition, usableRect } from '../home/openTransition';
+import { gameOpenArt } from '../home/homeNav';
+import { cssLayers } from '../home/homeView';
+import { cardArtMemo, LibraryGrid } from './LibraryGrid';
 import { LibraryInspector } from './LibraryInspector';
 import { LIBRARY_CSS } from './libraryCss';
 import { buildCategories, LibraryCategory, LibraryCollectionItem, LibraryGameItem } from './libraryData';
@@ -28,6 +32,125 @@ const LAUNCH_SOURCE = 100;
 
 function runGameId(appId: number, shortcutGameId: string | undefined): string {
     return typeof shortcutGameId === 'string' && shortcutGameId.length > 0 ? shortcutGameId : String(appId);
+}
+
+/**
+ * If the user scrolled the library grid using mouse wheel or touch gestures, the currently
+ * selected card may have moved out of the viewport. When resuming keyboard/gamepad navigation,
+ * this reconciles the active focus to the topmost visible card instead of abruptly jumping back.
+ */
+export function getReconciledSelectedIndex(currentIdx: number, totalCount: number): number {
+    if (typeof document === 'undefined' || totalCount <= 0) return currentIdx;
+    const container = document.querySelector('.sgl-grid-panel');
+    if (!container) return currentIdx;
+
+    const cards = container.querySelectorAll('.sgl-card, .sgl-card-collection');
+    if (cards.length === 0) return currentIdx;
+
+    const currentCard = cards[currentIdx];
+    if (currentCard) {
+        const cRect = container.getBoundingClientRect();
+        const elRect = currentCard.getBoundingClientRect();
+        if (elRect.bottom >= cRect.top + 20 && elRect.top <= cRect.bottom - 20) {
+            return currentIdx;
+        }
+    }
+
+    const cRect = container.getBoundingClientRect();
+    for (let i = 0; i < cards.length; i++) {
+        const cardRect = cards[i].getBoundingClientRect();
+        if (cardRect.bottom > cRect.top + 20 && cardRect.top < cRect.bottom - 20) {
+            return i;
+        }
+    }
+
+    return currentIdx;
+}
+
+export function libraryOpenArt(game: LibraryGameItem): string[] {
+    const urls: string[] = [];
+    const memoArt = cardArtMemo.get(game.appId);
+    if (memoArt) {
+        if (memoArt.mode === 'banner' && memoArt.url) {
+            urls.push(memoArt.url);
+        } else if (memoArt.mode === 'hero-logo' && memoArt.heroUrl) {
+            urls.push(memoArt.heroUrl);
+        } else if (memoArt.mode === 'hero' && memoArt.heroUrl) {
+            urls.push(memoArt.heroUrl);
+        } else if (memoArt.mode === 'poster' && memoArt.url) {
+            urls.push(memoArt.url);
+        }
+    }
+    if (game.landscapeUrl) urls.push(game.landscapeUrl);
+    if (game.heroUrl) urls.push(game.heroUrl);
+    if (game.capsuleUrl) urls.push(game.capsuleUrl);
+    try {
+        for (const u of gameOpenArt(game.appId)) {
+            if (!urls.includes(u)) urls.push(u);
+        }
+    } catch {
+        // fallback
+    }
+    return urls;
+}
+
+let libraryTransition: OpenTransition | null = null;
+let leavingLibraryRoot: HTMLElement | null = null;
+
+export function getLibraryTransition(): OpenTransition {
+    libraryTransition ??= createOpenTransition({
+        navigate: (path) => Navigation.Navigate(path),
+        mount: (rect, art) => {
+            if (!leavingLibraryRoot) throw new Error('no Library root');
+            return mountOpenOverlay(leavingLibraryRoot, rect, art);
+        },
+        setTimer: (fn, ms) => setTimeout(fn, ms),
+        clearTimer: (id) => clearTimeout(id as ReturnType<typeof setTimeout>),
+        warn: (message, error) => console.warn(`${LOG_PREFIX} SpotlightLibrary: ${message}`, error),
+    });
+    return libraryTransition;
+}
+
+export function openLibraryGameDetails(game: LibraryGameItem, sourceEl?: HTMLElement | null) {
+    markLeavingLibrary();
+
+    let rect: DOMRectLike | null = null;
+    try {
+        const hasDoc = typeof document !== 'undefined';
+        const root = (sourceEl?.closest?.('.sgl-root') ?? (hasDoc ? document.querySelector('.sgl-root') : null)) as HTMLElement | null;
+        leavingLibraryRoot = root;
+
+        const candidateSource = sourceEl ?? (
+            hasDoc ? (
+                document.querySelector(`.sgl-card[data-app-id="${game.appId}"]`) ??
+                document.querySelector('.sgl-card.focused') ??
+                document.querySelector('.sgl-poster-wrapper')
+            ) : null
+        ) as HTMLElement | null;
+
+        if (candidateSource && root) {
+            const r = candidateSource.getBoundingClientRect();
+            if (usableRect(r)) {
+                rect = { left: r.left, top: r.top, width: r.width, height: r.height };
+            }
+        }
+    } catch (error) {
+        console.warn(`${LOG_PREFIX} SpotlightLibrary: could not measure source element`, error);
+        rect = null;
+    }
+
+    const art = cssLayers(libraryOpenArt(game));
+
+    try {
+        getLibraryTransition().open(game.appId, rect, art);
+    } catch (error) {
+        console.warn(`${LOG_PREFIX} SpotlightLibrary: open transition failed`, error);
+        try {
+            Navigation.Navigate(`/library/app/${game.appId}`);
+        } catch {}
+    } finally {
+        leavingLibraryRoot = null;
+    }
 }
 
 export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) {
@@ -103,6 +226,21 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         setActiveCategoryId(id);
         setSelectedCollectionId(null);
         setSelectedGameIdx(0);
+        const gridPanel = document.querySelector('.sgl-grid-panel');
+        if (gridPanel) {
+            gridPanel.scrollTop = 0;
+        }
+        playNavSound();
+    }, []);
+
+    // Select specific sub-collection directly (e.g. from top nav tab)
+    const selectSubCollection = useCallback((colId: string) => {
+        setSelectedCollectionId(colId);
+        setSelectedGameIdx(0);
+        const gridPanel = document.querySelector('.sgl-grid-panel');
+        if (gridPanel) {
+            gridPanel.scrollTop = 0;
+        }
         playNavSound();
     }, []);
 
@@ -115,6 +253,10 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
             const nextIdx = (curIdx + direction + cols.length) % cols.length;
             setSelectedCollectionId(cols[nextIdx].id);
             setSelectedGameIdx(0);
+            const gridPanel = document.querySelector('.sgl-grid-panel');
+            if (gridPanel) {
+                gridPanel.scrollTop = 0;
+            }
             playNavSound();
             return;
         }
@@ -153,6 +295,10 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         if (!col) return;
         setSelectedCollectionId(col.id);
         setSelectedGameIdx(0);
+        const gridPanel = document.querySelector('.sgl-grid-panel');
+        if (gridPanel) {
+            gridPanel.scrollTop = 0;
+        }
         playNavSound();
     }, [selectedCollectionItem]);
 
@@ -254,15 +400,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         };
     }, [selectedGame, artworkVersion]);
 
-    // Primary action: Open game details (A button)
-    const handleDetails = useCallback((gameToShow: LibraryGameItem | null = selectedGame) => {
-        if (!gameToShow) return;
-        markLeavingLibrary();
-        try {
-            Navigation.Navigate(`/library/app/${gameToShow.appId}`);
-        } catch (error) {
-            console.warn(`${LOG_PREFIX} SpotlightLibrary: Navigate failed`, error);
-        }
+    // Primary action: Open game details (A button) with zoom-into-fullscreen transition
+    const handleDetails = useCallback((gameToShow: LibraryGameItem | null = selectedGame, sourceEl?: HTMLElement | null) => {
+        const game = gameToShow ?? selectedGame;
+        if (!game) return;
+        openLibraryGameDetails(game, sourceEl);
     }, [selectedGame]);
 
     // Secondary action: Play game (Y button)
@@ -337,6 +479,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
     }, [onActivate]);
 
     const onCancel = useCallback(() => {
+        libraryTransition?.cancel();
         if (isInsideSubCollection) {
             handleBackToCollections();
             return;
@@ -427,8 +570,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 evt.stopPropagation?.();
                 if (focusZone === 'tabs') {
                     cycleCategory(-1);
-                } else if (totalItemsCount > 0 && selectedGameIdx > 0) {
-                    handleSelectGame(selectedGameIdx - 1);
+                } else if (totalItemsCount > 0) {
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx > 0) {
+                        handleSelectGame(baseIdx - 1);
+                    }
                 }
                 return;
             }
@@ -438,8 +584,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 evt.stopPropagation?.();
                 if (focusZone === 'tabs') {
                     cycleCategory(1);
-                } else if (totalItemsCount > 0 && selectedGameIdx < totalItemsCount - 1) {
-                    handleSelectGame(selectedGameIdx + 1);
+                } else if (totalItemsCount > 0) {
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx < totalItemsCount - 1) {
+                        handleSelectGame(baseIdx + 1);
+                    }
                 }
                 return;
             }
@@ -448,8 +597,9 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 if (focusZone === 'grid') {
                     evt.preventDefault?.();
                     evt.stopPropagation?.();
-                    if (selectedGameIdx >= columns) {
-                        handleSelectGame(selectedGameIdx - columns);
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx >= columns) {
+                        handleSelectGame(baseIdx - columns);
                     } else {
                         setFocusZone('tabs');
                         playNavSound();
@@ -468,10 +618,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                     setFocusZone('grid');
                     playNavSound();
                 } else if (totalItemsCount > 0) {
-                    if (selectedGameIdx + columns < totalItemsCount) {
-                        handleSelectGame(selectedGameIdx + columns);
+                    const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+                    if (baseIdx + columns < totalItemsCount) {
+                        handleSelectGame(baseIdx + columns);
                     } else {
-                        const curRow = Math.floor(selectedGameIdx / columns);
+                        const curRow = Math.floor(baseIdx / columns);
                         const lastRow = Math.floor((totalItemsCount - 1) / columns);
                         if (curRow < lastRow) {
                             handleSelectGame(totalItemsCount - 1);
@@ -559,29 +710,31 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
             // In Grid
             if (totalItemsCount === 0) return;
 
+            const baseIdx = getReconciledSelectedIndex(selectedGameIdx, totalItemsCount);
+
             if (e.key === 'ArrowLeft') {
-                if (selectedGameIdx > 0) {
-                    handleSelectGame(selectedGameIdx - 1);
+                if (baseIdx > 0) {
+                    handleSelectGame(baseIdx - 1);
                 }
                 e.preventDefault();
             } else if (e.key === 'ArrowRight') {
-                if (selectedGameIdx < totalItemsCount - 1) {
-                    handleSelectGame(selectedGameIdx + 1);
+                if (baseIdx < totalItemsCount - 1) {
+                    handleSelectGame(baseIdx + 1);
                 }
                 e.preventDefault();
             } else if (e.key === 'ArrowUp') {
-                if (selectedGameIdx >= columns) {
-                    handleSelectGame(selectedGameIdx - columns);
+                if (baseIdx >= columns) {
+                    handleSelectGame(baseIdx - columns);
                 } else {
                     setFocusZone('tabs');
                     playNavSound();
                 }
                 e.preventDefault();
             } else if (e.key === 'ArrowDown') {
-                if (selectedGameIdx + columns < totalItemsCount) {
-                    handleSelectGame(selectedGameIdx + columns);
+                if (baseIdx + columns < totalItemsCount) {
+                    handleSelectGame(baseIdx + columns);
                 } else {
-                    const currentRow = Math.floor(selectedGameIdx / columns);
+                    const currentRow = Math.floor(baseIdx / columns);
                     const lastRow = Math.floor((totalItemsCount - 1) / columns);
                     if (currentRow < lastRow) {
                         handleSelectGame(totalItemsCount - 1);
@@ -619,6 +772,9 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
     }, [focusZone, selectedGameIdx, totalItemsCount, columns, cycleCategory, handleSelectGame, onActivate, handlePlayGame, onCancel, isCollectionsTab, isInsideSubCollection, selectedGame]);
 
     const activeCategoryIdx = categories.findIndex((c) => c.id === activeCategoryId);
+    const activeCollectionIdx = isInsideSubCollection
+        ? (activeCategory?.collections?.findIndex((c) => c.id === selectedCollectionId) ?? 0)
+        : -1;
     const hltbHours = gameHltb?.status === 'found' ? gameHltb.times.main : null;
 
     return (
@@ -653,8 +809,16 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 categories={categories}
                 activeCategoryId={activeCategoryId}
                 onSelectCategory={selectCategory}
-                focusedIndex={activeCategoryIdx >= 0 ? activeCategoryIdx : 0}
+                focusedIndex={
+                    isInsideSubCollection
+                        ? (activeCollectionIdx >= 0 ? activeCollectionIdx : 0)
+                        : (activeCategoryIdx >= 0 ? activeCategoryIdx : 0)
+                }
                 isHeaderFocused={focusZone === 'tabs'}
+                isInsideSubCollection={isInsideSubCollection}
+                collections={activeCategory?.collections ?? []}
+                activeSubCollectionId={selectedCollectionId}
+                onSelectSubCollection={selectSubCollection}
                 activeSubCollectionName={activeSubCollection?.name}
                 onBackToCollections={handleBackToCollections}
             />
@@ -670,7 +834,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                     hltbMainHours={hltbHours}
                     preferLogos={currentSettings.gameLogo}
                     onPlay={() => handlePlayGame()}
-                    onDetails={() => handleDetails()}
+                    onDetails={(sourceEl) => handleDetails(selectedGame, sourceEl)}
                     onOpenCollection={handleOpenCollection}
                 />
 

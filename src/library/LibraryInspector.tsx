@@ -26,7 +26,7 @@ interface LibraryInspectorProps {
     hltbMainHours: number | null;
     preferLogos?: boolean;
     onPlay: () => void;
-    onDetails: () => void;
+    onDetails: (sourceEl?: HTMLElement) => void;
     onOpenCollection?: () => void;
 }
 
@@ -76,7 +76,7 @@ function InspectorFanCover({ game, className }: { game?: LibraryGameItem; classN
     );
 }
 
-function InspectorGameCover({ game }: { game: LibraryGameItem }) {
+function InspectorGameCover({ game, onOpen }: { game: LibraryGameItem; onOpen?: (sourceEl?: HTMLElement) => void }) {
     const artworkVersion = useArtworkVersion();
     // 1. Primary: Square cover for soundtracks (1:1), Vertical capsule art for games (2:3)
     const posterCandidates = React.useMemo(() => {
@@ -202,7 +202,18 @@ function InspectorGameCover({ game }: { game: LibraryGameItem }) {
     const isBannerAvailable = Boolean(bannerSrc && !hasBannerError);
 
     return (
-        <div className={`sgl-poster-wrapper${game.isSoundtrack ? ' sgl-poster-square' : ''}`}>
+        <div
+            role={onOpen ? 'button' : undefined}
+            tabIndex={onOpen ? 0 : undefined}
+            onClick={(e) => {
+                if (!onOpen) return;
+                e.preventDefault();
+                e.stopPropagation();
+                onOpen(e.currentTarget);
+            }}
+            className={`sgl-poster-wrapper${game.isSoundtrack ? ' sgl-poster-square' : ''}`}
+            style={onOpen ? { cursor: 'pointer' } : undefined}
+        >
             {isPosterAvailable ? (
                 <img
                     src={posterSrc}
@@ -412,7 +423,7 @@ export function LibraryInspector({
     return (
         <aside className="sgl-inspector" style={{ '--accent': accent } as React.CSSProperties}>
             {/* Poster Art: vertical 2:3 for games, square 1:1 for soundtracks, or blurred hero + logo fallback */}
-            <InspectorGameCover game={game} />
+            <InspectorGameCover game={game} onOpen={onDetails} />
 
             {/* Game Title: Clean typography, no cluttered secondary logo */}
             <div className="sgl-title-box">
@@ -464,7 +475,8 @@ export function LibraryInspector({
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            onDetails?.();
+                            const poster = e.currentTarget.closest('.sgl-inspector')?.querySelector('.sgl-poster-wrapper') as HTMLElement | null;
+                            onDetails?.(poster ?? e.currentTarget);
                         }}
                         style={{ width: '100%' }}
                     >
@@ -480,7 +492,8 @@ export function LibraryInspector({
                         onClick={(e) => {
                             e.preventDefault();
                             e.stopPropagation();
-                            onDetails?.();
+                            const poster = e.currentTarget.closest('.sgl-inspector')?.querySelector('.sgl-poster-wrapper') as HTMLElement | null;
+                            onDetails?.(poster ?? e.currentTarget);
                         }}
                     >
                         <FaInfoCircle size={13} />

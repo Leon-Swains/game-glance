@@ -2,7 +2,8 @@
 
 A [Decky Loader](https://decky.xyz) plugin for Steam's Game Mode. It turns each game's page into a full-screen view
 with everything about the game at a glance (how long it takes to beat, how far you are, what it is about and where it
-came from), and can replace Steam's Home with **Spotlight Home**: your games, one at a time, over their own art.
+came from), and can replace Steam's Home with **Spotlight Home** and Steam's Library with **Spotlight Library**:
+your games, over their own art.
 
 ![A game page on a TV: the game's logo, Play row, cards, and the Family Sharing pill](docs/images/tv-page-family.jpg)
 
@@ -70,6 +71,29 @@ An optional new Home screen, off by default (Quick Access → Game Glance → Sp
     (the new price, then the old one struck through).
 - **Safe.** If anything in Spotlight Home fails, you get Steam's own Home instead of a broken screen.
 
+## Spotlight Library
+
+![Spotlight Library: left inspector with game stats, right banner grid](docs/images/tv-game-library.gif)
+
+An optional new Library screen, off by default (Quick Access → Game Glance → Spotlight Library).
+
+- **Split layout.** Inspired by the Pegasus frontend: an inspector on the left and a banner grid on the right. The
+  inspector displays the selected game's vertical cover, title, store and status pills, HowLongToBeat times, play
+  time, achievements progress, and description.
+- **Banner grid.** Games displayed as wide cards with your custom banner or hero artwork, glowing accent outlines in
+  the game's colour, running indicators, and collection fan covers.
+- **Grid density.** Choose from 3 to 7 columns in settings (Quick Access → Game Glance → Grid Columns) to fit
+  handheld screens or docked 1080p/4K TVs.
+- **Category ribbon.** Browse by Favorites, Installed, All Games, and your custom Steam Collections. L1 and R1 switch
+  categories with Steam's tab sounds, or swipe horizontally across the ribbon.
+- **Zoom transition.** Selecting a game or pressing A smoothly expands its banner into full screen before opening
+  the game page, matching Spotlight Home's handoff motion.
+- **Soundtracks and Non-Steam.** Soundtracks display square album art, listening time and quick play. Non-Steam games
+  from Heroic or Unifideck show their store badges and launch seamlessly.
+- **Controls & Navigation.** Fully navigable via gamepad, keyboard, mouse wheel, or direct touch. Left and Right
+  navigate the grid, Up reaches the categories, A opens game details, and Y launches the game directly.
+- **Safe.** If anything in Spotlight Library fails, you get Steam's own Library instead of a broken screen.
+
 ## Settings
 
 Quick Access (…) → Game Glance:
@@ -79,6 +103,8 @@ Quick Access (…) → Game Glance:
 | Game Glance page | On | The full-screen game page. Off gives Steam's own game page. |
 | Clean look | Off | The game page with only the art and one row at the bottom. |
 | Spotlight Home | Off | The new Home, and its look on the game page. Off returns Steam's Home at once. |
+| Spotlight Library | Off | The new 2-panel Library view. Off returns Steam's own Library at once. |
+| Grid Columns | 3 | Number of poster/banner columns in the Spotlight Library grid (3 to 7). |
 | Status bar | On | The clock, battery, connection and online status at the top right. |
 | Game logo | Off | The game's logo in place of its name, on Home and the game page. A game without a logo keeps its name. Each logo is cropped to its artwork and sized so that wide and compact logos look about equally big. |
 | Games row | Recent Games | What Home's row shows: your recent games, or one of your Steam collections (Favorites, Locally Installed Games and your own). With a collection, **Sort By** offers Last Played, Alphabetical or Date Added to Library, and the line under the title starts with the collection's name. |
@@ -90,8 +116,28 @@ Also in Quick Access:
 - **HowLongToBeat match:** if a game matches the wrong entry or none, paste its HowLongToBeat link.
 - **Pre-load game info for installed games:** fetches times and descriptions for every installed game, about one per
   second. A game that does not answer is skipped, and Stop ends it at once.
+- **Reload Steam artwork:** refreshes heroes, logos and banners immediately if you changed artwork via SteamGridDB or Steam, without needing to restart Steam.
 - **Clear cached data.**
 - **Updates:** the installed version, **Update to …** when a newer release is out, and **Check for updates**.
+
+## Fork improvements & highlights
+
+This fork introduces several key enhancements and quality-of-life improvements:
+
+- **Spotlight Library view:** A Pegasus-inspired 2-panel game library replacing Steam's default library with an
+  inspector panel, customizable 3–7 column banner grids, collection fan covers, and sound-effects navigation.
+- **Full Touch, Mouse & Wheel Support:**
+  - **Spotlight Home:** Horizontal touch drag, swipe flick with momentum physics, mouse wheel scrolling, single-tap
+    focus selection with second-tap activation, drag-click suppression, and click guards against accidental activations.
+  - **Spotlight Library:** Touch drag, swipe momentum, and mouse wheel navigation across both the banner grid and the
+    top category ribbon, with real-time focus reconciliation.
+- **Live Artwork Reload & Direct Cache-Busting:** A dedicated "Reload Steam artwork" action in Quick Access that
+  directly probes SteamGridDB custom asset folders and applies cache-busting queries, updating changed artwork
+  instantly across all screens without restarting Steam.
+- **Consistent Zoom Transitions:** Opening game details triggers an expanding full-screen banner zoom animation
+  across both Spotlight Home and Spotlight Library.
+- **Robustness & Edge Cases:** Improved handling for non-Steam games, soundtrack formats, offline cache persistence,
+  and SteamOS client compatibility.
 
 ## Your language
 
