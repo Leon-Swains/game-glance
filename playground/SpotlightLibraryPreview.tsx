@@ -16,7 +16,7 @@ export function SpotlightLibraryPreview({ deviceMode = 'handheld', customAccent 
             isShortcut: g.info.isShortcut,
             isSoundtrack: false,
             gameId: g.info.isShortcut ? String(g.info.appId) : undefined,
-            installed: true,
+            installed: idx % 2 === 0,
             running: idx === 0, // First game is simulated as currently running
             playedMinutes: g.info.playedMinutes,
             achievements: g.info.achievements,

@@ -57,6 +57,23 @@ describe('libraryData: buildCategories', () => {
         expect(item.playedMinutes).toBe(120);
         expect(item.source).toBe('Steam');
         expect(item.isSoundtrack).toBe(false);
+        expect(item.installed).toBe(true);
+    });
+
+    it('correctly sets installed status based on installedAppIds set or fallback', () => {
+        const raw1 = { appid: 10, display_name: 'Installed Game' };
+        const raw2 = { appid: 20, display_name: 'Uninstalled Game' };
+        const installedSet = new Set<number>([10]);
+
+        const item1 = rawAppToItem(raw1, false, undefined, installedSet);
+        const item2 = rawAppToItem(raw2, false, undefined, installedSet);
+
+        expect(item1.installed).toBe(true);
+        expect(item2.installed).toBe(false);
+
+        // Fallback without installedSet defaults undefined to false (not true)
+        const uninstalledFallback = rawAppToItem({ appid: 30, display_name: 'No Status' }, false);
+        expect(uninstalledFallback.installed).toBe(false);
     });
 
     it('correctly identifies soundtrack apps (app_type === 8192)', () => {

@@ -266,6 +266,7 @@ function isSystemCollection(col: Record<string, unknown>, id: string, name: stri
 
 export function readRawApps(): {
     installed: RawApp[];
+    installedAppIds: Set<number>;
     deckCompat: RawApp[];
     all: RawApp[];
     favorites: RawApp[];
@@ -391,9 +392,13 @@ export function readRawApps(): {
 
     // Installed apps
     const installed = extractCollectionApps(cStore?.localGamesCollection);
+    const installedAppIds = new Set<number>(installed.map((a) => a.appid));
     if (installed.length === 0) {
         for (const a of allAppsMap.values()) {
-            if (a.installed) installed.push(a);
+            if (a.installed) {
+                installed.push(a);
+                installedAppIds.add(a.appid);
+            }
         }
     }
 
@@ -556,6 +561,7 @@ export function readRawApps(): {
 
     return {
         installed,
+        installedAppIds,
         deckCompat,
         all,
         favorites,
@@ -567,7 +573,7 @@ export function readRawApps(): {
     };
 }
 
-export function rawAppToItem(app: RawApp, isRunning: boolean, soundtrackAppIds?: Set<number>): LibraryGameItem {
+export function rawAppToItem(app: RawApp, isRunning: boolean, soundtrackAppIds?: Set<number>, installedAppIds?: Set<number>): LibraryGameItem {
     const s = steam();
     let overview = s.appStore?.GetAppOverviewByAppID?.(app.appid) ?? app;
     if ((!overview || overview === app) && (app.appid < 0 || app.appid > 0x7fffffff)) {
@@ -598,13 +604,26 @@ export function rawAppToItem(app: RawApp, isRunning: boolean, soundtrackAppIds?:
     const size = typeof app.size_on_disk === 'number' ? app.size_on_disk : Number(app.size_on_disk) || undefined;
     const gameId = app.m_gameid ?? ((overview as Record<string, unknown> | undefined)?.m_gameid as string | undefined);
 
+    const overviewRec = overview as Record<string, unknown> | undefined;
+    const isInstalled = isShortcutApp(app)
+        ? true
+        : installedAppIds && installedAppIds.size > 0
+            ? installedAppIds.has(app.appid)
+            : typeof app.installed === 'boolean'
+                ? app.installed
+                : typeof overviewRec?.installed === 'boolean'
+                    ? Boolean(overviewRec.installed)
+                    : typeof (overviewRec?.local_per_client_data as Record<string, unknown> | undefined)?.installed === 'boolean'
+                        ? Boolean((overviewRec?.local_per_client_data as Record<string, unknown>).installed)
+                        : false;
+
     return {
         appId: app.appid,
         name: info.name || app.display_name || `App ${app.appid}`,
         isShortcut: info.isShortcut,
         isSoundtrack,
         gameId,
-        installed: app.installed ?? true,
+        installed: isInstalled,
         running: isRunning,
         playedMinutes: info.playedMinutes,
         achievements: isSoundtrack ? null : info.achievements,
@@ -652,7 +671,7 @@ export function buildCategories(mockGames?: LibraryGameItem[]): LibraryCategory[
         return baseCategories;
     }
 
-    const { installed, deckCompat, all, favorites, shortcuts, soundtracks, soundtrackAppIds, userCollections, runningAppIds } = readRawApps();
+    const { installed, installedAppIds, deckCompat, all, favorites, shortcuts, soundtracks, soundtrackAppIds, userCollections, runningAppIds } = readRawApps();
 
     const toItems = (apps: RawApp[], forceSoundtrack = false): LibraryGameItem[] => {
         // Deduplicate by appid and sort alphabetically by name
@@ -661,7 +680,7 @@ export function buildCategories(mockGames?: LibraryGameItem[]): LibraryCategory[
         for (const app of apps) {
             if (!seen.has(app.appid)) {
                 seen.add(app.appid);
-                const item = rawAppToItem(app, runningAppIds.has(app.appid), soundtrackAppIds);
+                const item = rawAppToItem(app, runningAppIds.has(app.appid), soundtrackAppIds, installedAppIds);
                 if (forceSoundtrack) item.isSoundtrack = true;
                 list.push(item);
             }

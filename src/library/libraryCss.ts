@@ -5,7 +5,7 @@ export const LIBRARY_CSS = `
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    padding-top: var(--sgl-top-inset, 70px);
+    padding-top: var(--sgl-top-inset, 42px) !important;
     padding-bottom: var(--sgl-bottom-inset, 58px);
     overflow: hidden;
     overflow: clip;
@@ -13,7 +13,13 @@ export const LIBRARY_CSS = `
     flex-direction: column;
     background: #06090e;
     color: #f0f6fc;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+    font-size: 14px !important;
+    line-height: normal !important;
+    letter-spacing: normal !important;
+    text-transform: none !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
     user-select: none;
     z-index: 1;
 }
@@ -24,8 +30,11 @@ export const LIBRARY_CSS = `
     transition: opacity 300ms ease;
 }
 
+.sgl-root,
 .sgl-root * {
-    box-sizing: border-box;
+    box-sizing: border-box !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
 }
 
 /* Ambient Blurred Background */
@@ -72,7 +81,7 @@ export const LIBRARY_CSS = `
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 15px;
+    font-size: 15px !important;
     font-weight: 800;
     letter-spacing: 1.2px;
     color: #ffffff;
@@ -94,9 +103,10 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-bumper-badge {
-    font-size: 10px;
+    font-size: 10px !important;
+    line-height: 1 !important;
     font-weight: 800;
-    padding: 2px 6px;
+    padding: 2px 6px !important;
     border-radius: 4px;
     background: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.7);
@@ -138,7 +148,8 @@ export const LIBRARY_CSS = `
     white-space: nowrap;
     flex-shrink: 0;
     padding: 8px 2px 10px;
-    font-size: 13px;
+    font-size: 13px !important;
+    line-height: 1 !important;
     font-weight: 700;
     letter-spacing: 0.14em;
     cursor: pointer;
@@ -198,10 +209,11 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-tab-count {
-    font-size: 11px;
+    font-size: 11px !important;
+    line-height: 1 !important;
     font-weight: 600;
     letter-spacing: 0.04em;
-    padding: 1px 6px;
+    padding: 1px 6px !important;
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.08);
     color: rgba(255, 255, 255, 0.65);
@@ -401,9 +413,9 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-title-text {
-    font-size: 21px;
+    font-size: 21px !important;
     font-weight: 800;
-    line-height: 1.25;
+    line-height: 1.25 !important;
     color: #ffffff;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     display: -webkit-box;
@@ -420,9 +432,10 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-source-pill {
-    font-size: 11px;
+    font-size: 11px !important;
+    line-height: 1 !important;
     font-weight: 700;
-    padding: 3px 8px;
+    padding: 3px 8px !important;
     border-radius: 12px;
     background: rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.85);
@@ -430,9 +443,10 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-status-pill {
-    font-size: 11px;
+    font-size: 11px !important;
+    line-height: 1 !important;
     font-weight: 700;
-    padding: 3px 8px;
+    padding: 3px 8px !important;
     border-radius: 12px;
     background: rgba(46, 160, 67, 0.2);
     color: #3fb950;
@@ -457,7 +471,8 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-stat-label {
-    font-size: 10.5px;
+    font-size: 10.5px !important;
+    line-height: 1.2 !important;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.5);
     text-transform: uppercase;
@@ -465,7 +480,8 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-stat-value {
-    font-size: 13.5px;
+    font-size: 13.5px !important;
+    line-height: 1.2 !important;
     font-weight: 700;
     color: #ffffff;
 }
@@ -508,7 +524,9 @@ export const LIBRARY_CSS = `
     flex: 1;
     padding: 10px 16px;
     border-radius: 999px;
-    font-size: 13.5px;
+    font-size: 13.5px !important;
+    line-height: 1 !important;
+    height: 46px;
     font-weight: 800;
     background: var(--accent, #58a6ff);
     color: #0b0d10;
@@ -533,7 +551,9 @@ export const LIBRARY_CSS = `
     flex: 1;
     padding: 10px 14px;
     border-radius: 999px;
-    font-size: 13px;
+    font-size: 13px !important;
+    line-height: 1 !important;
+    height: 46px;
     font-weight: 700;
     background: rgba(12, 16, 22, 0.45);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -557,9 +577,10 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-btn-badge {
-    font-size: 10px;
+    font-size: 10px !important;
+    line-height: 1 !important;
     font-weight: 800;
-    padding: 1px 6px;
+    padding: 1px 6px !important;
     border-radius: 6px;
     letter-spacing: 0.5px;
 }
@@ -966,25 +987,26 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-col-footer-title {
-    font-size: 13px;
+    font-size: 13px !important;
     font-weight: 700;
     color: #ffffff;
     letter-spacing: 0.2px;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
-    overflow: hidden;
+    overflow: hidden !important;
     text-overflow: ellipsis;
     word-break: break-word;
-    line-height: 1.25;
-    max-height: 2.6em;
+    line-height: 1.25 !important;
+    max-height: 2.6em !important;
     width: 100%;
 }
 
 .sgl-col-footer-badge {
-    font-size: 9.5px;
+    font-size: 9.5px !important;
+    line-height: 1 !important;
     font-weight: 700;
-    padding: 1.5px 6px;
+    padding: 1.5px 6px !important;
     border-radius: 8px;
     background: rgba(255, 255, 255, 0.12);
     color: rgba(255, 255, 255, 0.85);
@@ -1458,6 +1480,48 @@ export const LIBRARY_CSS = `
     .sgl-stat-card {
         padding: 4px 6px;
     }
+}
+
+/* Steam Large Text mode resilience: protect layout and typography */
+:global(.LargeText) .sgl-root,
+body.LargeText .sgl-root,
+.LargeText .sgl-root,
+.sgl-root {
+    font-size: 14px !important;
+    line-height: normal !important;
+}
+
+.LargeText .sgl-root .sgl-tab,
+body.LargeText .sgl-root .sgl-tab {
+    font-size: 13px !important;
+    line-height: 1 !important;
+}
+
+.LargeText .sgl-root .sgl-title-text,
+body.LargeText .sgl-root .sgl-title-text {
+    font-size: 21px !important;
+    line-height: 1.25 !important;
+}
+
+.LargeText .sgl-root .sgl-btn-play,
+body.LargeText .sgl-root .sgl-btn-play {
+    font-size: 13px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+}
+
+.LargeText .sgl-root .sgl-btn-details,
+body.LargeText .sgl-root .sgl-btn-details {
+    font-size: 13.5px !important;
+    height: 46px !important;
+    min-height: 46px !important;
+}
+
+.LargeText .sgl-root .sgl-col-footer-title,
+body.LargeText .sgl-root .sgl-col-footer-title {
+    font-size: 13px !important;
+    line-height: 1.25 !important;
+    max-height: 2.6em !important;
 }
 `;
 

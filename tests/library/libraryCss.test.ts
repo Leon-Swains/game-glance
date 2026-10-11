@@ -32,4 +32,22 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
     it('defines ultra-compact rules for <=720px height viewports', () => {
         expect(LIBRARY_CSS).toContain('@media (max-height: 720px)');
     });
+
+    it('sets 40% reduced top padding inset (42px) to optimize screen real estate', () => {
+        expect(LIBRARY_CSS).toContain('padding-top: var(--sgl-top-inset, 42px) !important;');
+    });
+
+    it('includes font-size and text-size-adjust locking to protect against Steam Large Text mode distortion', () => {
+        expect(LIBRARY_CSS).toContain('-webkit-text-size-adjust: 100% !important;');
+        expect(LIBRARY_CSS).toContain('font-size: 14px !important;');
+        expect(LIBRARY_CSS).toContain(':global(.LargeText) .sgl-root');
+        expect(LIBRARY_CSS).toContain('body.LargeText .sgl-root');
+    });
+
+    it('includes grayscale and dimmed styling for uninstalled games', () => {
+        expect(LIBRARY_CSS).toContain('.sgl-card.sgl-card-uninstalled');
+        expect(LIBRARY_CSS).toContain('grayscale(85%)');
+        expect(LIBRARY_CSS).toContain('opacity: 0.85;');
+    });
 });
+

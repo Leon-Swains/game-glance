@@ -163,4 +163,59 @@ describe('BannerCard Artwork Hierarchy & Memoization', () => {
         );
         expect(html).toContain('https://example.com/banner.jpg');
     });
+
+    it('applies sgl-card-uninstalled class and neutral gray accent when dimUninstalled is true and game is uninstalled', () => {
+        const uninstalledGame: LibraryGameItem = {
+            ...baseGame,
+            installed: false,
+        };
+
+        const html = renderToString(
+            <BannerCard
+                game={uninstalledGame}
+                isFocused={false}
+                accent="#1a9fff"
+                dimUninstalled={true}
+                onClick={() => {}}
+                onDoubleClick={() => {}}
+            />
+        );
+
+        expect(html).toContain('sgl-card-uninstalled');
+        expect(html).toContain('--accent:#707784');
+    });
+
+    it('does not apply sgl-card-uninstalled when dimUninstalled is false or game is installed', () => {
+        const installedGame: LibraryGameItem = {
+            ...baseGame,
+            installed: true,
+        };
+
+        const htmlInstalled = renderToString(
+            <BannerCard
+                game={installedGame}
+                isFocused={false}
+                accent="#1a9fff"
+                dimUninstalled={true}
+                onClick={() => {}}
+                onDoubleClick={() => {}}
+            />
+        );
+        expect(htmlInstalled).not.toContain('sgl-card-uninstalled');
+        expect(htmlInstalled).toContain('--accent:#1a9fff');
+
+        const uninstalledWithoutSetting = renderToString(
+            <BannerCard
+                game={{ ...baseGame, installed: false }}
+                isFocused={false}
+                accent="#1a9fff"
+                dimUninstalled={false}
+                onClick={() => {}}
+                onDoubleClick={() => {}}
+            />
+        );
+        expect(uninstalledWithoutSetting).not.toContain('sgl-card-uninstalled');
+        expect(uninstalledWithoutSetting).toContain('--accent:#1a9fff');
+    });
 });
+

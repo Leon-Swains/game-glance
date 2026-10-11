@@ -841,7 +841,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                     game={selectedGame}
                     collection={selectedCollectionItem}
                     isCollectionView={isCollectionsTab && !isInsideSubCollection}
-                    accent={gameAccent}
+                    accent={Boolean(currentSettings.dimUninstalledGames && selectedGame && !selectedGame.installed) ? '#707784' : gameAccent}
                     description={gameDesc}
                     hltbMainHours={hltbHours}
                     preferLogos={currentSettings.gameLogo}
