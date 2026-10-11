@@ -44,6 +44,26 @@ describe('libraryCss: Handheld and responsive layout rules', () => {
         expect(LIBRARY_CSS).toContain('font-size: 14px !important;');
         expect(LIBRARY_CSS).toContain('html.LargeText .sgl-root');
         expect(LIBRARY_CSS).toContain('body.LargeText .sgl-root');
+        expect(LIBRARY_CSS).toContain(':root .sgl-root');
+        expect(LIBRARY_CSS).toContain('html body .sgl-root');
+    });
+
+    it('locks navbar, inspector, description, action buttons, and card typography with high-specificity rules', () => {
+        expect(LIBRARY_CSS).toContain('.sgl-tab-label');
+        expect(LIBRARY_CSS).toContain('font-size: 12.5px !important;');
+        expect(LIBRARY_CSS).toContain('.sgl-brand');
+        expect(LIBRARY_CSS).toContain('.sgl-title-text');
+        expect(LIBRARY_CSS).toContain('.sgl-description');
+        expect(LIBRARY_CSS).toContain('.sgl-btn-details');
+        expect(LIBRARY_CSS).toContain('.sgl-btn-play');
+        expect(LIBRARY_CSS).toContain('.sgl-card-fallback-title');
+        expect(LIBRARY_CSS).toContain('.sgl-col-footer-title');
+    });
+
+    it('enforces clamped poster dimensions across base, handheld, and compact viewports', () => {
+        expect(LIBRARY_CSS).toContain('max-width: 130px !important;');
+        expect(LIBRARY_CSS).toContain('height: clamp(120px, 24vh, 195px) !important;');
+        expect(LIBRARY_CSS).toContain('max-height: 195px !important;');
     });
 
     it('includes fast compositor-optimized grayscale and dimmed styling for uninstalled games', () => {

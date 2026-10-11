@@ -800,6 +800,10 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 '--glance-accent': gameAccent,
                 '--glance-accent-text': legibleAccent(gameAccent),
                 '--accent-glow': `${gameAccent}55`,
+                fontSize: '14px',
+                lineHeight: 'normal',
+                WebkitTextSizeAdjust: '100%',
+                textSizeAdjust: '100%',
             } as React.CSSProperties}
             onGamepadFocus={() => {
                 // Keep the active focus zone (grid by default or as restored from memory)

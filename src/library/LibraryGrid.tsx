@@ -294,7 +294,7 @@ export const BannerCard = React.memo(
             {game.running && (
                 <div className="sgl-card-running-badge">
                     <div className="sgl-running-dot" />
-                    <span>PLAYING</span>
+                    <span className="sgl-card-running-text">PLAYING</span>
                 </div>
             )}
 

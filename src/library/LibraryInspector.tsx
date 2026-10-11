@@ -363,7 +363,7 @@ export function LibraryInspector({
                         style={{ width: '100%' }}
                     >
                         <FaFolderOpen size={13} />
-                        <span>Open Collection</span>
+                        <span className="sgl-btn-text">Open Collection</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
                 </div>
@@ -479,7 +479,7 @@ export function LibraryInspector({
                         style={{ width: '100%' }}
                     >
                         <FaMusic size={12} />
-                        <span>Open Soundtrack</span>
+                        <span className="sgl-btn-text">Open Soundtrack</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
                 </div>
@@ -495,7 +495,7 @@ export function LibraryInspector({
                         }}
                     >
                         <FaInfoCircle size={13} />
-                        <span>Details</span>
+                        <span className="sgl-btn-text">Details</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
                     <button
@@ -507,7 +507,7 @@ export function LibraryInspector({
                         }}
                     >
                         <FaPlay size={11} />
-                        <span>{playLabel}</span>
+                        <span className="sgl-btn-text">{playLabel}</span>
                         <span className="sgl-btn-badge">Y</span>
                     </button>
                 </div>

@@ -221,13 +221,13 @@ export function LibraryCategoryBar({
                             onBackToCollections?.();
                         }}
                     >
-                        <span>‹ COLLECTIONS</span>
+                        <span className="sgl-btn-back-text">‹ COLLECTIONS</span>
                         <span className="sgl-btn-badge" style={{ marginLeft: 2 }}>B</span>
                     </button>
                 ) : (
                     <>
                         <FaGamepad className="sgl-brand-icon" size={18} />
-                        <span>LIBRARY</span>
+                        <span className="sgl-brand-text">LIBRARY</span>
                     </>
                 )}
             </div>
@@ -243,7 +243,7 @@ export function LibraryCategoryBar({
                             onBackToCollections?.();
                         }}
                     >
-                        <span>‹ COLLECTIONS</span>
+                        <span className="sgl-btn-back-text">‹ COLLECTIONS</span>
                         <span className="sgl-btn-badge" style={{ marginLeft: 2 }}>B</span>
                     </button>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>

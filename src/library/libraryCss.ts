@@ -1,40 +1,40 @@
 export const LIBRARY_CSS = `
+.sgl-root,
+.sgl-root *,
+.sgl-root *::before,
+.sgl-root *::after {
+    box-sizing: border-box !important;
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
+}
+
 .sgl-root {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    box-sizing: border-box;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    box-sizing: border-box !important;
     padding-top: var(--sgl-top-inset, 42px) !important;
-    padding-bottom: var(--sgl-bottom-inset, 58px);
-    overflow: hidden;
-    overflow: clip;
-    display: flex;
-    flex-direction: column;
-    background: #06090e;
-    color: #f0f6fc;
+    padding-bottom: var(--sgl-bottom-inset, 58px) !important;
+    overflow: hidden !important;
+    overflow: clip !important;
+    display: flex !important;
+    flex-direction: column !important;
+    background: #06090e !important;
+    color: #f0f6fc !important;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
     font-size: 14px !important;
     line-height: normal !important;
     letter-spacing: normal !important;
     text-transform: none !important;
-    -webkit-text-size-adjust: 100% !important;
-    text-size-adjust: 100% !important;
-    user-select: none;
-    z-index: 1;
+    user-select: none !important;
+    z-index: 1 !important;
 }
 
 .sgl-root[data-gh-leaving] {
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 300ms ease;
-}
-
-.sgl-root,
-.sgl-root * {
-    box-sizing: border-box !important;
-    -webkit-text-size-adjust: 100% !important;
-    text-size-adjust: 100% !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: opacity 300ms ease !important;
 }
 
 /* Ambient Blurred Background */
@@ -144,24 +144,33 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-tab {
-    position: relative;
-    white-space: nowrap;
-    flex-shrink: 0;
-    padding: 8px 2px 10px;
+    position: relative !important;
+    white-space: nowrap !important;
+    flex-shrink: 0 !important;
+    padding: 8px 2px 10px !important;
     font-size: 13px !important;
     line-height: 1 !important;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    border: none;
-    background: transparent;
-    color: rgba(255, 255, 255, 0.6);
-    transition: color 0.2s ease;
-    outline: none;
-    text-transform: uppercase;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em !important;
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    border: none !important;
+    background: transparent !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    transition: color 0.2s ease !important;
+    outline: none !important;
+    text-transform: uppercase !important;
+}
+
+.sgl-tab-label {
+    font-size: 13px !important;
+    line-height: 1 !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.14em !important;
+    text-transform: uppercase !important;
+    white-space: nowrap !important;
 }
 
 .sgl-tab:hover {
@@ -239,7 +248,8 @@ export const LIBRARY_CSS = `
     gap: 6px;
     padding: 5px 12px;
     border-radius: 8px;
-    font-size: 11.5px;
+    font-size: 11.5px !important;
+    line-height: 1 !important;
     font-weight: 700;
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.14);
@@ -267,7 +277,8 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-breadcrumb-title {
-    font-size: 13px;
+    font-size: 13px !important;
+    line-height: 1 !important;
     font-weight: 800;
     letter-spacing: 0.8px;
     color: var(--accent, #58a6ff);
@@ -275,7 +286,8 @@ export const LIBRARY_CSS = `
 
 
 .sgl-header-info {
-    font-size: 12px;
+    font-size: 11.5px !important;
+    line-height: 1 !important;
     font-weight: 600;
     color: rgba(255, 255, 255, 0.45);
     letter-spacing: 0.8px;
@@ -405,31 +417,32 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-poster-fallback-title {
-    font-size: 15px;
-    font-weight: 800;
-    line-height: 1.35;
-    text-align: center;
-    color: #ffffff;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
-    padding: 12px;
+    font-size: 14px !important;
+    font-weight: 800 !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9) !important;
+    padding: 12px !important;
 }
 
 .sgl-title-box {
-    min-height: 44px;
-    display: flex;
-    align-items: center;
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
 }
 
 .sgl-title-text {
-    font-size: 21px !important;
-    font-weight: 800;
+    font-size: 18.5px !important;
+    font-weight: 800 !important;
     line-height: 1.25 !important;
-    color: #ffffff;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    color: #ffffff !important;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8) !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    max-height: 2.5em !important;
 }
 
 .sgl-meta-row {
@@ -510,14 +523,15 @@ export const LIBRARY_CSS = `
 
 /* Description */
 .sgl-description {
-    font-size: 12px;
-    line-height: 1.45;
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
     color: rgba(255, 255, 255, 0.7);
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    max-height: 4.2em !important;
 }
 
 /* Action Buttons */
@@ -530,11 +544,13 @@ export const LIBRARY_CSS = `
 
 .sgl-btn-details {
     flex: 1;
-    padding: 10px 16px;
+    padding: 8px 16px !important;
     border-radius: 999px;
-    font-size: 13.5px !important;
+    font-size: 13px !important;
     line-height: 1 !important;
-    height: 46px;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
     font-weight: 800;
     background: var(--accent, #58a6ff);
     color: #0b0d10;
@@ -557,11 +573,13 @@ export const LIBRARY_CSS = `
 
 .sgl-btn-play {
     flex: 1;
-    padding: 10px 14px;
+    padding: 8px 14px !important;
     border-radius: 999px;
-    font-size: 13px !important;
+    font-size: 12.5px !important;
     line-height: 1 !important;
-    height: 46px;
+    height: 42px !important;
+    min-height: 42px !important;
+    max-height: 42px !important;
     font-weight: 700;
     background: rgba(12, 16, 22, 0.45);
     border: 1px solid rgba(255, 255, 255, 0.18);
@@ -776,19 +794,20 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-card-fallback-title {
-    position: relative;
-    z-index: 3;
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.3;
-    color: #ffffff;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9);
-    text-align: center;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    padding: 0 8px;
+    position: relative !important;
+    z-index: 3 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    line-height: 1.3 !important;
+    color: #ffffff !important;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.9) !important;
+    text-align: center !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    padding: 0 8px !important;
+    max-height: 2.6em !important;
 }
 
 /* Uninstalled Games Muted / Grayscale Style - High Performance Compositor-Only */
@@ -1087,466 +1106,881 @@ export const LIBRARY_CSS = `
 @media (max-width: 1366px), (max-height: 850px) {
     /* Header ribbon: compact 48px to save vertical space for library items */
     .sgl-header {
-        height: 48px;
-        padding: 0 18px;
+        height: 48px !important;
+        padding: 0 18px !important;
     }
 
-    .sgl-brand {
-        font-size: 13.5px;
-        gap: 8px;
+    .sgl-brand,
+    .sgl-brand span,
+    .sgl-brand .sgl-brand-text {
+        font-size: 13.5px !important;
+        line-height: 1 !important;
+        gap: 8px !important;
     }
 
     .sgl-tabs-container {
-        gap: 8px;
+        gap: 8px !important;
     }
 
     .sgl-tabs {
-        gap: 16px;
-        padding: 2px 4px;
+        gap: 16px !important;
+        padding: 2px 4px !important;
     }
 
-    .sgl-tab {
-        font-size: 12px;
-        padding: 6px 2px 8px;
-        gap: 6px;
+    .sgl-tab,
+    .sgl-tab span,
+    .sgl-tab-label {
+        font-size: 12px !important;
+        line-height: 1 !important;
+        padding: 6px 2px 8px !important;
+        gap: 6px !important;
+        height: auto !important;
+        min-height: 0 !important;
     }
 
     .sgl-tab-count {
-        font-size: 10px;
-        padding: 1px 5px;
+        font-size: 10px !important;
+        line-height: 1 !important;
+        padding: 1px 5px !important;
+    }
+
+    .sgl-bumper-badge {
+        font-size: 9.5px !important;
+        line-height: 1 !important;
+        padding: 2px 5px !important;
+    }
+
+    .sgl-breadcrumb-title {
+        font-size: 12.5px !important;
+        line-height: 1 !important;
+    }
+
+    .sgl-btn-back-col,
+    .sgl-btn-back-col span {
+        font-size: 11px !important;
+        line-height: 1 !important;
     }
 
     .sgl-header-info {
-        font-size: 11px;
+        font-size: 11px !important;
+        line-height: 1 !important;
     }
 
-    /* Left Panel: Inspector resized to 300px width with 200px poster */
+    /* Left Panel: Inspector resized to 300px width with clamped poster */
     .sgl-inspector {
-        width: 300px;
-        padding: 14px 18px;
-        gap: 8px;
-        transform: translateZ(0);
-        will-change: transform;
+        width: 300px !important;
+        min-width: 290px !important;
+        max-width: 310px !important;
+        padding: 14px 18px !important;
+        gap: 8px !important;
+        transform: translateZ(0) !important;
+        will-change: transform !important;
     }
 
     .sgl-poster-wrapper {
-        max-width: 200px;
-        border-radius: 10px;
-        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75);
+        flex: 0 0 auto !important;
+        flex-grow: 0 !important;
+        flex-shrink: 0 !important;
+        height: clamp(120px, 24vh, 195px) !important;
+        max-height: 195px !important;
+        width: auto !important;
+        max-width: 130px !important;
+        aspect-ratio: 2 / 3 !important;
+        align-self: center !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75) !important;
     }
 
     .sgl-poster-wrapper.sgl-poster-square {
-        max-width: 180px;
+        height: clamp(110px, 20vh, 165px) !important;
+        max-height: 165px !important;
+        max-width: 165px !important;
+        aspect-ratio: 1 / 1 !important;
     }
 
     .sgl-title-box {
-        min-height: 38px;
+        min-height: 38px !important;
+        max-height: 48px !important;
     }
 
     .sgl-title-text {
-        font-size: 17.5px;
-        line-height: 1.22;
+        font-size: 17.5px !important;
+        line-height: 1.22 !important;
+        max-height: 2.44em !important;
+        overflow: hidden !important;
     }
 
     .sgl-meta-row {
-        gap: 6px;
+        gap: 6px !important;
     }
 
     .sgl-source-pill,
     .sgl-status-pill {
-        font-size: 10px;
-        padding: 2px 7px;
+        font-size: 10px !important;
+        line-height: 1 !important;
+        padding: 2px 7px !important;
     }
 
     .sgl-stats-grid {
-        gap: 6px;
+        gap: 6px !important;
     }
 
     .sgl-stat-card {
-        padding: 5px 8px;
-        gap: 2px;
-        border-radius: 6px;
+        padding: 5px 8px !important;
+        gap: 2px !important;
+        border-radius: 6px !important;
     }
 
     .sgl-stat-label {
-        font-size: 9.5px;
+        font-size: 9.5px !important;
+        line-height: 1.2 !important;
     }
 
     .sgl-stat-value {
-        font-size: 12px;
+        font-size: 12px !important;
+        line-height: 1.2 !important;
     }
 
     .sgl-stat-bar {
-        height: 2.5px;
-        margin-top: 3px;
+        height: 2.5px !important;
+        margin-top: 3px !important;
     }
 
     .sgl-description {
-        font-size: 11px;
-        line-height: 1.35;
-        -webkit-line-clamp: 2;
+        font-size: 11px !important;
+        line-height: 1.35 !important;
+        -webkit-line-clamp: 2 !important;
+        max-height: 2.7em !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
     }
 
     .sgl-actions {
-        gap: 8px;
-        padding-top: 4px;
+        gap: 8px !important;
+        padding-top: 4px !important;
     }
 
-    .sgl-btn-details {
-        padding: 8px 12px;
-        font-size: 12px;
+    .sgl-btn-details,
+    .sgl-btn-details span {
+        padding: 8px 12px !important;
+        font-size: 12px !important;
+        line-height: 1 !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
     }
 
-    .sgl-btn-play {
-        padding: 8px 10px;
-        font-size: 11.5px;
+    .sgl-btn-play,
+    .sgl-btn-play span {
+        padding: 8px 10px !important;
+        font-size: 11.5px !important;
+        line-height: 1 !important;
+        height: 40px !important;
+        min-height: 40px !important;
+        max-height: 40px !important;
     }
 
     .sgl-btn-badge {
-        font-size: 9px;
-        padding: 1px 5px;
+        font-size: 9px !important;
+        line-height: 1 !important;
+        padding: 1px 5px !important;
     }
 
     /* Inspector Collection Fan */
     .sgl-inspector-col-fan {
-        max-width: 240px;
-        height: 135px;
-        margin-bottom: 4px;
+        max-width: 240px !important;
+        height: 135px !important;
+        margin-bottom: 4px !important;
     }
 
     .sgl-insp-col-card {
-        width: 62px;
-        height: 93px;
-        border-radius: 6px;
+        width: 62px !important;
+        height: 93px !important;
+        border-radius: 6px !important;
     }
 
     .sgl-insp-col-card-far-left {
-        transform: translateX(-60px) translateY(10px) rotate(-16deg) scale(0.82);
+        transform: translateX(-60px) translateY(10px) rotate(-16deg) scale(0.82) !important;
     }
 
     .sgl-insp-col-card-left {
-        transform: translateX(-30px) translateY(4px) rotate(-8deg) scale(0.91);
+        transform: translateX(-30px) translateY(4px) rotate(-8deg) scale(0.91) !important;
     }
 
     .sgl-insp-col-card-right {
-        transform: translateX(30px) translateY(4px) rotate(8deg) scale(0.91);
+        transform: translateX(30px) translateY(4px) rotate(8deg) scale(0.91) !important;
     }
 
     .sgl-insp-col-card-far-right {
-        transform: translateX(60px) translateY(10px) rotate(16deg) scale(0.82);
+        transform: translateX(60px) translateY(10px) rotate(16deg) scale(0.82) !important;
     }
 
     /* Right Panel: Game Grid */
     .sgl-grid-panel {
-        padding: 14px 18px 20px 16px;
+        padding: 14px 18px 20px 16px !important;
     }
 
     .sgl-grid {
-        gap: 10px;
-        padding-bottom: 16px;
+        gap: 10px !important;
+        padding-bottom: 16px !important;
     }
 
-    /* Collections Cards in Grid */
+    /* Cards in Grid */
+    .sgl-card-fallback-title {
+        font-size: 12px !important;
+        line-height: 1.3 !important;
+        max-height: 2.6em !important;
+    }
+
+    .sgl-card-running-badge,
+    .sgl-card-running-badge span {
+        font-size: 9px !important;
+        line-height: 1 !important;
+    }
+
     .sgl-card-collection {
-        height: 135px;
+        aspect-ratio: 1 / 1 !important;
+        height: auto !important;
+        contain: paint !important;
     }
 
     .sgl-col-fan-stage {
-        height: 90px;
+        height: 90px !important;
     }
 
     .sgl-col-fan-card {
-        width: 54px;
-        height: 81px;
+        width: 54px !important;
+        height: 81px !important;
     }
 
     .sgl-col-card-far-left {
-        transform: translateX(-44px) translateY(6px) rotate(-14deg) scale(0.82);
+        transform: translateX(-44px) translateY(6px) rotate(-14deg) scale(0.82) !important;
     }
 
     .sgl-col-card-left {
-        transform: translateX(-22px) translateY(2px) rotate(-7deg) scale(0.91);
+        transform: translateX(-22px) translateY(2px) rotate(-7deg) scale(0.91) !important;
     }
 
     .sgl-col-card-right {
-        transform: translateX(22px) translateY(2px) rotate(7deg) scale(0.91);
+        transform: translateX(22px) translateY(2px) rotate(7deg) scale(0.91) !important;
     }
 
     .sgl-col-card-far-right {
-        transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82);
+        transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82) !important;
     }
 
     .sgl-col-footer {
-        padding: 6px 10px;
+        padding: 6px 10px !important;
     }
 
     .sgl-col-footer-title {
-        font-size: 12px;
+        font-size: 12px !important;
+        line-height: 1.25 !important;
+        max-height: 2.5em !important;
     }
 
     .sgl-col-footer-badge {
-        font-size: 9.5px;
-        padding: 1.5px 6px;
+        font-size: 9.5px !important;
+        line-height: 1 !important;
+        padding: 1.5px 6px !important;
     }
 }
 
 /* Explicit compact modifier (e.g. Playground Handheld mode toggle) */
 .sgl-root.sgl-compact .sgl-header {
-    height: 48px;
-    padding: 0 18px;
+    height: 48px !important;
+    padding: 0 18px !important;
 }
-.sgl-root.sgl-compact .sgl-brand {
-    font-size: 13.5px;
-    gap: 8px;
+.sgl-root.sgl-compact .sgl-brand,
+.sgl-root.sgl-compact .sgl-brand span,
+.sgl-root.sgl-compact .sgl-brand .sgl-brand-text {
+    font-size: 13.5px !important;
+    line-height: 1 !important;
+    gap: 8px !important;
 }
 .sgl-root.sgl-compact .sgl-tabs-container {
-    gap: 8px;
+    gap: 8px !important;
 }
 .sgl-root.sgl-compact .sgl-tabs {
-    gap: 16px;
-    padding: 2px 4px;
+    gap: 16px !important;
+    padding: 2px 4px !important;
 }
-.sgl-root.sgl-compact .sgl-tab {
-    font-size: 12px;
-    padding: 6px 2px 8px;
-    gap: 6px;
+.sgl-root.sgl-compact .sgl-tab,
+.sgl-root.sgl-compact .sgl-tab span,
+.sgl-root.sgl-compact .sgl-tab-label {
+    font-size: 12px !important;
+    line-height: 1 !important;
+    padding: 6px 2px 8px !important;
+    gap: 6px !important;
+    height: auto !important;
+    min-height: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-tab-count {
-    font-size: 10px;
-    padding: 1px 5px;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    padding: 1px 5px !important;
+}
+.sgl-root.sgl-compact .sgl-bumper-badge {
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+    padding: 2px 5px !important;
 }
 .sgl-root.sgl-compact .sgl-header-info {
-    font-size: 11px;
+    font-size: 11px !important;
+    line-height: 1 !important;
 }
 .sgl-root.sgl-compact .sgl-inspector {
-    width: 300px;
-    padding: 14px 18px;
-    gap: 8px;
-    transform: translateZ(0);
-    will-change: transform;
+    width: 300px !important;
+    min-width: 290px !important;
+    max-width: 310px !important;
+    padding: 14px 18px !important;
+    gap: 8px !important;
+    transform: translateZ(0) !important;
+    will-change: transform !important;
 }
 .sgl-root.sgl-compact .sgl-poster-wrapper {
-    max-width: 200px;
-    border-radius: 10px;
-    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75);
+    flex: 0 0 auto !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    height: clamp(120px, 24vh, 195px) !important;
+    max-height: 195px !important;
+    width: auto !important;
+    max-width: 130px !important;
+    aspect-ratio: 2 / 3 !important;
+    align-self: center !important;
+    border-radius: 10px !important;
+    box-shadow: 0 10px 26px rgba(0, 0, 0, 0.75) !important;
 }
 .sgl-root.sgl-compact .sgl-poster-wrapper.sgl-poster-square {
-    max-width: 180px;
+    height: clamp(110px, 20vh, 165px) !important;
+    max-height: 165px !important;
+    max-width: 165px !important;
+    aspect-ratio: 1 / 1 !important;
 }
 .sgl-root.sgl-compact .sgl-title-box {
-    min-height: 38px;
+    min-height: 38px !important;
+    max-height: 48px !important;
 }
 .sgl-root.sgl-compact .sgl-title-text {
-    font-size: 17.5px;
-    line-height: 1.22;
+    font-size: 17.5px !important;
+    line-height: 1.22 !important;
+    max-height: 2.44em !important;
+    overflow: hidden !important;
 }
 .sgl-root.sgl-compact .sgl-meta-row {
-    gap: 6px;
+    gap: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-source-pill,
 .sgl-root.sgl-compact .sgl-status-pill {
-    font-size: 10px;
-    padding: 2px 7px;
+    font-size: 10px !important;
+    line-height: 1 !important;
+    padding: 2px 7px !important;
 }
 .sgl-root.sgl-compact .sgl-stats-grid {
-    gap: 6px;
+    gap: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-stat-card {
-    padding: 5px 8px;
-    gap: 2px;
-    border-radius: 6px;
+    padding: 5px 8px !important;
+    gap: 2px !important;
+    border-radius: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-stat-label {
-    font-size: 9.5px;
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
 }
 .sgl-root.sgl-compact .sgl-stat-value {
-    font-size: 12px;
+    font-size: 12px !important;
+    line-height: 1.2 !important;
 }
 .sgl-root.sgl-compact .sgl-stat-bar {
-    height: 2.5px;
-    margin-top: 3px;
+    height: 2.5px !important;
+    margin-top: 3px !important;
 }
 .sgl-root.sgl-compact .sgl-description {
-    font-size: 11px;
-    line-height: 1.35;
-    -webkit-line-clamp: 2;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    -webkit-line-clamp: 2 !important;
+    max-height: 2.7em !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 .sgl-root.sgl-compact .sgl-actions {
-    gap: 8px;
-    padding-top: 4px;
+    gap: 8px !important;
+    padding-top: 4px !important;
 }
-.sgl-root.sgl-compact .sgl-btn-details {
-    padding: 8px 12px;
-    font-size: 12px;
+.sgl-root.sgl-compact .sgl-btn-details,
+.sgl-root.sgl-compact .sgl-btn-details span {
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+    line-height: 1 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
 }
-.sgl-root.sgl-compact .sgl-btn-play {
-    padding: 8px 10px;
-    font-size: 11.5px;
+.sgl-root.sgl-compact .sgl-btn-play,
+.sgl-root.sgl-compact .sgl-btn-play span {
+    padding: 8px 10px !important;
+    font-size: 11.5px !important;
+    line-height: 1 !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
 }
 .sgl-root.sgl-compact .sgl-btn-badge {
-    font-size: 9px;
-    padding: 1px 5px;
+    font-size: 9px !important;
+    line-height: 1 !important;
+    padding: 1px 5px !important;
 }
 .sgl-root.sgl-compact .sgl-inspector-col-fan {
-    max-width: 240px;
-    height: 135px;
-    margin-bottom: 4px;
+    max-width: 240px !important;
+    height: 135px !important;
+    margin-bottom: 4px !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card {
-    width: 62px;
-    height: 93px;
-    border-radius: 6px;
+    width: 62px !important;
+    height: 93px !important;
+    border-radius: 6px !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-far-left {
-    transform: translateX(-60px) translateY(10px) rotate(-16deg) scale(0.82);
+    transform: translateX(-60px) translateY(10px) rotate(-16deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-left {
-    transform: translateX(-30px) translateY(4px) rotate(-8deg) scale(0.91);
+    transform: translateX(-30px) translateY(4px) rotate(-8deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-right {
-    transform: translateX(30px) translateY(4px) rotate(8deg) scale(0.91);
+    transform: translateX(30px) translateY(4px) rotate(8deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-insp-col-card-far-right {
-    transform: translateX(60px) translateY(10px) rotate(16deg) scale(0.82);
+    transform: translateX(60px) translateY(10px) rotate(16deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-grid-panel {
-    padding: 14px 18px 20px 16px;
+    padding: 14px 18px 20px 16px !important;
 }
 .sgl-root.sgl-compact .sgl-grid {
-    gap: 10px;
-    padding-bottom: 16px;
+    gap: 10px !important;
+    padding-bottom: 16px !important;
+}
+.sgl-root.sgl-compact .sgl-card-fallback-title {
+    font-size: 12px !important;
+    line-height: 1.3 !important;
+    max-height: 2.6em !important;
+}
+.sgl-root.sgl-compact .sgl-card-running-badge,
+.sgl-root.sgl-compact .sgl-card-running-badge span {
+    font-size: 9px !important;
+    line-height: 1 !important;
 }
 .sgl-root.sgl-compact .sgl-card-collection {
-    aspect-ratio: 1 / 1;
-    height: auto;
-    contain: paint;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    contain: paint !important;
 }
 .sgl-root.sgl-compact .sgl-col-fan-stage {
-    height: 90px;
+    height: 90px !important;
 }
 .sgl-root.sgl-compact .sgl-col-fan-card {
-    width: 54px;
-    height: 81px;
+    width: 54px !important;
+    height: 81px !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-far-left {
-    transform: translateX(-44px) translateY(6px) rotate(-14deg) scale(0.82);
+    transform: translateX(-44px) translateY(6px) rotate(-14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-left {
-    transform: translateX(-22px) translateY(2px) rotate(-7deg) scale(0.91);
+    transform: translateX(-22px) translateY(2px) rotate(-7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-right {
-    transform: translateX(22px) translateY(2px) rotate(7deg) scale(0.91);
+    transform: translateX(22px) translateY(2px) rotate(7deg) scale(0.91) !important;
 }
 .sgl-root.sgl-compact .sgl-col-card-far-right {
-    transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82);
+    transform: translateX(44px) translateY(6px) rotate(14deg) scale(0.82) !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer {
-    padding: 6px 8px;
-    gap: 3px;
+    padding: 6px 8px !important;
+    gap: 3px !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer-title {
-    font-size: 11.5px;
-    line-height: 1.2;
-    max-height: 2.4em;
+    font-size: 11.5px !important;
+    line-height: 1.2 !important;
+    max-height: 2.4em !important;
 }
 .sgl-root.sgl-compact .sgl-col-footer-badge {
-    font-size: 8.5px;
-    padding: 1px 5px;
+    font-size: 8.5px !important;
+    line-height: 1 !important;
+    padding: 1px 5px !important;
 }
 
 /* Ultra-compact / 720p height optimization (e.g. 1280x720 or on-screen keyboard open) */
 @media (max-height: 720px) {
     .sgl-poster-wrapper {
-        max-width: 180px;
+        max-width: 120px !important;
+        height: clamp(105px, 20vh, 155px) !important;
+        max-height: 155px !important;
     }
     .sgl-poster-wrapper.sgl-poster-square {
-        max-width: 160px;
+        max-width: 140px !important;
+        height: clamp(95px, 18vh, 135px) !important;
+        max-height: 135px !important;
     }
     .sgl-inspector {
-        gap: 6px;
-        padding: 10px 14px;
+        gap: 6px !important;
+        padding: 10px 14px !important;
+    }
+    .sgl-title-box {
+        min-height: 32px !important;
+        max-height: 42px !important;
+    }
+    .sgl-title-text {
+        font-size: 16px !important;
+        line-height: 1.2 !important;
     }
     .sgl-stats-grid {
-        gap: 4px;
+        gap: 4px !important;
     }
     .sgl-stat-card {
-        padding: 4px 6px;
+        padding: 4px 6px !important;
     }
 }
 
-/* Steam Large Text mode resilience: protect layout and typography */
-body.LargeText .sgl-root,
+/* ==========================================================================
+   Master Typography & Steam UI Scale Immunity:
+   High-specificity isolation ensuring Steam Deck / Big Picture settings
+   cannot distort navbar, inspector, cards, or poster dimensions.
+   ========================================================================== */
+:root .sgl-root,
+html body .sgl-root,
+html body.LargeText .sgl-root,
 html.LargeText .sgl-root,
+body.LargeText .sgl-root,
 .LargeText .sgl-root,
-.sgl-root {
+.sgl-root.sgl-root {
     font-size: 14px !important;
     line-height: normal !important;
     -webkit-text-size-adjust: 100% !important;
     text-size-adjust: 100% !important;
 }
 
-body.LargeText .sgl-inspector,
-.LargeText .sgl-inspector {
-    width: 320px !important;
-    min-width: 300px !important;
-    max-width: 340px !important;
-    padding: 16px 20px !important;
-    gap: 10px !important;
+:root .sgl-root *,
+html body .sgl-root *,
+html body.LargeText .sgl-root *,
+html.LargeText .sgl-root *,
+body.LargeText .sgl-root *,
+.LargeText .sgl-root *,
+.sgl-root.sgl-root * {
+    -webkit-text-size-adjust: 100% !important;
+    text-size-adjust: 100% !important;
 }
 
-body.LargeText .sgl-poster-wrapper,
-.LargeText .sgl-poster-wrapper {
-    flex: 0 0 auto !important;
-    flex-grow: 0 !important;
-    height: clamp(140px, 26vh, 205px) !important;
-    max-height: 205px !important;
-    width: auto !important;
-    max-width: 140px !important;
-    aspect-ratio: 2 / 3 !important;
+/* Category Ribbon (Top Nav) */
+:root .sgl-root .sgl-brand,
+:root .sgl-root .sgl-brand span,
+:root .sgl-root .sgl-brand .sgl-brand-text,
+html body .sgl-root .sgl-brand,
+html body .sgl-root .sgl-brand span,
+html body .sgl-root .sgl-brand .sgl-brand-text,
+body.LargeText .sgl-root .sgl-brand,
+body.LargeText .sgl-root .sgl-brand span,
+body.LargeText .sgl-root .sgl-brand .sgl-brand-text,
+.LargeText .sgl-root .sgl-brand,
+.LargeText .sgl-root .sgl-brand span,
+.sgl-root .sgl-brand,
+.sgl-root .sgl-brand span,
+.sgl-root .sgl-brand .sgl-brand-text {
+    font-size: 14px !important;
+    line-height: 1 !important;
 }
 
-body.LargeText .sgl-poster-wrapper.sgl-poster-square,
-.LargeText .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(130px, 22vh, 175px) !important;
-    max-height: 175px !important;
-    max-width: 175px !important;
-    aspect-ratio: 1 / 1 !important;
+:root .sgl-root .sgl-bumper-badge,
+html body .sgl-root .sgl-bumper-badge,
+body.LargeText .sgl-root .sgl-bumper-badge,
+.LargeText .sgl-root .sgl-bumper-badge,
+.sgl-root .sgl-bumper-badge {
+    font-size: 10px !important;
+    line-height: 1 !important;
+    padding: 2px 6px !important;
 }
 
-body.LargeText .sgl-tab,
-.LargeText .sgl-tab {
+:root .sgl-root .sgl-tab,
+:root .sgl-root .sgl-tab span,
+:root .sgl-root .sgl-tab-label,
+html body .sgl-root .sgl-tab,
+html body .sgl-root .sgl-tab span,
+html body .sgl-root .sgl-tab-label,
+body.LargeText .sgl-root .sgl-tab,
+body.LargeText .sgl-root .sgl-tab span,
+body.LargeText .sgl-root .sgl-tab-label,
+.LargeText .sgl-root .sgl-tab,
+.LargeText .sgl-root .sgl-tab span,
+.LargeText .sgl-root .sgl-tab-label,
+.sgl-root .sgl-tab,
+.sgl-root .sgl-tab span,
+.sgl-root .sgl-tab-label {
+    font-size: 12.5px !important;
+    line-height: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+}
+
+:root .sgl-root .sgl-tab-count,
+html body .sgl-root .sgl-tab-count,
+body.LargeText .sgl-root .sgl-tab-count,
+.LargeText .sgl-root .sgl-tab-count,
+.sgl-root .sgl-tab-count {
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    padding: 1px 6px !important;
+}
+
+:root .sgl-root .sgl-breadcrumb-title,
+html body .sgl-root .sgl-breadcrumb-title,
+body.LargeText .sgl-root .sgl-breadcrumb-title,
+.LargeText .sgl-root .sgl-breadcrumb-title,
+.sgl-root .sgl-breadcrumb-title {
     font-size: 13px !important;
     line-height: 1 !important;
 }
 
-body.LargeText .sgl-title-text,
-.LargeText .sgl-title-text {
-    font-size: 19px !important;
+:root .sgl-root .sgl-btn-back-col,
+:root .sgl-root .sgl-btn-back-col span,
+html body .sgl-root .sgl-btn-back-col,
+html body .sgl-root .sgl-btn-back-col span,
+body.LargeText .sgl-root .sgl-btn-back-col,
+body.LargeText .sgl-root .sgl-btn-back-col span,
+.LargeText .sgl-root .sgl-btn-back-col,
+.LargeText .sgl-root .sgl-btn-back-col span,
+.sgl-root .sgl-btn-back-col,
+.sgl-root .sgl-btn-back-col span {
+    font-size: 11.5px !important;
+    line-height: 1 !important;
+}
+
+:root .sgl-root .sgl-header-info,
+html body .sgl-root .sgl-header-info,
+body.LargeText .sgl-root .sgl-header-info,
+.LargeText .sgl-root .sgl-header-info,
+.sgl-root .sgl-header-info {
+    font-size: 11px !important;
+    line-height: 1 !important;
+}
+
+/* Left Panel (Inspector) */
+:root .sgl-root .sgl-inspector,
+html body .sgl-root .sgl-inspector,
+body.LargeText .sgl-root .sgl-inspector,
+.LargeText .sgl-root .sgl-inspector,
+.sgl-root .sgl-inspector {
+    width: 310px !important;
+    min-width: 290px !important;
+    max-width: 325px !important;
+    padding: 14px 18px !important;
+    gap: 8px !important;
+}
+
+:root .sgl-root .sgl-poster-wrapper,
+html body .sgl-root .sgl-poster-wrapper,
+body.LargeText .sgl-root .sgl-poster-wrapper,
+.LargeText .sgl-root .sgl-poster-wrapper,
+.sgl-root .sgl-poster-wrapper {
+    flex: 0 0 auto !important;
+    flex-grow: 0 !important;
+    flex-shrink: 0 !important;
+    height: clamp(120px, 24vh, 195px) !important;
+    max-height: 195px !important;
+    width: auto !important;
+    max-width: 130px !important;
+    aspect-ratio: 2 / 3 !important;
+    align-self: center !important;
+}
+
+:root .sgl-root .sgl-poster-wrapper.sgl-poster-square,
+html body .sgl-root .sgl-poster-wrapper.sgl-poster-square,
+body.LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
+.LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
+.sgl-root .sgl-poster-wrapper.sgl-poster-square {
+    height: clamp(110px, 20vh, 165px) !important;
+    max-height: 165px !important;
+    max-width: 165px !important;
+    aspect-ratio: 1 / 1 !important;
+}
+
+:root .sgl-root .sgl-title-box,
+html body .sgl-root .sgl-title-box,
+body.LargeText .sgl-root .sgl-title-box,
+.LargeText .sgl-root .sgl-title-box,
+.sgl-root .sgl-title-box {
+    min-height: 36px !important;
+    max-height: 50px !important;
+}
+
+:root .sgl-root .sgl-title-text,
+html body .sgl-root .sgl-title-text,
+body.LargeText .sgl-root .sgl-title-text,
+.LargeText .sgl-root .sgl-title-text,
+.sgl-root .sgl-title-text {
+    font-size: 18px !important;
     line-height: 1.22 !important;
-    max-height: 2.5em !important;
+    max-height: 2.44em !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
 }
 
-body.LargeText .sgl-btn-play,
-.LargeText .sgl-btn-play {
+:root .sgl-root .sgl-source-pill,
+:root .sgl-root .sgl-status-pill,
+html body .sgl-root .sgl-source-pill,
+html body .sgl-root .sgl-status-pill,
+body.LargeText .sgl-root .sgl-source-pill,
+body.LargeText .sgl-root .sgl-status-pill,
+.LargeText .sgl-root .sgl-source-pill,
+.LargeText .sgl-root .sgl-status-pill,
+.sgl-root .sgl-source-pill,
+.sgl-root .sgl-status-pill {
+    font-size: 10.5px !important;
+    line-height: 1 !important;
+    padding: 2.5px 7px !important;
+}
+
+:root .sgl-root .sgl-stat-label,
+html body .sgl-root .sgl-stat-label,
+body.LargeText .sgl-root .sgl-stat-label,
+.LargeText .sgl-root .sgl-stat-label,
+.sgl-root .sgl-stat-label {
+    font-size: 9.5px !important;
+    line-height: 1.2 !important;
+}
+
+:root .sgl-root .sgl-stat-value,
+html body .sgl-root .sgl-stat-value,
+body.LargeText .sgl-root .sgl-stat-value,
+.LargeText .sgl-root .sgl-stat-value,
+.sgl-root .sgl-stat-value {
     font-size: 12.5px !important;
-    height: 42px !important;
-    min-height: 42px !important;
-    max-height: 42px !important;
+    line-height: 1.2 !important;
 }
 
-body.LargeText .sgl-btn-details,
-.LargeText .sgl-btn-details {
-    font-size: 13px !important;
-    height: 42px !important;
-    min-height: 42px !important;
-    max-height: 42px !important;
+:root .sgl-root .sgl-description,
+html body .sgl-root .sgl-description,
+body.LargeText .sgl-root .sgl-description,
+.LargeText .sgl-root .sgl-description,
+.sgl-root .sgl-description {
+    font-size: 11.5px !important;
+    line-height: 1.4 !important;
+    max-height: 4.2em !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
-body.LargeText .sgl-col-footer-title,
-.LargeText .sgl-col-footer-title {
-    font-size: 13px !important;
-    line-height: 1.25 !important;
+:root .sgl-root .sgl-btn-play,
+:root .sgl-root .sgl-btn-play span,
+:root .sgl-root .sgl-btn-play .sgl-btn-text,
+html body .sgl-root .sgl-btn-play,
+html body .sgl-root .sgl-btn-play span,
+html body .sgl-root .sgl-btn-play .sgl-btn-text,
+body.LargeText .sgl-root .sgl-btn-play,
+body.LargeText .sgl-root .sgl-btn-play span,
+body.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
+.LargeText .sgl-root .sgl-btn-play,
+.LargeText .sgl-root .sgl-btn-play span,
+.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
+.sgl-root .sgl-btn-play,
+.sgl-root .sgl-btn-play span,
+.sgl-root .sgl-btn-play .sgl-btn-text {
+    font-size: 12px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    line-height: 1 !important;
+}
+
+:root .sgl-root .sgl-btn-details,
+:root .sgl-root .sgl-btn-details span,
+:root .sgl-root .sgl-btn-details .sgl-btn-text,
+html body .sgl-root .sgl-btn-details,
+html body .sgl-root .sgl-btn-details span,
+html body .sgl-root .sgl-btn-details .sgl-btn-text,
+body.LargeText .sgl-root .sgl-btn-details,
+body.LargeText .sgl-root .sgl-btn-details span,
+body.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
+.LargeText .sgl-root .sgl-btn-details,
+.LargeText .sgl-root .sgl-btn-details span,
+.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
+.sgl-root .sgl-btn-details,
+.sgl-root .sgl-btn-details span,
+.sgl-root .sgl-btn-details .sgl-btn-text {
+    font-size: 12.5px !important;
+    height: 40px !important;
+    min-height: 40px !important;
+    max-height: 40px !important;
+    line-height: 1 !important;
+}
+
+:root .sgl-root .sgl-btn-badge,
+html body .sgl-root .sgl-btn-badge,
+body.LargeText .sgl-root .sgl-btn-badge,
+.LargeText .sgl-root .sgl-btn-badge,
+.sgl-root .sgl-btn-badge {
+    font-size: 9.5px !important;
+    line-height: 1 !important;
+}
+
+/* Right Grid (Cards) */
+:root .sgl-root .sgl-card-fallback-title,
+html body .sgl-root .sgl-card-fallback-title,
+body.LargeText .sgl-root .sgl-card-fallback-title,
+.LargeText .sgl-root .sgl-card-fallback-title,
+.sgl-root .sgl-card-fallback-title {
+    font-size: 12px !important;
+    line-height: 1.3 !important;
     max-height: 2.6em !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+:root .sgl-root .sgl-card-running-badge,
+:root .sgl-root .sgl-card-running-badge span,
+:root .sgl-root .sgl-card-running-badge .sgl-card-running-text,
+html body .sgl-root .sgl-card-running-badge,
+html body .sgl-root .sgl-card-running-badge span,
+html body .sgl-root .sgl-card-running-badge .sgl-card-running-text,
+body.LargeText .sgl-root .sgl-card-running-badge,
+body.LargeText .sgl-root .sgl-card-running-badge span,
+body.LargeText .sgl-root .sgl-card-running-badge .sgl-card-running-text,
+.LargeText .sgl-root .sgl-card-running-badge,
+.LargeText .sgl-root .sgl-card-running-badge span,
+.LargeText .sgl-root .sgl-card-running-badge .sgl-card-running-text,
+.sgl-root .sgl-card-running-badge,
+.sgl-root .sgl-card-running-badge span,
+.sgl-root .sgl-card-running-badge .sgl-card-running-text {
+    font-size: 9px !important;
+    line-height: 1 !important;
+}
+
+:root .sgl-root .sgl-col-footer-title,
+html body .sgl-root .sgl-col-footer-title,
+body.LargeText .sgl-root .sgl-col-footer-title,
+.LargeText .sgl-root .sgl-col-footer-title,
+.sgl-root .sgl-col-footer-title {
+    font-size: 12px !important;
+    line-height: 1.25 !important;
+    max-height: 2.5em !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+}
+
+:root .sgl-root .sgl-col-footer-badge,
+html body .sgl-root .sgl-col-footer-badge,
+body.LargeText .sgl-root .sgl-col-footer-badge,
+.LargeText .sgl-root .sgl-col-footer-badge,
+.sgl-root .sgl-col-footer-badge {
+    font-size: 9px !important;
+    line-height: 1 !important;
 }
 `;
 
