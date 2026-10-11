@@ -11,8 +11,8 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
 
     it('contains base sgl-poster-wrapper styling with dynamically clamped height to prevent panel overflow', () => {
         expect(LIBRARY_CSS).toContain('.sgl-poster-wrapper');
-        expect(LIBRARY_CSS).toContain('clamp(calc(90 * var(--sgl-d)), 16vh, calc(130 * var(--sgl-d)))');
-        expect(LIBRARY_CSS).toContain('max-height: calc(130 * var(--sgl-d))');
+        expect(LIBRARY_CSS).toContain('clamp(calc(130 * var(--sgl-d)), 22vh, calc(190 * var(--sgl-d)))');
+        expect(LIBRARY_CSS).toContain('max-height: calc(190 * var(--sgl-d))');
     });
 
     it('contains responsive media query for handheld screens (Steam Deck <=1366px / <=850px)', () => {
@@ -32,7 +32,7 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
     });
 
     it('defines compact dynamically scaled header ribbon for handhelds', () => {
-        expect(LIBRARY_CSS).toContain('height: calc(44 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('height: calc(40 * var(--sgl-d)) !important;');
     });
 
     it('provides explicit .sgl-compact modifier rules for device mode toggle', () => {
@@ -45,7 +45,7 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
     });
 
     it('sets scaled top padding inset to optimize screen real estate', () => {
-        expect(LIBRARY_CSS).toContain('padding-top: var(--sgl-top-inset, calc(42 * var(--sgl-d))) !important;');
+        expect(LIBRARY_CSS).toContain('padding-top: var(--sgl-top-inset, calc(36 * var(--sgl-d))) !important;');
     });
 
     it('includes font-size and text-size-adjust locking to protect against Steam Large Text mode distortion', () => {
@@ -55,6 +55,7 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
         expect(LIBRARY_CSS).toContain('body.LargeText .sgl-root');
         expect(LIBRARY_CSS).toContain(':root .sgl-root');
         expect(LIBRARY_CSS).toContain('html body .sgl-root');
+        expect(LIBRARY_CSS).toContain('.Focusable.sgl-root');
     });
 
     it('locks navbar, inspector, description, action buttons, and card typography with dynamically scaled rules', () => {
@@ -70,12 +71,13 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
         expect(LIBRARY_CSS).toContain('.sgl-btn-play');
         expect(LIBRARY_CSS).toContain('.sgl-card-fallback-title');
         expect(LIBRARY_CSS).toContain('.sgl-col-footer-title');
+        expect(LIBRARY_CSS).toContain('.sgl-btn-badge');
     });
 
     it('enforces clamped poster dimensions across base, handheld, and compact viewports', () => {
-        expect(LIBRARY_CSS).toContain('max-width: calc(87 * var(--sgl-d)) !important;');
-        expect(LIBRARY_CSS).toContain('height: clamp(calc(90 * var(--sgl-d)), 16vh, calc(130 * var(--sgl-d))) !important;');
-        expect(LIBRARY_CSS).toContain('max-height: calc(130 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('max-width: calc(130 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('height: clamp(calc(130 * var(--sgl-d)), 22vh, calc(190 * var(--sgl-d))) !important;');
+        expect(LIBRARY_CSS).toContain('max-height: calc(190 * var(--sgl-d)) !important;');
     });
 
     it('includes fast compositor-optimized grayscale and dimmed styling for uninstalled games', () => {

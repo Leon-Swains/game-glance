@@ -459,8 +459,8 @@ function CollectionCard({ collection, isFocused, accent, onClick, onDoubleClick,
             </div>
 
             <div className="sgl-col-footer">
-                <span className="sgl-col-footer-title">{collection.name}</span>
-                <span className="sgl-col-footer-badge">{collection.count} {collection.count === 1 ? 'GAME' : 'GAMES'}</span>
+                <div className="sgl-col-footer-title">{collection.name}</div>
+                <div className="sgl-col-footer-badge">{collection.count} {collection.count === 1 ? 'GAME' : 'GAMES'}</div>
             </div>
 
             <div className="sgl-card-bar" />

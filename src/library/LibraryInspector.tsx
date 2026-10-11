@@ -343,8 +343,8 @@ export function LibraryInspector({
 
                 <div className="sgl-stats-grid">
                     <div className="sgl-stat-card">
-                        <span className="sgl-stat-label">Total Games</span>
-                        <span className="sgl-stat-value">{collection.count}</span>
+                        <div className="sgl-stat-label">Total Games</div>
+                        <div className="sgl-stat-value">{collection.count}</div>
                     </div>
                 </div>
 
@@ -446,8 +446,8 @@ export function LibraryInspector({
             <div className="sgl-stats-grid">
                 {chips.map((chip) => (
                     <div key={chip.key} className="sgl-stat-card">
-                        <span className="sgl-stat-label">{chip.label}</span>
-                        <span className="sgl-stat-value">{chip.value}</span>
+                        <div className="sgl-stat-label">{chip.label}</div>
+                        <div className="sgl-stat-value">{chip.value}</div>
                         {typeof chip.progress === 'number' && (
                             <div className="sgl-stat-bar">
                                 <div

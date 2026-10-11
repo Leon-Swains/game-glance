@@ -38,8 +38,8 @@ export const LIBRARY_CSS = `
     width: 100% !important;
     height: 100% !important;
     box-sizing: border-box !important;
-    padding-top: var(--sgl-top-inset, ${d(42)}) !important;
-    padding-bottom: var(--sgl-bottom-inset, ${d(58)}) !important;
+    padding-top: var(--sgl-top-inset, ${d(36)}) !important;
+    padding-bottom: var(--sgl-bottom-inset, ${d(48)}) !important;
     overflow: hidden !important;
     overflow: clip !important;
     display: flex !important;
@@ -89,11 +89,11 @@ export const LIBRARY_CSS = `
 
 /* Top Header / Categories Ribbon */
 .sgl-header {
-    height: ${d(44)} !important;
+    height: ${d(40)} !important;
     display: flex !important;
     align-items: center !important;
     justify-content: space-between !important;
-    padding: 0 20px !important;
+    padding: 0 ${d(16)} !important;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
     background: rgba(10, 14, 22, 0.6) !important;
     backdrop-filter: blur(20px) !important;
@@ -127,15 +127,24 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-bumper-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     font-weight: 800 !important;
-    padding: 1.5px 5px !important;
-    border-radius: 4px !important;
+    height: ${d(17)} !important;
+    min-width: ${d(22)} !important;
+    max-height: ${d(17)} !important;
+    padding: 0 ${d(4.5)} !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+    border-radius: ${d(4)} !important;
     background: rgba(255, 255, 255, 0.1) !important;
     color: rgba(255, 255, 255, 0.7) !important;
     border: 1px solid rgba(255, 255, 255, 0.15) !important;
     letter-spacing: 0.4px !important;
+    margin: 0 !important;
     flex-shrink: 0 !important;
 }
 
@@ -171,7 +180,7 @@ export const LIBRARY_CSS = `
     position: relative !important;
     white-space: nowrap !important;
     flex-shrink: 0 !important;
-    padding: 6px 2px 8px !important;
+    padding: ${d(4)} ${d(4)} ${d(6)} !important;
     font-size: ${d(11)} !important;
     line-height: 1 !important;
     font-weight: 700 !important;
@@ -188,6 +197,8 @@ export const LIBRARY_CSS = `
     text-transform: uppercase !important;
     height: auto !important;
     min-height: 0 !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
 }
 
 .sgl-tab-label {
@@ -244,15 +255,24 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-tab-count {
-    font-size: ${d(11)} !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: ${d(9.5)} !important;
     line-height: 1 !important;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    padding: 1px 6px !important;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.08);
-    color: rgba(255, 255, 255, 0.65);
-    transition: all 0.2s ease;
+    font-weight: 600 !important;
+    letter-spacing: 0.04em !important;
+    height: ${d(15)} !important;
+    min-height: ${d(15)} !important;
+    max-height: ${d(15)} !important;
+    padding: 0 ${d(5)} !important;
+    box-sizing: border-box !important;
+    border-radius: ${d(8)} !important;
+    background: rgba(255, 255, 255, 0.08) !important;
+    color: rgba(255, 255, 255, 0.65) !important;
+    margin: 0 0 0 ${d(4)} !important;
+    vertical-align: middle !important;
+    transition: all 0.2s ease !important;
 }
 
 .sgl-tab.active .sgl-tab-count,
@@ -595,8 +615,7 @@ export const LIBRARY_CSS = `
     outline: none !important;
 }
 
-.sgl-btn-details .sgl-btn-text,
-.sgl-btn-details span {
+.sgl-btn-details .sgl-btn-text {
     font-size: ${d(11)} !important;
     line-height: 1 !important;
 }
@@ -630,8 +649,7 @@ export const LIBRARY_CSS = `
     outline: none !important;
 }
 
-.sgl-btn-play .sgl-btn-text,
-.sgl-btn-play span {
+.sgl-btn-play .sgl-btn-text {
     font-size: ${d(11)} !important;
     line-height: 1 !important;
 }
@@ -645,12 +663,22 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-btn-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     font-weight: 800 !important;
-    padding: 1px 4px !important;
-    border-radius: 4px !important;
-    letter-spacing: 0.5px !important;
+    height: ${d(15)} !important;
+    min-width: ${d(15)} !important;
+    max-height: ${d(15)} !important;
+    padding: 0 ${d(3.5)} !important;
+    box-sizing: border-box !important;
+    vertical-align: middle !important;
+    border-radius: ${d(3.5)} !important;
+    letter-spacing: 0 !important;
+    margin: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 .sgl-btn-details .sgl-btn-badge {
@@ -1226,10 +1254,10 @@ export const LIBRARY_CSS = `
         flex: 0 0 auto !important;
         flex-grow: 0 !important;
         flex-shrink: 0 !important;
-        height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
-        max-height: ${d(130)} !important;
+        height: clamp(${d(130)}, 22vh, ${d(190)}) !important;
+        max-height: ${d(190)} !important;
         width: auto !important;
-        max-width: ${d(87)} !important;
+        max-width: ${d(130)} !important;
         aspect-ratio: 2 / 3 !important;
         align-self: center !important;
         border-radius: 8px !important;
@@ -1237,9 +1265,9 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-poster-wrapper.sgl-poster-square {
-        height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
-        max-height: ${d(115)} !important;
-        max-width: ${d(115)} !important;
+        height: clamp(${d(120)}, 20vh, ${d(145)}) !important;
+        max-height: ${d(145)} !important;
+        max-width: ${d(145)} !important;
         aspect-ratio: 1 / 1 !important;
     }
 
@@ -1311,7 +1339,6 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-btn-details,
-    .sgl-btn-details span,
     .sgl-btn-details .sgl-btn-text {
         padding: 4px 10px !important;
         font-size: ${d(11)} !important;
@@ -1322,7 +1349,6 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-btn-play,
-    .sgl-btn-play span,
     .sgl-btn-play .sgl-btn-text {
         padding: 4px 10px !important;
         font-size: ${d(11)} !important;
@@ -1333,9 +1359,18 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-btn-badge {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
         font-size: ${d(8.5)} !important;
         line-height: 1 !important;
-        padding: 1px 4px !important;
+        height: ${d(15)} !important;
+        min-width: ${d(15)} !important;
+        max-height: ${d(15)} !important;
+        padding: 0 ${d(3.5)} !important;
+        box-sizing: border-box !important;
+        border-radius: ${d(3.5)} !important;
+        margin: 0 !important;
     }
 
     /* Inspector Collection Fan */
@@ -1576,7 +1611,6 @@ export const LIBRARY_CSS = `
     flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-btn-details,
-.sgl-root.sgl-compact .sgl-btn-details span,
 .sgl-root.sgl-compact .sgl-btn-details .sgl-btn-text {
     padding: 4px 10px !important;
     font-size: ${d(11)} !important;
@@ -1586,7 +1620,6 @@ export const LIBRARY_CSS = `
     max-height: ${d(34)} !important;
 }
 .sgl-root.sgl-compact .sgl-btn-play,
-.sgl-root.sgl-compact .sgl-btn-play span,
 .sgl-root.sgl-compact .sgl-btn-play .sgl-btn-text {
     padding: 4px 10px !important;
     font-size: ${d(11)} !important;
@@ -1596,9 +1629,18 @@ export const LIBRARY_CSS = `
     max-height: ${d(34)} !important;
 }
 .sgl-root.sgl-compact .sgl-btn-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
-    padding: 1px 4px !important;
+    height: ${d(15)} !important;
+    min-width: ${d(15)} !important;
+    max-height: ${d(15)} !important;
+    padding: 0 ${d(3.5)} !important;
+    box-sizing: border-box !important;
+    border-radius: ${d(3.5)} !important;
+    margin: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-inspector-col-fan {
     max-width: ${d(200)} !important;
@@ -1688,14 +1730,14 @@ export const LIBRARY_CSS = `
 /* Ultra-compact / 720p height optimization (e.g. 1280x720 or on-screen keyboard open) */
 @media (max-height: 720px) {
     .sgl-poster-wrapper {
-        max-width: ${d(80)} !important;
-        height: clamp(${d(80)}, 14vh, ${d(115)}) !important;
-        max-height: ${d(115)} !important;
+        max-width: ${d(115)} !important;
+        height: clamp(${d(115)}, 18vh, ${d(165)}) !important;
+        max-height: ${d(165)} !important;
     }
     .sgl-poster-wrapper.sgl-poster-square {
-        max-width: ${d(100)} !important;
-        height: clamp(${d(75)}, 13vh, ${d(100)}) !important;
-        max-height: ${d(100)} !important;
+        max-width: ${d(125)} !important;
+        height: clamp(${d(105)}, 16vh, ${d(125)}) !important;
+        max-height: ${d(125)} !important;
     }
     .sgl-inspector {
         gap: 5px !important;
@@ -1724,6 +1766,7 @@ export const LIBRARY_CSS = `
    ========================================================================== */
 :root .sgl-root,
 html body .sgl-root,
+.Focusable.sgl-root,
 html body.LargeText .sgl-root,
 html.LargeText .sgl-root,
 body.LargeText .sgl-root,
@@ -1737,6 +1780,7 @@ body.LargeText .sgl-root,
 
 :root .sgl-root *,
 html body .sgl-root *,
+.Focusable.sgl-root *,
 html body.LargeText .sgl-root *,
 html.LargeText .sgl-root *,
 body.LargeText .sgl-root *,
@@ -1747,12 +1791,28 @@ body.LargeText .sgl-root *,
 }
 
 /* Category Ribbon (Top Nav) */
+:root .sgl-root .sgl-header,
+html body .sgl-root .sgl-header,
+.Focusable.sgl-root .sgl-header,
+body.LargeText .sgl-root .sgl-header,
+.LargeText .sgl-root .sgl-header,
+.sgl-root .sgl-header {
+    height: ${d(40)} !important;
+    min-height: ${d(40)} !important;
+    max-height: ${d(40)} !important;
+    padding: 0 ${d(16)} !important;
+    box-sizing: border-box !important;
+}
+
 :root .sgl-root .sgl-brand,
 :root .sgl-root .sgl-brand span,
 :root .sgl-root .sgl-brand .sgl-brand-text,
 html body .sgl-root .sgl-brand,
 html body .sgl-root .sgl-brand span,
 html body .sgl-root .sgl-brand .sgl-brand-text,
+.Focusable.sgl-root .sgl-brand,
+.Focusable.sgl-root .sgl-brand span,
+.Focusable.sgl-root .sgl-brand .sgl-brand-text,
 body.LargeText .sgl-root .sgl-brand,
 body.LargeText .sgl-root .sgl-brand span,
 body.LargeText .sgl-root .sgl-brand .sgl-brand-text,
@@ -1767,52 +1827,71 @@ body.LargeText .sgl-root .sgl-brand .sgl-brand-text,
 
 :root .sgl-root .sgl-bumper-badge,
 html body .sgl-root .sgl-bumper-badge,
+.Focusable.sgl-root .sgl-bumper-badge,
 body.LargeText .sgl-root .sgl-bumper-badge,
 .LargeText .sgl-root .sgl-bumper-badge,
 .sgl-root .sgl-bumper-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
-    padding: 1.5px 5px !important;
+    height: ${d(17)} !important;
+    min-width: ${d(22)} !important;
+    max-height: ${d(17)} !important;
+    padding: 0 ${d(4.5)} !important;
+    box-sizing: border-box !important;
 }
 
 :root .sgl-root .sgl-tab,
-:root .sgl-root .sgl-tab span,
-:root .sgl-root .sgl-tab-label,
+:root .sgl-root .sgl-tab .sgl-tab-label,
 html body .sgl-root .sgl-tab,
-html body .sgl-root .sgl-tab span,
-html body .sgl-root .sgl-tab-label,
+html body .sgl-root .sgl-tab .sgl-tab-label,
+.Focusable.sgl-root .sgl-tab,
+.Focusable.sgl-root .sgl-tab .sgl-tab-label,
 body.LargeText .sgl-root .sgl-tab,
-body.LargeText .sgl-root .sgl-tab span,
-body.LargeText .sgl-root .sgl-tab-label,
+body.LargeText .sgl-root .sgl-tab .sgl-tab-label,
 .LargeText .sgl-root .sgl-tab,
-.LargeText .sgl-root .sgl-tab span,
-.LargeText .sgl-root .sgl-tab-label,
+.LargeText .sgl-root .sgl-tab .sgl-tab-label,
 .sgl-root .sgl-tab,
-.sgl-root .sgl-tab span,
-.sgl-root .sgl-tab-label {
+.sgl-root .sgl-tab .sgl-tab-label {
     font-size: ${d(11)} !important;
     line-height: 1 !important;
     height: auto !important;
     min-height: 0 !important;
     letter-spacing: 0.05em !important;
+    padding: ${d(4)} ${d(4)} ${d(6)} !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
 }
 
 :root .sgl-root .sgl-tab-count,
 html body .sgl-root .sgl-tab-count,
+.Focusable.sgl-root .sgl-tab-count,
 body.LargeText .sgl-root .sgl-tab-count,
 .LargeText .sgl-root .sgl-tab-count,
 .sgl-root .sgl-tab-count {
-    font-size: ${d(9)} !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: ${d(9.5)} !important;
     line-height: 1 !important;
-    padding: 1px 4.5px !important;
+    height: ${d(15)} !important;
+    min-height: ${d(15)} !important;
+    max-height: ${d(15)} !important;
+    padding: 0 ${d(5)} !important;
+    box-sizing: border-box !important;
+    border-radius: ${d(8)} !important;
+    margin: 0 0 0 ${d(4)} !important;
 }
 
 :root .sgl-root .sgl-breadcrumb-title,
 html body .sgl-root .sgl-breadcrumb-title,
+.Focusable.sgl-root .sgl-breadcrumb-title,
 body.LargeText .sgl-root .sgl-breadcrumb-title,
 .LargeText .sgl-root .sgl-breadcrumb-title,
 .sgl-root .sgl-breadcrumb-title {
-    font-size: ${d(11)} !important;
+    font-size: ${d(11.5)} !important;
     line-height: 1 !important;
 }
 
@@ -1820,78 +1899,78 @@ body.LargeText .sgl-root .sgl-breadcrumb-title,
 :root .sgl-root .sgl-btn-back-col span,
 html body .sgl-root .sgl-btn-back-col,
 html body .sgl-root .sgl-btn-back-col span,
+.Focusable.sgl-root .sgl-btn-back-col,
+.Focusable.sgl-root .sgl-btn-back-col span,
 body.LargeText .sgl-root .sgl-btn-back-col,
 body.LargeText .sgl-root .sgl-btn-back-col span,
 .LargeText .sgl-root .sgl-btn-back-col,
 .LargeText .sgl-root .sgl-btn-back-col span,
 .sgl-root .sgl-btn-back-col,
 .sgl-root .sgl-btn-back-col span {
-    font-size: ${d(10)} !important;
+    font-size: ${d(11.5)} !important;
     line-height: 1 !important;
 }
 
 :root .sgl-root .sgl-header-info,
 html body .sgl-root .sgl-header-info,
+.Focusable.sgl-root .sgl-header-info,
 body.LargeText .sgl-root .sgl-header-info,
 .LargeText .sgl-root .sgl-header-info,
 .sgl-root .sgl-header-info {
-    font-size: ${d(10)} !important;
+    font-size: ${d(11)} !important;
     line-height: 1 !important;
 }
 
-/* Left Panel (Inspector) */
+/* Left Inspector Panel */
 :root .sgl-root .sgl-inspector,
 html body .sgl-root .sgl-inspector,
+.Focusable.sgl-root .sgl-inspector,
 body.LargeText .sgl-root .sgl-inspector,
 .LargeText .sgl-root .sgl-inspector,
 .sgl-root .sgl-inspector {
-    width: ${d(275)} !important;
-    min-width: ${d(250)} !important;
-    max-width: ${d(285)} !important;
-    padding: 12px 14px !important;
-    gap: 6px !important;
-    overflow-y: hidden !important;
+    width: clamp(${d(240)}, 22vw, ${d(290)}) !important;
+    min-width: clamp(${d(240)}, 22vw, ${d(290)}) !important;
+    max-width: clamp(${d(240)}, 22vw, ${d(290)}) !important;
+    flex: 0 0 clamp(${d(240)}, 22vw, ${d(290)}) !important;
 }
 
 :root .sgl-root .sgl-poster-wrapper,
 html body .sgl-root .sgl-poster-wrapper,
+.Focusable.sgl-root .sgl-poster-wrapper,
 body.LargeText .sgl-root .sgl-poster-wrapper,
 .LargeText .sgl-root .sgl-poster-wrapper,
 .sgl-root .sgl-poster-wrapper {
-    flex: 0 0 auto !important;
-    flex-grow: 0 !important;
-    flex-shrink: 0 !important;
-    height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
-    max-height: ${d(130)} !important;
-    width: auto !important;
-    max-width: ${d(87)} !important;
-    aspect-ratio: 2 / 3 !important;
-    align-self: center !important;
+    max-width: ${d(130)} !important;
+    height: clamp(${d(130)}, 22vh, ${d(190)}) !important;
+    max-height: ${d(190)} !important;
+    margin: 0 auto !important;
 }
 
 :root .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 html body .sgl-root .sgl-poster-wrapper.sgl-poster-square,
+.Focusable.sgl-root .sgl-poster-wrapper.sgl-poster-square,
 body.LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .sgl-root .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
-    max-height: ${d(115)} !important;
-    max-width: ${d(115)} !important;
-    aspect-ratio: 1 / 1 !important;
+    max-width: ${d(145)} !important;
+    max-height: ${d(145)} !important;
+    height: clamp(${d(120)}, 20vh, ${d(145)}) !important;
+    margin: 0 auto !important;
 }
 
 :root .sgl-root .sgl-title-box,
 html body .sgl-root .sgl-title-box,
+.Focusable.sgl-root .sgl-title-box,
 body.LargeText .sgl-root .sgl-title-box,
 .LargeText .sgl-root .sgl-title-box,
 .sgl-root .sgl-title-box {
     min-height: ${d(24)} !important;
-    max-height: ${d(38)} !important;
-    flex-shrink: 0 !important;
+    max-height: ${d(40)} !important;
 }
 
 :root .sgl-root .sgl-title-text,
 html body .sgl-root .sgl-title-text,
+.Focusable.sgl-root .sgl-title-text,
 body.LargeText .sgl-root .sgl-title-text,
 .LargeText .sgl-root .sgl-title-text,
 .sgl-root .sgl-title-text {
@@ -1902,44 +1981,75 @@ body.LargeText .sgl-root .sgl-title-text,
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
     overflow: hidden !important;
+    text-overflow: ellipsis !important;
 }
 
 :root .sgl-root .sgl-source-pill,
 :root .sgl-root .sgl-status-pill,
 html body .sgl-root .sgl-source-pill,
 html body .sgl-root .sgl-status-pill,
+.Focusable.sgl-root .sgl-source-pill,
+.Focusable.sgl-root .sgl-status-pill,
 body.LargeText .sgl-root .sgl-source-pill,
 body.LargeText .sgl-root .sgl-status-pill,
 .LargeText .sgl-root .sgl-source-pill,
 .LargeText .sgl-root .sgl-status-pill,
 .sgl-root .sgl-source-pill,
 .sgl-root .sgl-status-pill {
-    font-size: ${d(9)} !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    height: ${d(18)} !important;
+    font-size: ${d(8.5)} !important;
     line-height: 1 !important;
-    padding: 2px 6px !important;
+    padding: 0 ${d(6)} !important;
+    border-radius: ${d(999)} !important;
     flex-shrink: 0 !important;
 }
 
+:root .sgl-root .sgl-stat-card,
+html body .sgl-root .sgl-stat-card,
+.Focusable.sgl-root .sgl-stat-card,
+body.LargeText .sgl-root .sgl-stat-card,
+.LargeText .sgl-root .sgl-stat-card,
+.sgl-root .sgl-stat-card {
+    padding: 3px 6px !important;
+    gap: 1px !important;
+    border-radius: 6px !important;
+}
+
+:root .sgl-root .sgl-stat-card span,
+:root .sgl-root .sgl-stat-card div,
 :root .sgl-root .sgl-stat-label,
 html body .sgl-root .sgl-stat-label,
+.Focusable.sgl-root .sgl-stat-label,
 body.LargeText .sgl-root .sgl-stat-label,
 .LargeText .sgl-root .sgl-stat-label,
 .sgl-root .sgl-stat-label {
     font-size: ${d(8)} !important;
     line-height: 1.15 !important;
+    letter-spacing: 0.5px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 :root .sgl-root .sgl-stat-value,
 html body .sgl-root .sgl-stat-value,
+.Focusable.sgl-root .sgl-stat-value,
 body.LargeText .sgl-root .sgl-stat-value,
 .LargeText .sgl-root .sgl-stat-value,
 .sgl-root .sgl-stat-value {
     font-size: ${d(11)} !important;
     line-height: 1.15 !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 :root .sgl-root .sgl-description,
 html body .sgl-root .sgl-description,
+.Focusable.sgl-root .sgl-description,
 body.LargeText .sgl-root .sgl-description,
 .LargeText .sgl-root .sgl-description,
 .sgl-root .sgl-description {
@@ -1956,6 +2066,7 @@ body.LargeText .sgl-root .sgl-description,
 
 :root .sgl-root .sgl-actions,
 html body .sgl-root .sgl-actions,
+.Focusable.sgl-root .sgl-actions,
 body.LargeText .sgl-root .sgl-actions,
 .LargeText .sgl-root .sgl-actions,
 .sgl-root .sgl-actions {
@@ -1966,19 +2077,16 @@ body.LargeText .sgl-root .sgl-actions,
 }
 
 :root .sgl-root .sgl-btn-play,
-:root .sgl-root .sgl-btn-play span,
 :root .sgl-root .sgl-btn-play .sgl-btn-text,
 html body .sgl-root .sgl-btn-play,
-html body .sgl-root .sgl-btn-play span,
 html body .sgl-root .sgl-btn-play .sgl-btn-text,
+.Focusable.sgl-root .sgl-btn-play,
+.Focusable.sgl-root .sgl-btn-play .sgl-btn-text,
 body.LargeText .sgl-root .sgl-btn-play,
-body.LargeText .sgl-root .sgl-btn-play span,
 body.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
 .LargeText .sgl-root .sgl-btn-play,
-.LargeText .sgl-root .sgl-btn-play span,
 .LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
 .sgl-root .sgl-btn-play,
-.sgl-root .sgl-btn-play span,
 .sgl-root .sgl-btn-play .sgl-btn-text {
     font-size: ${d(11)} !important;
     height: ${d(34)} !important;
@@ -1989,19 +2097,16 @@ body.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
 }
 
 :root .sgl-root .sgl-btn-details,
-:root .sgl-root .sgl-btn-details span,
 :root .sgl-root .sgl-btn-details .sgl-btn-text,
 html body .sgl-root .sgl-btn-details,
-html body .sgl-root .sgl-btn-details span,
 html body .sgl-root .sgl-btn-details .sgl-btn-text,
+.Focusable.sgl-root .sgl-btn-details,
+.Focusable.sgl-root .sgl-btn-details .sgl-btn-text,
 body.LargeText .sgl-root .sgl-btn-details,
-body.LargeText .sgl-root .sgl-btn-details span,
 body.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
 .LargeText .sgl-root .sgl-btn-details,
-.LargeText .sgl-root .sgl-btn-details span,
 .LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
 .sgl-root .sgl-btn-details,
-.sgl-root .sgl-btn-details span,
 .sgl-root .sgl-btn-details .sgl-btn-text {
     font-size: ${d(11)} !important;
     height: ${d(34)} !important;
@@ -2013,17 +2118,30 @@ body.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
 
 :root .sgl-root .sgl-btn-badge,
 html body .sgl-root .sgl-btn-badge,
+.Focusable.sgl-root .sgl-btn-badge,
 body.LargeText .sgl-root .sgl-btn-badge,
 .LargeText .sgl-root .sgl-btn-badge,
-.sgl-root .sgl-btn-badge {
+.sgl-root .sgl-btn-badge,
+.sgl-btn-details .sgl-btn-badge,
+.sgl-btn-play .sgl-btn-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
-    padding: 1px 4px !important;
+    height: ${d(15)} !important;
+    min-width: ${d(15)} !important;
+    max-height: ${d(15)} !important;
+    padding: 0 ${d(3.5)} !important;
+    box-sizing: border-box !important;
+    border-radius: ${d(3.5)} !important;
+    margin: 0 !important;
 }
 
 /* Right Grid (Cards) */
 :root .sgl-root .sgl-card-fallback-title,
 html body .sgl-root .sgl-card-fallback-title,
+.Focusable.sgl-root .sgl-card-fallback-title,
 body.LargeText .sgl-root .sgl-card-fallback-title,
 .LargeText .sgl-root .sgl-card-fallback-title,
 .sgl-root .sgl-card-fallback-title {
@@ -2042,6 +2160,9 @@ body.LargeText .sgl-root .sgl-card-fallback-title,
 html body .sgl-root .sgl-card-running-badge,
 html body .sgl-root .sgl-card-running-badge span,
 html body .sgl-root .sgl-card-running-badge .sgl-card-running-text,
+.Focusable.sgl-root .sgl-card-running-badge,
+.Focusable.sgl-root .sgl-card-running-badge span,
+.Focusable.sgl-root .sgl-card-running-badge .sgl-card-running-text,
 body.LargeText .sgl-root .sgl-card-running-badge,
 body.LargeText .sgl-root .sgl-card-running-badge span,
 body.LargeText .sgl-root .sgl-card-running-badge .sgl-card-running-text,
@@ -2057,6 +2178,7 @@ body.LargeText .sgl-root .sgl-card-running-badge .sgl-card-running-text,
 
 :root .sgl-root .sgl-col-footer,
 html body .sgl-root .sgl-col-footer,
+.Focusable.sgl-root .sgl-col-footer,
 body.LargeText .sgl-root .sgl-col-footer,
 .LargeText .sgl-root .sgl-col-footer,
 .sgl-root .sgl-col-footer {
@@ -2066,6 +2188,7 @@ body.LargeText .sgl-root .sgl-col-footer,
 
 :root .sgl-root .sgl-col-footer-title,
 html body .sgl-root .sgl-col-footer-title,
+.Focusable.sgl-root .sgl-col-footer-title,
 body.LargeText .sgl-root .sgl-col-footer-title,
 .LargeText .sgl-root .sgl-col-footer-title,
 .sgl-root .sgl-col-footer-title {
@@ -2082,18 +2205,29 @@ body.LargeText .sgl-root .sgl-col-footer-title,
 
 :root .sgl-root .sgl-col-footer-badge,
 html body .sgl-root .sgl-col-footer-badge,
+.Focusable.sgl-root .sgl-col-footer-badge,
 body.LargeText .sgl-root .sgl-col-footer-badge,
 .LargeText .sgl-root .sgl-col-footer-badge,
-.sgl-root .sgl-col-footer-badge {
+.sgl-root .sgl-col-footer-badge,
+.sgl-root span.sgl-col-footer-badge,
+.sgl-root div.sgl-col-footer-badge {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
     font-size: ${d(7.5)} !important;
     line-height: 1 !important;
-    padding: 1px 4px !important;
-    border-radius: 4px !important;
+    height: ${d(14)} !important;
+    max-height: ${d(14)} !important;
+    padding: 0 ${d(4.5)} !important;
+    border-radius: ${d(4)} !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
 }
 
 /* Inspector 5-Card Fan for Collections in Immunity Block */
 :root .sgl-root .sgl-inspector-col-fan,
 html body .sgl-root .sgl-inspector-col-fan,
+.Focusable.sgl-root .sgl-inspector-col-fan,
 body.LargeText .sgl-root .sgl-inspector-col-fan,
 .LargeText .sgl-root .sgl-inspector-col-fan,
 .sgl-root .sgl-inspector-col-fan {
@@ -2105,6 +2239,7 @@ body.LargeText .sgl-root .sgl-inspector-col-fan,
 
 :root .sgl-root .sgl-insp-col-card,
 html body .sgl-root .sgl-insp-col-card,
+.Focusable.sgl-root .sgl-insp-col-card,
 body.LargeText .sgl-root .sgl-insp-col-card,
 .LargeText .sgl-root .sgl-insp-col-card,
 .sgl-root .sgl-insp-col-card {
@@ -2113,4 +2248,3 @@ body.LargeText .sgl-root .sgl-insp-col-card,
     border-radius: 5px !important;
 }
 `;
-
