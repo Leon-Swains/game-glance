@@ -73,8 +73,7 @@ An optional new Home screen, off by default (Quick Access → Game Glance → Sp
 
 ## Spotlight Library
 
-<!-- Placeholder: Add Spotlight Library screenshot here (e.g. docs/images/tv-library.jpg) -->
-<!-- ![Spotlight Library: left inspector with game stats, right banner grid](docs/images/tv-library.jpg) -->
+![Spotlight Library: left inspector with game stats, right banner grid](docs/images/tv-game-library.gif)
 
 An optional new Library screen, off by default (Quick Access → Game Glance → Spotlight Library).
 
