@@ -233,6 +233,17 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
         playNavSound();
     }, []);
 
+    // Select specific sub-collection directly (e.g. from top nav tab)
+    const selectSubCollection = useCallback((colId: string) => {
+        setSelectedCollectionId(colId);
+        setSelectedGameIdx(0);
+        const gridPanel = document.querySelector('.sgl-grid-panel');
+        if (gridPanel) {
+            gridPanel.scrollTop = 0;
+        }
+        playNavSound();
+    }, []);
+
     // Tab / Collection bumper cycling
     const cycleCategory = useCallback((direction: -1 | 1) => {
         // When inside a sub-collection, bumpers cycle between available collections
@@ -242,6 +253,10 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
             const nextIdx = (curIdx + direction + cols.length) % cols.length;
             setSelectedCollectionId(cols[nextIdx].id);
             setSelectedGameIdx(0);
+            const gridPanel = document.querySelector('.sgl-grid-panel');
+            if (gridPanel) {
+                gridPanel.scrollTop = 0;
+            }
             playNavSound();
             return;
         }
@@ -757,6 +772,9 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
     }, [focusZone, selectedGameIdx, totalItemsCount, columns, cycleCategory, handleSelectGame, onActivate, handlePlayGame, onCancel, isCollectionsTab, isInsideSubCollection, selectedGame]);
 
     const activeCategoryIdx = categories.findIndex((c) => c.id === activeCategoryId);
+    const activeCollectionIdx = isInsideSubCollection
+        ? (activeCategory?.collections?.findIndex((c) => c.id === selectedCollectionId) ?? 0)
+        : -1;
     const hltbHours = gameHltb?.status === 'found' ? gameHltb.times.main : null;
 
     return (
@@ -791,8 +809,16 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 categories={categories}
                 activeCategoryId={activeCategoryId}
                 onSelectCategory={selectCategory}
-                focusedIndex={activeCategoryIdx >= 0 ? activeCategoryIdx : 0}
+                focusedIndex={
+                    isInsideSubCollection
+                        ? (activeCollectionIdx >= 0 ? activeCollectionIdx : 0)
+                        : (activeCategoryIdx >= 0 ? activeCategoryIdx : 0)
+                }
                 isHeaderFocused={focusZone === 'tabs'}
+                isInsideSubCollection={isInsideSubCollection}
+                collections={activeCategory?.collections ?? []}
+                activeSubCollectionId={selectedCollectionId}
+                onSelectSubCollection={selectSubCollection}
                 activeSubCollectionName={activeSubCollection?.name}
                 onBackToCollections={handleBackToCollections}
             />

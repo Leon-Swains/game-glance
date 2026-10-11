@@ -198,6 +198,35 @@ describe('Library Scroll & Touch Navigation', () => {
             expect(html).toContain('All Games');
             expect(html).toContain('Favorites');
         });
+
+        it('renders all collections as tabs and back button when inside sub-collection', async () => {
+            const { LibraryCategoryBar } = await import('../../src/library/LibraryCategoryBar');
+            const dummyCollections = [
+                { id: 'rpg', name: 'Role Playing', count: 18, games: [] },
+                { id: 'deck', name: 'Great on Deck', count: 24, games: [] },
+                { id: 'action', name: 'Action', count: 9, games: [] },
+            ];
+
+            const html = renderToString(
+                <LibraryCategoryBar
+                    categories={dummyCategories}
+                    activeCategoryId="collections"
+                    onSelectCategory={() => {}}
+                    isInsideSubCollection={true}
+                    collections={dummyCollections}
+                    activeSubCollectionId="deck"
+                    onSelectSubCollection={() => {}}
+                    onBackToCollections={() => {}}
+                />
+            );
+
+            expect(html).toContain('‹ COLLECTIONS');
+            expect(html).toContain('Role Playing');
+            expect(html).toContain('Great on Deck');
+            expect(html).toContain('Action');
+            expect(html).toContain('24 GAMES');
+            expect(html).toContain('sgl-btn-back-col');
+        });
     });
 
     describe('libraryOpenArt & openLibraryGameDetails', () => {

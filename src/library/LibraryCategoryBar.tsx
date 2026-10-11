@@ -1,13 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { FaGamepad } from 'react-icons/fa';
-import { LibraryCategory } from './libraryData';
+import { LibraryCategory, LibraryCollectionItem } from './libraryData';
 
-interface LibraryCategoryBarProps {
+export interface LibraryCategoryBarProps {
     categories: LibraryCategory[];
     activeCategoryId: string;
     onSelectCategory: (id: string) => void;
     focusedIndex?: number;
     isHeaderFocused?: boolean;
+    isInsideSubCollection?: boolean;
+    collections?: LibraryCollectionItem[];
+    activeSubCollectionId?: string | null;
+    onSelectSubCollection?: (id: string) => void;
     activeSubCollectionName?: string | null;
     onBackToCollections?: () => void;
 }
@@ -18,10 +22,37 @@ export function LibraryCategoryBar({
     onSelectCategory,
     focusedIndex = 0,
     isHeaderFocused = false,
+    isInsideSubCollection = false,
+    collections,
+    activeSubCollectionId = null,
+    onSelectSubCollection,
     activeSubCollectionName = null,
     onBackToCollections,
 }: LibraryCategoryBarProps) {
-    const activeCategory = categories.find((c) => c.id === activeCategoryId) ?? categories[0];
+    const isShowingCollections = Boolean(
+        isInsideSubCollection && collections && collections.length > 0
+    );
+
+    const tabsList: Array<{ id: string; name: string; count: number }> = isShowingCollections
+        ? collections!
+        : categories;
+
+    const currentActiveId = isShowingCollections
+        ? (activeSubCollectionId ?? (collections?.[0]?.id ?? ''))
+        : activeCategoryId;
+
+    const activeItem = isShowingCollections
+        ? collections?.find((c) => c.id === currentActiveId) ?? collections?.[0]
+        : categories.find((c) => c.id === activeCategoryId) ?? categories[0];
+
+    const handleSelectTab = (id: string) => {
+        if (isShowingCollections) {
+            onSelectSubCollection?.(id);
+        } else {
+            onSelectCategory(id);
+        }
+    };
+
     const navRef = useRef<HTMLElement | null>(null);
     const tabRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
 
@@ -164,7 +195,7 @@ export function LibraryCategoryBar({
         // Do not auto-scroll while user is actively dragging tabs
         if (isDragging) return;
         const nav = navRef.current;
-        const activeTabEl = tabRefs.current.get(activeCategoryId);
+        const activeTabEl = tabRefs.current.get(currentActiveId);
         if (nav && activeTabEl) {
             const navRect = nav.getBoundingClientRect();
             const tabRect = activeTabEl.getBoundingClientRect();
@@ -175,18 +206,34 @@ export function LibraryCategoryBar({
                 behavior: 'smooth',
             });
         }
-    }, [activeCategoryId, isDragging]);
+    }, [currentActiveId, isDragging]);
 
     return (
         <header className="sgl-header">
-            {/* Left: Brand / Title */}
+            {/* Left: Brand / Title OR Back to Collections Button */}
             <div className="sgl-brand">
-                <FaGamepad className="sgl-brand-icon" size={18} />
-                <span>LIBRARY</span>
+                {isShowingCollections ? (
+                    <button
+                        className="sgl-btn-back-col"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            onBackToCollections?.();
+                        }}
+                    >
+                        <span>‹ COLLECTIONS</span>
+                        <span className="sgl-btn-badge" style={{ marginLeft: 2 }}>B</span>
+                    </button>
+                ) : (
+                    <>
+                        <FaGamepad className="sgl-brand-icon" size={18} />
+                        <span>LIBRARY</span>
+                    </>
+                )}
             </div>
 
-            {/* Center: Breadcrumb (if inside sub-collection) OR Category Tabs with Bumper Prompts */}
-            {activeSubCollectionName ? (
+            {/* Center: Category or Collection Tabs with Bumper Prompts (or fallback breadcrumb if collections array empty) */}
+            {activeSubCollectionName && !isShowingCollections ? (
                 <div className="sgl-breadcrumb">
                     <button
                         className="sgl-btn-back-col"
@@ -197,6 +244,7 @@ export function LibraryCategoryBar({
                         }}
                     >
                         <span>‹ COLLECTIONS</span>
+                        <span className="sgl-btn-badge" style={{ marginLeft: 2 }}>B</span>
                     </button>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
                         <span className="sgl-bumper-badge">L1</span>
@@ -217,15 +265,15 @@ export function LibraryCategoryBar({
                         onPointerCancel={onPointerCancel}
                         onWheel={onWheel}
                     >
-                        {categories.map((cat, idx) => {
-                            const isActive = cat.id === activeCategoryId;
+                        {tabsList.map((item, idx) => {
+                            const isActive = item.id === currentActiveId;
                             const isFocused = isHeaderFocused && idx === focusedIndex;
                             return (
                                 <button
-                                    key={cat.id}
+                                    key={item.id}
                                     ref={(el) => {
-                                        if (el) tabRefs.current.set(cat.id, el);
-                                        else tabRefs.current.delete(cat.id);
+                                        if (el) tabRefs.current.set(item.id, el);
+                                        else tabRefs.current.delete(item.id);
                                     }}
                                     role="tab"
                                     aria-selected={isActive}
@@ -236,11 +284,11 @@ export function LibraryCategoryBar({
                                         if (wasDraggedRef.current || Date.now() - dragEndTimeRef.current < 400) {
                                             return;
                                         }
-                                        onSelectCategory(cat.id);
+                                        handleSelectTab(item.id);
                                     }}
                                 >
-                                    <span className="sgl-tab-label">{cat.name}</span>
-                                    <span className="sgl-tab-count">{cat.count}</span>
+                                    <span className="sgl-tab-label">{item.name}</span>
+                                    <span className="sgl-tab-count">{item.count}</span>
                                     <div className="sgl-tab-line" />
                                 </button>
                             );
@@ -250,17 +298,19 @@ export function LibraryCategoryBar({
                 </div>
             )}
 
-            {/* Right: Category Count Info */}
+            {/* Right: Category or Collection Count Info */}
             <div className="sgl-header-info">
-                {activeSubCollectionName
-                    ? 'IN COLLECTION'
-                    : activeCategory
-                        ? activeCategory.id === 'soundtracks'
-                            ? `${activeCategory.count} SOUNDTRACKS`
-                            : activeCategory.id === 'collections'
-                                ? `${activeCategory.count} COLLECTIONS`
-                                : `${activeCategory.count} GAMES`
-                        : ''}
+                {isShowingCollections
+                    ? `${activeItem?.count ?? 0} GAMES`
+                    : activeSubCollectionName
+                        ? 'IN COLLECTION'
+                        : activeItem
+                            ? activeItem.id === 'soundtracks'
+                                ? `${activeItem.count} SOUNDTRACKS`
+                                : activeItem.id === 'collections'
+                                    ? `${activeItem.count} COLLECTIONS`
+                                    : `${activeItem.count} GAMES`
+                            : ''}
             </div>
         </header>
     );

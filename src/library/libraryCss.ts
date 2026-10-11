@@ -235,6 +235,10 @@ export const LIBRARY_CSS = `
     cursor: pointer;
     transition: all 0.15s ease;
     outline: none;
+    white-space: nowrap;
+    user-select: none;
+    -webkit-user-select: none;
+    flex-shrink: 0;
 }
 
 .sgl-btn-back-col:hover,
@@ -242,6 +246,12 @@ export const LIBRARY_CSS = `
     background: rgba(255, 255, 255, 0.16);
     border-color: var(--accent, #58a6ff);
     box-shadow: 0 0 10px var(--accent-glow, rgba(88, 166, 255, 0.35));
+}
+
+.sgl-btn-back-col .sgl-btn-badge {
+    background: rgba(255, 255, 255, 0.16);
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .sgl-breadcrumb-title {
