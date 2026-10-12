@@ -536,8 +536,11 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
     // so mouse clicks on background or items never trigger an accidental launch of the selected game.
     const handleRootActivate = useCallback((e?: unknown) => {
         if (e && typeof e === 'object') {
-            const evt = e as { type?: string; pointerType?: string };
-            if (evt.type === 'click' && evt.pointerType === 'mouse') {
+            const evt = e as { type?: string; clientX?: number; clientY?: number; pointerType?: string };
+            if (evt.type === 'click' || evt.pointerType === 'mouse' || evt.pointerType === 'touch') {
+                return;
+            }
+            if (typeof evt.clientX === 'number' && typeof evt.clientY === 'number' && (evt.clientX > 0 || evt.clientY > 0)) {
                 return;
             }
         }
@@ -910,6 +913,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 />
 
                 <LibraryGrid
+                    key={activeCategoryId + (selectedCollectionId ? `-${selectedCollectionId}` : '')}
                     games={currentGames}
                     collections={currentCollections}
                     isCollectionsView={isCollectionsTab && !isInsideSubCollection}

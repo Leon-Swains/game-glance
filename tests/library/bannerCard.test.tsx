@@ -1,5 +1,5 @@
 import React from 'react';
-import { beforeEach, describe, expect, it } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderToString } from 'react-dom/server';
 import { BannerCard, cardArtMemo, resolveGameArt } from '../../src/library/LibraryGrid';
 import { LibraryGameItem } from '../../src/library/libraryData';
@@ -216,6 +216,79 @@ describe('BannerCard Artwork Hierarchy & Memoization', () => {
         );
         expect(uninstalledWithoutSetting).not.toContain('sgl-card-uninstalled');
         expect(uninstalledWithoutSetting).toContain('--accent:#1a9fff');
+    });
+
+    describe('BannerCard index stability and React.memo equality', () => {
+        // BannerCard is React.memo(component, arePropsEqual)
+        const arePropsEqual = (BannerCard as unknown as { compare: (prev: unknown, next: unknown) => boolean }).compare;
+
+        it('re-renders when index changes between categories or filters', () => {
+            const prevProps = {
+                game: baseGame,
+                index: 2,
+                isFocused: false,
+                accent: '#1a9fff',
+                dimUninstalled: true,
+                onSelectGame: vi.fn(),
+            };
+
+            const nextProps = {
+                ...prevProps,
+                index: 5, // Moved to index 5 in new category
+            };
+
+            expect(arePropsEqual(prevProps, nextProps)).toBe(false);
+        });
+
+        it('re-renders when onSelectGame handler changes', () => {
+            const fn1 = vi.fn();
+            const fn2 = vi.fn();
+            const prevProps = {
+                game: baseGame,
+                index: 3,
+                isFocused: false,
+                accent: '#1a9fff',
+                dimUninstalled: true,
+                onSelectGame: fn1,
+            };
+
+            const nextProps = {
+                ...prevProps,
+                onSelectGame: fn2,
+            };
+
+            expect(arePropsEqual(prevProps, nextProps)).toBe(false);
+        });
+
+        it('re-renders when onClick handler changes', () => {
+            const prevProps = {
+                game: baseGame,
+                isFocused: false,
+                accent: '#1a9fff',
+                onClick: () => {},
+            };
+            const nextProps = {
+                ...prevProps,
+                onClick: () => {},
+            };
+            expect(arePropsEqual(prevProps, nextProps)).toBe(false);
+        });
+
+        it('preserves memoization when index, focus, and game remain unchanged', () => {
+            const onSelect = vi.fn();
+            const prevProps = {
+                game: baseGame,
+                index: 4,
+                isFocused: false,
+                accent: '#1a9fff',
+                dimUninstalled: true,
+                onSelectGame: onSelect,
+            };
+            const nextProps = {
+                ...prevProps,
+            };
+            expect(arePropsEqual(prevProps, nextProps)).toBe(true);
+        });
     });
 });
 
