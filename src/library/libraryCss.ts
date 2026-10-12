@@ -38,7 +38,7 @@ export const LIBRARY_CSS = `
     width: 100% !important;
     height: 100% !important;
     box-sizing: border-box !important;
-    padding-top: var(--sgl-top-inset, ${d(36)}) !important;
+    padding-top: var(--sgl-top-inset, ${d(40)}) !important;
     padding-bottom: var(--sgl-bottom-inset, ${d(48)}) !important;
     overflow: hidden !important;
     overflow: clip !important;
@@ -375,13 +375,13 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-shrink: 0 !important;
     flex-grow: 0 !important;
-    height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
-    max-height: ${d(130)} !important;
+    height: clamp(${d(210)}, 35vh, ${d(300)}) !important;
+    max-height: ${d(300)} !important;
     width: auto !important;
-    max-width: ${d(87)} !important;
+    max-width: ${d(200)} !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     overflow: hidden !important;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
     border: 1px solid rgba(255, 255, 255, 0.14) !important;
@@ -390,9 +390,9 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
-    max-height: ${d(115)} !important;
-    max-width: ${d(115)} !important;
+    height: clamp(${d(170)}, 28vh, ${d(220)}) !important;
+    max-height: ${d(220)} !important;
+    max-width: ${d(220)} !important;
     aspect-ratio: 1 / 1 !important;
 }
 
@@ -615,9 +615,21 @@ export const LIBRARY_CSS = `
     outline: none !important;
 }
 
-.sgl-btn-details .sgl-btn-text {
+.sgl-btn-details .sgl-btn-text,
+.sgl-btn-play .sgl-btn-text,
+.sgl-btn-text {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
     font-size: ${d(11)} !important;
     line-height: 1 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
 }
 
 .sgl-btn-details:hover,
@@ -649,11 +661,6 @@ export const LIBRARY_CSS = `
     outline: none !important;
 }
 
-.sgl-btn-play .sgl-btn-text {
-    font-size: ${d(11)} !important;
-    line-height: 1 !important;
-}
-
 .sgl-btn-play:hover,
 .sgl-btn-play:focus-visible {
     background: rgba(255, 255, 255, 0.15) !important;
@@ -666,16 +673,20 @@ export const LIBRARY_CSS = `
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    width: ${d(16)} !important;
+    height: ${d(16)} !important;
+    min-width: ${d(16)} !important;
+    max-width: ${d(16)} !important;
+    min-height: ${d(16)} !important;
+    max-height: ${d(16)} !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1 !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
     font-weight: 800 !important;
-    height: ${d(15)} !important;
-    min-width: ${d(15)} !important;
-    max-height: ${d(15)} !important;
-    padding: 0 ${d(3.5)} !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
     vertical-align: middle !important;
-    border-radius: ${d(3.5)} !important;
     letter-spacing: 0 !important;
     margin: 0 !important;
     flex-shrink: 0 !important;
@@ -1254,20 +1265,20 @@ export const LIBRARY_CSS = `
         flex: 0 0 auto !important;
         flex-grow: 0 !important;
         flex-shrink: 0 !important;
-        height: clamp(${d(130)}, 22vh, ${d(190)}) !important;
-        max-height: ${d(190)} !important;
+        height: clamp(${d(210)}, 35vh, ${d(300)}) !important;
+        max-height: ${d(300)} !important;
         width: auto !important;
-        max-width: ${d(130)} !important;
+        max-width: ${d(200)} !important;
         aspect-ratio: 2 / 3 !important;
         align-self: center !important;
-        border-radius: 8px !important;
+        border-radius: 10px !important;
         box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
     }
 
     .sgl-poster-wrapper.sgl-poster-square {
-        height: clamp(${d(120)}, 20vh, ${d(145)}) !important;
-        max-height: ${d(145)} !important;
-        max-width: ${d(145)} !important;
+        height: clamp(${d(170)}, 28vh, ${d(220)}) !important;
+        max-height: ${d(220)} !important;
+        max-width: ${d(220)} !important;
         aspect-ratio: 1 / 1 !important;
     }
 
@@ -1339,37 +1350,47 @@ export const LIBRARY_CSS = `
     }
 
     .sgl-btn-details,
-    .sgl-btn-details .sgl-btn-text {
+    .sgl-btn-play {
         padding: 4px 10px !important;
-        font-size: ${d(11)} !important;
-        line-height: 1 !important;
         height: ${d(34)} !important;
         min-height: ${d(34)} !important;
         max-height: ${d(34)} !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
     }
 
-    .sgl-btn-play,
+    .sgl-btn-details .sgl-btn-text,
     .sgl-btn-play .sgl-btn-text {
-        padding: 4px 10px !important;
         font-size: ${d(11)} !important;
         line-height: 1 !important;
-        height: ${d(34)} !important;
-        min-height: ${d(34)} !important;
-        max-height: ${d(34)} !important;
+        height: auto !important;
+        min-height: 0 !important;
+        max-height: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        vertical-align: middle !important;
     }
 
     .sgl-btn-badge {
         display: inline-flex !important;
         align-items: center !important;
         justify-content: center !important;
+        width: ${d(16)} !important;
+        height: ${d(16)} !important;
+        min-width: ${d(16)} !important;
+        max-width: ${d(16)} !important;
+        min-height: ${d(16)} !important;
+        max-height: ${d(16)} !important;
+        border-radius: 50% !important;
+        aspect-ratio: 1 / 1 !important;
         font-size: ${d(8.5)} !important;
         line-height: 1 !important;
-        height: ${d(15)} !important;
-        min-width: ${d(15)} !important;
-        max-height: ${d(15)} !important;
-        padding: 0 ${d(3.5)} !important;
+        padding: 0 !important;
         box-sizing: border-box !important;
-        border-radius: ${d(3.5)} !important;
         margin: 0 !important;
     }
 
@@ -1539,19 +1560,19 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
-    height: clamp(${d(90)}, 16vh, ${d(130)}) !important;
-    max-height: ${d(130)} !important;
+    height: clamp(${d(180)}, 28vh, ${d(255)}) !important;
+    max-height: ${d(255)} !important;
     width: auto !important;
-    max-width: ${d(87)} !important;
+    max-width: ${d(175)} !important;
     aspect-ratio: 2 / 3 !important;
     align-self: center !important;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
 }
 .sgl-root.sgl-compact .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(${d(85)}, 15vh, ${d(115)}) !important;
-    max-height: ${d(115)} !important;
-    max-width: ${d(115)} !important;
+    height: clamp(${d(150)}, 24vh, ${d(190)}) !important;
+    max-height: ${d(190)} !important;
+    max-width: ${d(190)} !important;
     aspect-ratio: 1 / 1 !important;
 }
 .sgl-root.sgl-compact .sgl-title-box {
@@ -1611,35 +1632,45 @@ export const LIBRARY_CSS = `
     flex-shrink: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-btn-details,
-.sgl-root.sgl-compact .sgl-btn-details .sgl-btn-text {
+.sgl-root.sgl-compact .sgl-btn-play {
     padding: 4px 10px !important;
-    font-size: ${d(11)} !important;
-    line-height: 1 !important;
     height: ${d(34)} !important;
     min-height: ${d(34)} !important;
     max-height: ${d(34)} !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
-.sgl-root.sgl-compact .sgl-btn-play,
+.sgl-root.sgl-compact .sgl-btn-details .sgl-btn-text,
 .sgl-root.sgl-compact .sgl-btn-play .sgl-btn-text {
-    padding: 4px 10px !important;
     font-size: ${d(11)} !important;
     line-height: 1 !important;
-    height: ${d(34)} !important;
-    min-height: ${d(34)} !important;
-    max-height: ${d(34)} !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
 }
 .sgl-root.sgl-compact .sgl-btn-badge {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    width: ${d(16)} !important;
+    height: ${d(16)} !important;
+    min-width: ${d(16)} !important;
+    max-width: ${d(16)} !important;
+    min-height: ${d(16)} !important;
+    max-height: ${d(16)} !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1 !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
-    height: ${d(15)} !important;
-    min-width: ${d(15)} !important;
-    max-height: ${d(15)} !important;
-    padding: 0 ${d(3.5)} !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
-    border-radius: ${d(3.5)} !important;
     margin: 0 !important;
 }
 .sgl-root.sgl-compact .sgl-inspector-col-fan {
@@ -1730,14 +1761,14 @@ export const LIBRARY_CSS = `
 /* Ultra-compact / 720p height optimization (e.g. 1280x720 or on-screen keyboard open) */
 @media (max-height: 720px) {
     .sgl-poster-wrapper {
-        max-width: ${d(115)} !important;
-        height: clamp(${d(115)}, 18vh, ${d(165)}) !important;
-        max-height: ${d(165)} !important;
+        max-width: ${d(165)} !important;
+        height: clamp(${d(170)}, 26vh, ${d(240)}) !important;
+        max-height: ${d(240)} !important;
     }
     .sgl-poster-wrapper.sgl-poster-square {
-        max-width: ${d(125)} !important;
-        height: clamp(${d(105)}, 16vh, ${d(125)}) !important;
-        max-height: ${d(125)} !important;
+        max-width: ${d(180)} !important;
+        height: clamp(${d(140)}, 22vh, ${d(180)}) !important;
+        max-height: ${d(180)} !important;
     }
     .sgl-inspector {
         gap: 5px !important;
@@ -1940,9 +1971,9 @@ html body .sgl-root .sgl-poster-wrapper,
 body.LargeText .sgl-root .sgl-poster-wrapper,
 .LargeText .sgl-root .sgl-poster-wrapper,
 .sgl-root .sgl-poster-wrapper {
-    max-width: ${d(130)} !important;
-    height: clamp(${d(130)}, 22vh, ${d(190)}) !important;
-    max-height: ${d(190)} !important;
+    max-width: ${d(200)} !important;
+    height: clamp(${d(210)}, 35vh, ${d(300)}) !important;
+    max-height: ${d(300)} !important;
     margin: 0 auto !important;
 }
 
@@ -1952,9 +1983,9 @@ html body .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 body.LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .sgl-root .sgl-poster-wrapper.sgl-poster-square {
-    max-width: ${d(145)} !important;
-    max-height: ${d(145)} !important;
-    height: clamp(${d(120)}, 20vh, ${d(145)}) !important;
+    max-width: ${d(220)} !important;
+    max-height: ${d(220)} !important;
+    height: clamp(${d(170)}, 28vh, ${d(220)}) !important;
     margin: 0 auto !important;
 }
 
@@ -2077,43 +2108,48 @@ body.LargeText .sgl-root .sgl-actions,
 }
 
 :root .sgl-root .sgl-btn-play,
-:root .sgl-root .sgl-btn-play .sgl-btn-text,
 html body .sgl-root .sgl-btn-play,
-html body .sgl-root .sgl-btn-play .sgl-btn-text,
 .Focusable.sgl-root .sgl-btn-play,
-.Focusable.sgl-root .sgl-btn-play .sgl-btn-text,
 body.LargeText .sgl-root .sgl-btn-play,
-body.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
 .LargeText .sgl-root .sgl-btn-play,
-.LargeText .sgl-root .sgl-btn-play .sgl-btn-text,
 .sgl-root .sgl-btn-play,
-.sgl-root .sgl-btn-play .sgl-btn-text {
-    font-size: ${d(11)} !important;
+:root .sgl-root .sgl-btn-details,
+html body .sgl-root .sgl-btn-details,
+.Focusable.sgl-root .sgl-btn-details,
+body.LargeText .sgl-root .sgl-btn-details,
+.LargeText .sgl-root .sgl-btn-details,
+.sgl-root .sgl-btn-details {
     height: ${d(34)} !important;
     min-height: ${d(34)} !important;
     max-height: ${d(34)} !important;
-    line-height: 1 !important;
-    padding: 4px 10px !important;
+    padding: 0 ${d(10)} !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px !important;
+    box-sizing: border-box !important;
 }
 
-:root .sgl-root .sgl-btn-details,
-:root .sgl-root .sgl-btn-details .sgl-btn-text,
-html body .sgl-root .sgl-btn-details,
-html body .sgl-root .sgl-btn-details .sgl-btn-text,
-.Focusable.sgl-root .sgl-btn-details,
-.Focusable.sgl-root .sgl-btn-details .sgl-btn-text,
-body.LargeText .sgl-root .sgl-btn-details,
-body.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
-.LargeText .sgl-root .sgl-btn-details,
-.LargeText .sgl-root .sgl-btn-details .sgl-btn-text,
-.sgl-root .sgl-btn-details,
-.sgl-root .sgl-btn-details .sgl-btn-text {
+:root .sgl-root .sgl-btn-text,
+html body .sgl-root .sgl-btn-text,
+.Focusable.sgl-root .sgl-btn-text,
+body.LargeText .sgl-root .sgl-btn-text,
+.LargeText .sgl-root .sgl-btn-text,
+.sgl-root .sgl-btn-text,
+.sgl-btn-details .sgl-btn-text,
+.sgl-btn-play .sgl-btn-text {
     font-size: ${d(11)} !important;
-    height: ${d(34)} !important;
-    min-height: ${d(34)} !important;
-    max-height: ${d(34)} !important;
     line-height: 1 !important;
-    padding: 4px 10px !important;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    vertical-align: middle !important;
+    box-sizing: border-box !important;
 }
 
 :root .sgl-root .sgl-btn-badge,
@@ -2123,19 +2159,28 @@ body.LargeText .sgl-root .sgl-btn-badge,
 .LargeText .sgl-root .sgl-btn-badge,
 .sgl-root .sgl-btn-badge,
 .sgl-btn-details .sgl-btn-badge,
-.sgl-btn-play .sgl-btn-badge {
+.sgl-btn-play .sgl-btn-badge,
+.sgl-btn-back-col .sgl-btn-badge {
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
+    width: ${d(16)} !important;
+    height: ${d(16)} !important;
+    min-width: ${d(16)} !important;
+    max-width: ${d(16)} !important;
+    min-height: ${d(16)} !important;
+    max-height: ${d(16)} !important;
+    border-radius: 50% !important;
+    aspect-ratio: 1 / 1 !important;
     font-size: ${d(8.5)} !important;
     line-height: 1 !important;
-    height: ${d(15)} !important;
-    min-width: ${d(15)} !important;
-    max-height: ${d(15)} !important;
-    padding: 0 ${d(3.5)} !important;
+    font-weight: 800 !important;
+    padding: 0 !important;
     box-sizing: border-box !important;
-    border-radius: ${d(3.5)} !important;
+    vertical-align: middle !important;
+    letter-spacing: 0 !important;
     margin: 0 !important;
+    flex-shrink: 0 !important;
 }
 
 /* Right Grid (Cards) */

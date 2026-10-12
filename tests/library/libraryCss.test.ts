@@ -11,8 +11,8 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
 
     it('contains base sgl-poster-wrapper styling with dynamically clamped height to prevent panel overflow', () => {
         expect(LIBRARY_CSS).toContain('.sgl-poster-wrapper');
-        expect(LIBRARY_CSS).toContain('clamp(calc(130 * var(--sgl-d)), 22vh, calc(190 * var(--sgl-d)))');
-        expect(LIBRARY_CSS).toContain('max-height: calc(190 * var(--sgl-d))');
+        expect(LIBRARY_CSS).toContain('clamp(calc(210 * var(--sgl-d)), 35vh, calc(300 * var(--sgl-d)))');
+        expect(LIBRARY_CSS).toContain('max-height: calc(300 * var(--sgl-d))');
     });
 
     it('contains responsive media query for handheld screens (Steam Deck <=1366px / <=850px)', () => {
@@ -45,7 +45,7 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
     });
 
     it('sets scaled top padding inset to optimize screen real estate', () => {
-        expect(LIBRARY_CSS).toContain('padding-top: var(--sgl-top-inset, calc(36 * var(--sgl-d))) !important;');
+        expect(LIBRARY_CSS).toContain('padding-top: var(--sgl-top-inset, calc(40 * var(--sgl-d))) !important;');
     });
 
     it('includes font-size and text-size-adjust locking to protect against Steam Large Text mode distortion', () => {
@@ -72,12 +72,13 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
         expect(LIBRARY_CSS).toContain('.sgl-card-fallback-title');
         expect(LIBRARY_CSS).toContain('.sgl-col-footer-title');
         expect(LIBRARY_CSS).toContain('.sgl-btn-badge');
+        expect(LIBRARY_CSS).toContain('border-radius: 50% !important;');
     });
 
     it('enforces clamped poster dimensions across base, handheld, and compact viewports', () => {
-        expect(LIBRARY_CSS).toContain('max-width: calc(130 * var(--sgl-d)) !important;');
-        expect(LIBRARY_CSS).toContain('height: clamp(calc(130 * var(--sgl-d)), 22vh, calc(190 * var(--sgl-d))) !important;');
-        expect(LIBRARY_CSS).toContain('max-height: calc(190 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('max-width: calc(200 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('height: clamp(calc(210 * var(--sgl-d)), 35vh, calc(300 * var(--sgl-d))) !important;');
+        expect(LIBRARY_CSS).toContain('max-height: calc(300 * var(--sgl-d)) !important;');
     });
 
     it('includes fast compositor-optimized grayscale and dimmed styling for uninstalled games', () => {
