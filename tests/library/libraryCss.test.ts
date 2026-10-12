@@ -11,8 +11,8 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
 
     it('contains base sgl-poster-wrapper styling with dynamically clamped height to prevent panel overflow', () => {
         expect(LIBRARY_CSS).toContain('.sgl-poster-wrapper');
-        expect(LIBRARY_CSS).toContain('clamp(calc(210 * var(--sgl-d)), 35vh, calc(300 * var(--sgl-d)))');
-        expect(LIBRARY_CSS).toContain('max-height: calc(300 * var(--sgl-d))');
+        expect(LIBRARY_CSS).toContain('clamp(calc(250 * var(--sgl-d)), 42vh, calc(360 * var(--sgl-d)))');
+        expect(LIBRARY_CSS).toContain('max-height: calc(360 * var(--sgl-d))');
     });
 
     it('contains responsive media query for handheld screens (Steam Deck <=1366px / <=850px)', () => {
@@ -76,9 +76,9 @@ describe('libraryCss: Handheld and responsive layout rules with proportional fon
     });
 
     it('enforces clamped poster dimensions across base, handheld, and compact viewports', () => {
-        expect(LIBRARY_CSS).toContain('max-width: calc(200 * var(--sgl-d)) !important;');
-        expect(LIBRARY_CSS).toContain('height: clamp(calc(210 * var(--sgl-d)), 35vh, calc(300 * var(--sgl-d))) !important;');
-        expect(LIBRARY_CSS).toContain('max-height: calc(300 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('max-width: calc(240 * var(--sgl-d)) !important;');
+        expect(LIBRARY_CSS).toContain('height: clamp(calc(250 * var(--sgl-d)), 42vh, calc(360 * var(--sgl-d))) !important;');
+        expect(LIBRARY_CSS).toContain('max-height: calc(360 * var(--sgl-d)) !important;');
     });
 
     it('includes fast compositor-optimized grayscale and dimmed styling for uninstalled games', () => {
