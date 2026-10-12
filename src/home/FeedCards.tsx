@@ -2,7 +2,7 @@ import { ConfirmModal, Focusable, showModal } from '@decky/ui';
 import { CSSProperties, useRef } from 'react';
 import { LOG_PREFIX } from '../constants';
 import type { FeedItem } from './feedLayout';
-import { openGame, openNews, openSteamUrl, openStorePage } from './homeNav';
+import { openCollection, openGame, openNews, openSteamUrl, openStorePage } from './homeNav';
 import { tr } from '../i18n/steamText';
 
 /** A and a touch can both arrive for one press; one action per press. */
@@ -69,6 +69,7 @@ export function FeedCard({ item, left, accent, preferred, onFocused, setRef }: {
             else if (target?.kind === 'store') openStorePage(target.appId);
             else if (target?.kind === 'news') openNews(target.appId, target.gid);
             else if (target?.kind === 'join') confirmJoin(target.url, target.question, self.current);
+            else if (target?.kind === 'collection') openCollection(target.collectionId);
         } catch (error) {
             console.warn(`${LOG_PREFIX} Home: feed card failed`, error);
         }

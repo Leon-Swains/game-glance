@@ -7,10 +7,11 @@ import type { RecommendedCard } from './playNext';
 import type { DealCard } from './recommended';
 import type { UpdatedCard } from './recentlyUpdated';
 import type { TrendingCard } from './trending';
+import type { HomeCollection } from './collections';
 import { rowInset } from './insets';
 import { tr } from '../i18n/steamText';
 
-export type FeedTab = 'news' | 'friends' | 'recommended';
+export type FeedTab = 'news' | 'friends' | 'recommended' | 'collections';
 
 /** Gap between cards. */
 export const FEED_GAP = 14;
@@ -24,7 +25,7 @@ export function feedViewportInset(side: number, tv = false): number {
 /** Card height; the recommended card is portrait at 0.72 of it. */
 export const FEED_CARD_H = 260;
 
-const WIDTH: Record<FeedTab, number> = { news: 320, friends: 230, recommended: Math.round(FEED_CARD_H * 0.72) };
+const WIDTH: Record<FeedTab, number> = { news: 320, friends: 230, recommended: Math.round(FEED_CARD_H * 0.72), collections: 240 };
 /**
  * Steam's event capsule art, the featured news card's image: 800 x 450 (16:9). The featured card is exactly as wide as
  * that image at the card's height, so the image fills it whole (any other shape still fits, over its blurred copy).
@@ -156,7 +157,8 @@ export type FeedOpen =
     /** Join a friend's game: Steam's own Join Game url, after a confirm ("Join Alex in Halo?"). */
     | { kind: 'join'; appId: number; url: string; question: string }
     | { kind: 'store'; appId: number }
-    | { kind: 'news'; appId: number; gid: string };
+    | { kind: 'news'; appId: number; gid: string }
+    | { kind: 'collection'; collectionId: string };
 
 /** One card as the feed draws it. */
 export interface FeedItem {
@@ -212,6 +214,8 @@ export interface FeedData {
     trending?: TrendingCard[];
     friends: FriendCard[];
     recommended: RecommendedCard[];
+    /** Library collections for the Collections tab; missing = none. */
+    collections?: HomeCollection[];
     /** Friends online now (the Friends tab badge); missing = 0. */
     friendsOnline?: number;
 }
@@ -237,12 +241,16 @@ function initial(name: string): string {
 export function hasSecondRow(tab: FeedTab, data: FeedData): boolean {
     if (tab === 'news') return (data.updated?.length ?? 0) > 0;
     if (tab === 'friends') return (data.trending?.length ?? 0) > 0;
-    return (data.deals?.length ?? 0) > 0;
+    if (tab === 'recommended') return (data.deals?.length ?? 0) > 0;
+    return false;
 }
 
 /** The second row's small header for a tab. */
 export function secondRowTitle(tab: FeedTab): string {
-    return tab === 'news' ? tr('recentlyUpdated') : tab === 'recommended' ? tr('wishlistSale') : tr('trending');
+    if (tab === 'news') return tr('recentlyUpdated');
+    if (tab === 'recommended') return tr('wishlistSale');
+    if (tab === 'friends') return tr('trending');
+    return '';
 }
 
 /**
@@ -337,6 +345,27 @@ function feedItemsRaw(tab: FeedTab, data: FeedData, art: FeedArt, space: number)
             moreFriends: c.moreFriends,
         })) : [];
         return [...cards, ...trending];
+    }
+    if (tab === 'collections') {
+        const collections = (data.collections ?? []).filter((c) => c.id !== 'local-install' && c.id !== 'installed');
+        return collections.map((c) => {
+            const topAppId = c.appIds?.[0] ?? null;
+            const cardArt = topAppId ? art(topAppId).hero : [];
+            return {
+                key: `collection-${c.id}`,
+                row: 0,
+                width: feedCardWidthAt('collections', false, rows.row1),
+                height: rows.row1,
+                featured: false,
+                art: cardArt,
+                pill: tr('tabCollections'),
+                title: c.name,
+                sub: `${c.count} ${tr('games')}`,
+                accentAppId: topAppId,
+                opens: { kind: 'collection', collectionId: c.id },
+                avatar: null,
+            };
+        });
     }
     const playNext: FeedItem[] = data.recommended.map((c) => ({
         key: `recommended-${c.appId}`,

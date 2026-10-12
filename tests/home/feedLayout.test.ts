@@ -71,6 +71,7 @@ describe('feedCardWidth', () => {
         expect(feedCardWidth('news', false)).toBe(320);
         expect(feedCardWidth('friends', false)).toBe(230);
         expect(feedCardWidth('recommended', false)).toBe(187);
+        expect(feedCardWidth('collections', false)).toBe(240);
         expect(FEED_GAP).toBe(14);
         expect(FEED_VIEWPORT_INSET).toBe(88);
     });
@@ -335,5 +336,45 @@ describe('feedItems placeholders', () => {
         const items = feedItems('news', data, () => ({ hero: [], capsule: [] }), 420);
         expect(items).toHaveLength(1);
         expect(items[0].backdrop).toEqual({ url: null, tone: null });
+    });
+});
+
+describe('Collections tab cards', () => {
+    const art = (appId: number) => ({ hero: [`hero-${appId}`], capsule: [`cap-${appId}`] });
+    it('generates collection cards that open the collection in the library', () => {
+        const data = {
+            news: [],
+            friends: [],
+            recommended: [],
+            collections: [
+                { id: 'favorite', name: 'Favorites', count: 12, appIds: [100, 101] },
+                { id: 'local-install', name: 'Locally Installed Games', count: 30, appIds: [102] },
+                { id: 'uc-rpg', name: 'RPG Classics', count: 5, appIds: [200] },
+            ],
+        };
+        expect(hasSecondRow('collections', data)).toBe(false);
+        expect(secondRowTitle('collections')).toBe('');
+        const items = feedItems('collections', data, art, 426);
+        expect(items).toHaveLength(2);
+        expect(items[0]).toMatchObject({
+            key: 'collection-favorite',
+            row: 0,
+            art: ['hero-100'],
+            pill: 'Collections',
+            title: 'Favorites',
+            sub: '12 Games',
+            opens: { kind: 'collection', collectionId: 'favorite' },
+            accentAppId: 100,
+        });
+        expect(items[1]).toMatchObject({
+            key: 'collection-uc-rpg',
+            row: 0,
+            art: ['hero-200'],
+            pill: 'Collections',
+            title: 'RPG Classics',
+            sub: '5 Games',
+            opens: { kind: 'collection', collectionId: 'uc-rpg' },
+            accentAppId: 200,
+        });
     });
 });

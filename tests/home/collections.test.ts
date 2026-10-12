@@ -21,10 +21,10 @@ describe('homeCollections (the Games row picker)', () => {
     it('lists Favorites and Installed first, then the user\'s collections by name, without empty ones, soundtracks or Uncategorized', () => {
         // Steam's own two are named by Steam's tokens (their stored names keep the language they were made in); the user's as typed.
         expect(homeCollections(user)).toEqual([
-            { id: 'favorite', name: 'Favorites', count: 1 },
-            { id: 'local-install', name: 'Locally Installed Games', count: 1 },
-            { id: 'uc-b', name: 'Backlog', count: 2 },
-            { id: 'uc-a', name: 'Playing', count: 1 },
+            { id: 'favorite', name: 'Favorites', count: 1, appIds: [1] },
+            { id: 'local-install', name: 'Locally Installed Games', count: 1, appIds: [2] },
+            { id: 'uc-b', name: 'Backlog', count: 2, appIds: [3, 4] },
+            { id: 'uc-a', name: 'Playing', count: 1, appIds: [5] },
         ]);
     });
     it('survives junk', () => {

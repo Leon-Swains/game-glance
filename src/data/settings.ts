@@ -16,6 +16,10 @@ export interface Settings {
     gameLogo: boolean; // the game's logo instead of its name on Home and the game page (the name when it has none)
     homeRow: string; // Home's games row: 'recent' (Steam's recent games, with those new to the library) or a collection id
     homeRowSort: RowSort; // how a collection's games are sorted in the row
+    homeWhatsNew: boolean; // Spotlight Home feed: What's New tab
+    homeFriends: boolean; // Spotlight Home feed: Friends tab
+    homeRecommended: boolean; // Spotlight Home feed: Recommended tab
+    homeCollections: boolean; // Spotlight Home feed: Collections tab
 }
 
 const KEY = 'settings';
@@ -33,6 +37,10 @@ const DEFAULTS: Settings = {
     gameLogo: false,
     homeRow: RECENT_ROW,
     homeRowSort: 'lastPlayed',
+    homeWhatsNew: true,
+    homeFriends: true,
+    homeRecommended: true,
+    homeCollections: true,
 };
 
 export function createSettingsStore(kv: KvBackend) {
@@ -61,6 +69,10 @@ export function createSettingsStore(kv: KvBackend) {
                 gameLogo: pick('gameLogo'),
                 homeRow: typeof raw?.homeRow === 'string' && raw.homeRow !== '' ? raw.homeRow : DEFAULTS.homeRow,
                 homeRowSort: rowSortOf(raw?.homeRowSort),
+                homeWhatsNew: pick('homeWhatsNew'),
+                homeFriends: pick('homeFriends'),
+                homeRecommended: pick('homeRecommended'),
+                homeCollections: pick('homeCollections'),
             };
             emit();
         },
@@ -127,6 +139,26 @@ export function createSettingsStore(kv: KvBackend) {
         },
         async setGameLogo(gameLogo: boolean): Promise<void> {
             current = { ...current, gameLogo };
+            emit();
+            await kv.set(KEY, current);
+        },
+        async setHomeWhatsNew(homeWhatsNew: boolean): Promise<void> {
+            current = { ...current, homeWhatsNew };
+            emit();
+            await kv.set(KEY, current);
+        },
+        async setHomeFriends(homeFriends: boolean): Promise<void> {
+            current = { ...current, homeFriends };
+            emit();
+            await kv.set(KEY, current);
+        },
+        async setHomeRecommended(homeRecommended: boolean): Promise<void> {
+            current = { ...current, homeRecommended };
+            emit();
+            await kv.set(KEY, current);
+        },
+        async setHomeCollections(homeCollections: boolean): Promise<void> {
+            current = { ...current, homeCollections };
             emit();
             await kv.set(KEY, current);
         },

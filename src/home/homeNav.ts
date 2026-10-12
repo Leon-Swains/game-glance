@@ -1,6 +1,7 @@
 import { Navigation } from '@decky/ui';
 import { LOG_PREFIX } from '../constants';
 import { settings } from '../data/settings';
+import { noteLibrary } from '../library/libraryMemory';
 import { browserStores, capsuleUrls, heroUrls, landscapeUrls } from './artwork';
 import { markLeaving } from './homeMemory';
 import { cssLayers, openArtLayers, wideArt } from './homeView';
@@ -100,6 +101,32 @@ export function openLibrary() {
         else Navigation.Navigate('/library');
     } catch (error) {
         console.warn(`${LOG_PREFIX} Home: could not open the library`, error);
+    }
+}
+
+/**
+ * Opens a library collection directly: when Spotlight Library is enabled, prepares the library memory to restore
+ * straight to that sub-collection (or Favorites/Installed categories) and opens the library; in native Steam,
+ * navigates to Steam's collection path `/library/collection/:id`.
+ */
+export function openCollection(collectionId: string) {
+    markLeaving();
+    try {
+        if (settings.get().spotlightLibrary) {
+            const isFav = collectionId === 'favorite' || collectionId === 'favorites';
+            const isInstalled = collectionId === 'local-install' || collectionId === 'installed';
+            noteLibrary({
+                categoryId: isFav ? 'favorites' : isInstalled ? 'installed' : 'collections',
+                subCollectionId: isFav || isInstalled ? null : collectionId,
+                focusZone: 'grid',
+            });
+            openLibrary();
+            return;
+        }
+        Navigation.Navigate(`/library/collection/${collectionId}`);
+    } catch (error) {
+        console.warn(`${LOG_PREFIX} Home: could not open collection`, error);
+        openLibrary();
     }
 }
 

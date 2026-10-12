@@ -78,6 +78,10 @@ export function SettingsPanel() {
         gameLogo,
         homeRow,
         homeRowSort,
+        homeWhatsNew,
+        homeFriends,
+        homeRecommended,
+        homeCollections,
     } = useSettings();
     // Read when the panel opens, so a collection made since shows up.
     const collections = useMemo(steamHomeCollections, []);
@@ -183,6 +187,38 @@ export function SettingsPanel() {
                         />
                     </PanelSectionRow>
                 )}
+                <PanelSectionRow>
+                    <ToggleField
+                        label="What's New section"
+                        description="Shows updates, announcements, and patch notes below the carousel."
+                        checked={homeWhatsNew}
+                        onChange={(value) => settings.setHomeWhatsNew(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Friends section"
+                        description="Shows friends activity and what they're playing below the carousel."
+                        checked={homeFriends}
+                        onChange={(value) => settings.setHomeFriends(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Recommended section"
+                        description="Shows recommendations and community highlights below the carousel."
+                        checked={homeRecommended}
+                        onChange={(value) => settings.setHomeRecommended(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Collections section"
+                        description="Shows library collection shortcuts below the carousel."
+                        checked={homeCollections}
+                        onChange={(value) => settings.setHomeCollections(value)}
+                    />
+                </PanelSectionRow>
                 <PanelSectionRow>
                     <ToggleField
                         label="Show wishlist deals"

@@ -6,8 +6,20 @@ const make = (enabled: boolean, spotlightHome: boolean, cleanPage = false): Sett
     enabled,
     autoPreload: true,
     spotlightHome,
+    spotlightLibrary: false,
+    libraryGridColumns: 3,
     wishlistDeals: false,
     cleanPage,
+    zoomTransition: true,
+    dimUninstalledGames: false,
+    homeStatusBar: true,
+    gameLogo: false,
+    homeRow: 'recent',
+    homeRowSort: 'lastPlayed',
+    homeWhatsNew: true,
+    homeFriends: true,
+    homeRecommended: true,
+    homeCollections: true,
 });
 
 describe('homeMode', () => {

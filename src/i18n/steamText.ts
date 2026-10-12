@@ -39,6 +39,7 @@ export const PHRASES = {
     tabWhatsNew: p('HomeTab_WhatsNew', "What's new"),
     tabFriends: p('tab_friends', 'Friends'),
     tabRecommended: p('HomeTab_Recommended', 'Recommended'),
+    tabCollections: p('LibraryTab_Collections', 'Collections'),
     trending: p('TrendingWithFriends_Title', 'Trending among friends'),
     recentlyUpdated: p('LibraryHome_RecentlyCompleted', 'Recently updated'),
     playNext: p('LibraryHome_PlayNext', 'Play next'),

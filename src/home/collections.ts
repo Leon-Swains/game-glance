@@ -24,12 +24,32 @@ export interface HomeCollection {
     id: string;
     name: string;
     count: number;
+    appIds?: number[];
 }
 
 interface CollectionLike {
     id?: unknown;
     displayName?: unknown;
     allApps?: unknown;
+}
+
+/** Extracts valid positive app IDs from collection app arrays (numbers, strings, or app objects). */
+function extractAppIds(apps: unknown): number[] {
+    if (!Array.isArray(apps)) return [];
+    const ids: number[] = [];
+    for (const item of apps) {
+        if (typeof item === 'number') {
+            if (item > 0) ids.push(item);
+        } else if (typeof item === 'string') {
+            const n = Number(item);
+            if (!Number.isNaN(n) && n > 0) ids.push(n);
+        } else if (item && typeof item === 'object') {
+            const raw = item as { appid?: unknown; appId?: unknown; nAppId?: unknown };
+            const id = Number(raw.appid ?? raw.appId ?? raw.nAppId);
+            if (!Number.isNaN(id) && id > 0) ids.push(id);
+        }
+    }
+    return ids;
 }
 
 /**
@@ -51,9 +71,10 @@ export function homeCollections(collections: unknown): HomeCollection[] {
         if (!c || typeof c !== 'object') continue;
         const id = typeof c.id === 'string' ? c.id : '';
         const name = typeof c.displayName === 'string' ? c.displayName : '';
-        const count = Array.isArray(c.allApps) ? c.allApps.length : 0;
+        const appIds = extractAppIds(c.allApps);
+        const count = appIds.length || (Array.isArray(c.allApps) ? c.allApps.length : 0);
         if (!id || !name || count === 0 || !offered(id)) continue;
-        list.push({ id, name: STEAM_NAMES[id]?.() ?? name, count });
+        list.push({ id, name: STEAM_NAMES[id]?.() ?? name, count, appIds });
     }
     const rank = (c: HomeCollection) => (FIRST.includes(c.id) ? FIRST.indexOf(c.id) : FIRST.length);
     return list.sort((a, b) => rank(a) - rank(b) || a.name.localeCompare(b.name));

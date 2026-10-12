@@ -11,12 +11,15 @@ const ORDER: Zone[] = ['actions', 'recents', 'tabs', 'feed'];
 
 /**
  * The zone above or below. Stops at the ends. `feedUp`: the feed row can take focus (the selected tab has
- * cards); when false, down from the tabs stays on the tabs.
+ * cards); when false, down from the tabs stays on the tabs. `hasTabs`: whether tabs exist (when all feed sections
+ * are disabled, Home has only actions and recents).
  */
-export function nextZone(zone: Zone, direction: 'up' | 'down', feedUp: boolean): Zone {
-    const zones = feedUp ? ORDER : ORDER.filter((z) => z !== 'feed');
+export function nextZone(zone: Zone, direction: 'up' | 'down', feedUp: boolean, hasTabs = true): Zone {
+    let zones = ORDER;
+    if (!hasTabs) zones = ['actions', 'recents'];
+    else if (!feedUp) zones = ['actions', 'recents', 'tabs'];
     const at = zones.indexOf(zone);
-    if (at < 0) return zone === 'feed' ? 'tabs' : zone;
+    if (at < 0) return hasTabs ? (zone === 'feed' ? 'tabs' : zone) : 'recents';
     const to = Math.min(zones.length - 1, Math.max(0, at + (direction === 'down' ? 1 : -1)));
     return zones[to];
 }
