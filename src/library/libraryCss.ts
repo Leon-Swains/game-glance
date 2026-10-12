@@ -357,7 +357,7 @@ export const LIBRARY_CSS = `
     height: 100% !important;
     display: flex !important;
     flex-direction: column !important;
-    padding: 12px 14px !important;
+    padding: ${d(14)} !important;
     gap: 6px !important;
     overflow-y: hidden !important;
     scrollbar-width: none !important;
@@ -375,11 +375,11 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-shrink: 0 !important;
     flex-grow: 0 !important;
-    height: clamp(${d(250)}, 42vh, ${d(360)}) !important;
-    max-height: ${d(360)} !important;
-    width: auto !important;
-    max-width: ${d(240)} !important;
+    width: 100% !important;
+    max-width: 100% !important;
     aspect-ratio: 2 / 3 !important;
+    height: auto !important;
+    max-height: clamp(${d(250)}, 44vh, ${d(380)}) !important;
     align-self: center !important;
     border-radius: 10px !important;
     overflow: hidden !important;
@@ -390,10 +390,11 @@ export const LIBRARY_CSS = `
 }
 
 .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(${d(205)}, 34vh, ${d(260)}) !important;
-    max-height: ${d(260)} !important;
-    max-width: ${d(260)} !important;
+    width: 100% !important;
+    max-width: 100% !important;
     aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    max-height: ${d(260)} !important;
 }
 
 .sgl-poster-img {
@@ -1254,7 +1255,7 @@ export const LIBRARY_CSS = `
         width: ${d(275)} !important;
         min-width: ${d(250)} !important;
         max-width: ${d(285)} !important;
-        padding: 12px 14px !important;
+        padding: ${d(14)} !important;
         gap: 6px !important;
         overflow-y: hidden !important;
         transform: translateZ(0) !important;
@@ -1265,21 +1266,22 @@ export const LIBRARY_CSS = `
         flex: 0 0 auto !important;
         flex-grow: 0 !important;
         flex-shrink: 0 !important;
-        height: clamp(${d(250)}, 42vh, ${d(360)}) !important;
-        max-height: ${d(360)} !important;
-        width: auto !important;
-        max-width: ${d(240)} !important;
+        width: 100% !important;
+        max-width: 100% !important;
         aspect-ratio: 2 / 3 !important;
+        height: auto !important;
+        max-height: clamp(${d(250)}, 44vh, ${d(380)}) !important;
         align-self: center !important;
         border-radius: 10px !important;
         box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
     }
 
     .sgl-poster-wrapper.sgl-poster-square {
-        height: clamp(${d(205)}, 34vh, ${d(260)}) !important;
-        max-height: ${d(260)} !important;
-        max-width: ${d(260)} !important;
+        width: 100% !important;
+        max-width: 100% !important;
         aspect-ratio: 1 / 1 !important;
+        height: auto !important;
+        max-height: ${d(260)} !important;
     }
 
     .sgl-title-box {
@@ -1550,7 +1552,7 @@ export const LIBRARY_CSS = `
     width: ${d(275)} !important;
     min-width: ${d(250)} !important;
     max-width: ${d(285)} !important;
-    padding: 12px 14px !important;
+    padding: ${d(14)} !important;
     gap: 6px !important;
     overflow-y: hidden !important;
     transform: translateZ(0) !important;
@@ -1560,20 +1562,21 @@ export const LIBRARY_CSS = `
     flex: 0 0 auto !important;
     flex-grow: 0 !important;
     flex-shrink: 0 !important;
-    height: clamp(${d(215)}, 34vh, ${d(305)}) !important;
-    max-height: ${d(305)} !important;
-    width: auto !important;
-    max-width: ${d(210)} !important;
+    width: 100% !important;
+    max-width: 100% !important;
     aspect-ratio: 2 / 3 !important;
+    height: auto !important;
+    max-height: clamp(${d(220)}, 40vh, ${d(330)}) !important;
     align-self: center !important;
     border-radius: 10px !important;
     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.75) !important;
 }
 .sgl-root.sgl-compact .sgl-poster-wrapper.sgl-poster-square {
-    height: clamp(${d(180)}, 29vh, ${d(230)}) !important;
-    max-height: ${d(230)} !important;
-    max-width: ${d(230)} !important;
+    width: 100% !important;
+    max-width: 100% !important;
     aspect-ratio: 1 / 1 !important;
+    height: auto !important;
+    max-height: ${d(240)} !important;
 }
 .sgl-root.sgl-compact .sgl-title-box {
     min-height: ${d(24)} !important;
@@ -1760,19 +1763,23 @@ export const LIBRARY_CSS = `
 
 /* Ultra-compact / 720p height optimization (e.g. 1280x720 or on-screen keyboard open) */
 @media (max-height: 720px) {
-    .sgl-poster-wrapper {
-        max-width: ${d(200)} !important;
-        height: clamp(${d(205)}, 31vh, ${d(290)}) !important;
-        max-height: ${d(290)} !important;
-    }
-    .sgl-poster-wrapper.sgl-poster-square {
-        max-width: ${d(215)} !important;
-        height: clamp(${d(170)}, 26vh, ${d(215)}) !important;
-        max-height: ${d(215)} !important;
-    }
     .sgl-inspector {
         gap: 5px !important;
-        padding: 10px 12px !important;
+        padding: ${d(10)} !important;
+    }
+    .sgl-poster-wrapper {
+        width: 100% !important;
+        max-width: 100% !important;
+        aspect-ratio: 2 / 3 !important;
+        height: auto !important;
+        max-height: clamp(${d(205)}, 36vh, ${d(300)}) !important;
+    }
+    .sgl-poster-wrapper.sgl-poster-square {
+        width: 100% !important;
+        max-width: 100% !important;
+        aspect-ratio: 1 / 1 !important;
+        height: auto !important;
+        max-height: ${d(220)} !important;
     }
     .sgl-title-box {
         min-height: ${d(22)} !important;
@@ -1959,10 +1966,11 @@ html body .sgl-root .sgl-inspector,
 body.LargeText .sgl-root .sgl-inspector,
 .LargeText .sgl-root .sgl-inspector,
 .sgl-root .sgl-inspector {
-    width: clamp(${d(240)}, 22vw, ${d(290)}) !important;
-    min-width: clamp(${d(240)}, 22vw, ${d(290)}) !important;
-    max-width: clamp(${d(240)}, 22vw, ${d(290)}) !important;
-    flex: 0 0 clamp(${d(240)}, 22vw, ${d(290)}) !important;
+    width: ${d(275)} !important;
+    min-width: ${d(250)} !important;
+    max-width: ${d(285)} !important;
+    flex: 0 0 ${d(275)} !important;
+    padding: ${d(14)} !important;
 }
 
 :root .sgl-root .sgl-poster-wrapper,
@@ -1971,9 +1979,11 @@ html body .sgl-root .sgl-poster-wrapper,
 body.LargeText .sgl-root .sgl-poster-wrapper,
 .LargeText .sgl-root .sgl-poster-wrapper,
 .sgl-root .sgl-poster-wrapper {
-    max-width: ${d(240)} !important;
-    height: clamp(${d(250)}, 42vh, ${d(360)}) !important;
-    max-height: ${d(360)} !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 2 / 3 !important;
+    height: auto !important;
+    max-height: clamp(${d(250)}, 44vh, ${d(380)}) !important;
     margin: 0 auto !important;
 }
 
@@ -1983,9 +1993,11 @@ html body .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 body.LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .LargeText .sgl-root .sgl-poster-wrapper.sgl-poster-square,
 .sgl-root .sgl-poster-wrapper.sgl-poster-square {
-    max-width: ${d(260)} !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    aspect-ratio: 1 / 1 !important;
+    height: auto !important;
     max-height: ${d(260)} !important;
-    height: clamp(${d(205)}, 34vh, ${d(260)}) !important;
     margin: 0 auto !important;
 }
 
