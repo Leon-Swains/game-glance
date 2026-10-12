@@ -16,6 +16,10 @@ describe('focusZones', () => {
         // No feed cards to go to: down from tabs stays on the tabs.
         expect(nextZone('tabs', 'down', false)).toBe('tabs');
         expect(nextZone('recents', 'down', false)).toBe('tabs');
+        // No feed sections at all (feedless home): down from recents stays on recents.
+        expect(nextZone('recents', 'down', false, false)).toBe('recents');
+        expect(nextZone('actions', 'down', false, false)).toBe('recents');
+        expect(nextZone('recents', 'up', false, false)).toBe('actions');
     });
 
     it('onBack: feed -> tabs -> the game cards, the action row -> the game cards; on the cards B is Steam\'s own (stock)', () => {

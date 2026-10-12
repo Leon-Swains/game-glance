@@ -34,6 +34,16 @@ describe('pickRecents', () => {
         expect(pickRecents(fixture, 2).map((g) => g.appId)).toEqual([3001, 3002]);
     });
 
+    it('includes game demos (app_type 8) and betas (app_type 65536)', () => {
+        const apps = [
+            { appid: 10, display_name: 'Factorio Demo', app_type: 8, rt_last_time_played: 1791000000, minutes_playtime_forever: 45 },
+            { appid: 20, display_name: 'Deadlock Playtest', app_type: 65536, rt_last_time_played: 1790900000, minutes_playtime_forever: 120 },
+            { appid: 30, display_name: 'Tool Server', app_type: 4, rt_last_time_played: 1790800000, minutes_playtime_forever: 10 },
+        ];
+        const ids = pickRecents(apps).map((g) => g.appId);
+        expect(ids).toEqual([10, 20]);
+    });
+
     it('of an empty list is empty', () => {
         expect(pickRecents([])).toEqual([]);
     });

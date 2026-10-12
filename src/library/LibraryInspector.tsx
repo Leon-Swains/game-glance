@@ -203,8 +203,6 @@ function InspectorGameCover({ game, onOpen }: { game: LibraryGameItem; onOpen?: 
 
     return (
         <div
-            role={onOpen ? 'button' : undefined}
-            tabIndex={onOpen ? 0 : undefined}
             onClick={(e) => {
                 if (!onOpen) return;
                 e.preventDefault();
@@ -319,17 +317,17 @@ export function LibraryInspector({
                     ) : (
                         <div
                             style={{
-                                width: 78,
-                                height: 117,
+                                width: 48,
+                                height: 72,
                                 display: 'flex',
                                 alignItems: 'center',
                                 justifyContent: 'center',
                                 background: '#161b24',
-                                borderRadius: 7,
+                                borderRadius: 5,
                                 border: '1px solid rgba(255,255,255,0.15)',
                             }}
                         >
-                            <FaFolderOpen size={32} color="var(--accent, #58a6ff)" />
+                            <FaFolderOpen size={20} color="var(--accent, #58a6ff)" />
                         </div>
                     )}
                 </div>
@@ -345,8 +343,8 @@ export function LibraryInspector({
 
                 <div className="sgl-stats-grid">
                     <div className="sgl-stat-card">
-                        <span className="sgl-stat-label">Total Games</span>
-                        <span className="sgl-stat-value">{collection.count}</span>
+                        <div className="sgl-stat-label">Total Games</div>
+                        <div className="sgl-stat-value">{collection.count}</div>
                     </div>
                 </div>
 
@@ -364,8 +362,8 @@ export function LibraryInspector({
                         }}
                         style={{ width: '100%' }}
                     >
-                        <FaFolderOpen size={13} />
-                        <span>Open Collection</span>
+                        <FaFolderOpen size={11} />
+                        <span className="sgl-btn-text">Open Collection</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
                 </div>
@@ -448,8 +446,8 @@ export function LibraryInspector({
             <div className="sgl-stats-grid">
                 {chips.map((chip) => (
                     <div key={chip.key} className="sgl-stat-card">
-                        <span className="sgl-stat-label">{chip.label}</span>
-                        <span className="sgl-stat-value">{chip.value}</span>
+                        <div className="sgl-stat-label">{chip.label}</div>
+                        <div className="sgl-stat-value">{chip.value}</div>
                         {typeof chip.progress === 'number' && (
                             <div className="sgl-stat-bar">
                                 <div
@@ -480,8 +478,8 @@ export function LibraryInspector({
                         }}
                         style={{ width: '100%' }}
                     >
-                        <FaMusic size={12} />
-                        <span>Open Soundtrack</span>
+                        <FaMusic size={11} />
+                        <span className="sgl-btn-text">Open Soundtrack</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
                 </div>
@@ -496,8 +494,8 @@ export function LibraryInspector({
                             onDetails?.(poster ?? e.currentTarget);
                         }}
                     >
-                        <FaInfoCircle size={13} />
-                        <span>Details</span>
+                        <FaInfoCircle size={11} />
+                        <span className="sgl-btn-text">Details</span>
                         <span className="sgl-btn-badge">A</span>
                     </button>
                     <button
@@ -508,8 +506,8 @@ export function LibraryInspector({
                             onPlay?.();
                         }}
                     >
-                        <FaPlay size={11} />
-                        <span>{playLabel}</span>
+                        <FaPlay size={9} />
+                        <span className="sgl-btn-text">{playLabel}</span>
                         <span className="sgl-btn-badge">Y</span>
                     </button>
                 </div>

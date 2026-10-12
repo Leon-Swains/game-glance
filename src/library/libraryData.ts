@@ -88,8 +88,9 @@ const steam = () => globalThis as unknown as StoreGlobals;
 
 export const GAME_APP_TYPE = 1;
 export const TOOL_APP_TYPE = 4;
-export const SOUNDTRACK_APP_TYPE = 8;
-export const DEMO_APP_TYPE = 64;
+export const DEMO_APP_TYPE = 8;
+export const MUSIC_APP_TYPE = 8192;
+export const BETA_APP_TYPE = 65536;
 
 export function isToolOrServerName(rawName: string): boolean {
     const name = rawName.toLowerCase().trim();
@@ -130,8 +131,8 @@ export function isGameOrShortcutApp(app: RawApp): boolean {
         return false;
     }
 
-    // Soundtracks (app_type 8) are separated into the dedicated Soundtracks tab
-    if (type === SOUNDTRACK_APP_TYPE || (typeof type === 'number' && (type & SOUNDTRACK_APP_TYPE) !== 0)) {
+    // Music / Soundtracks (app_type 8192 or bitmask) are separated into the dedicated Soundtracks tab
+    if (type === MUSIC_APP_TYPE || (typeof type === 'number' && (type & MUSIC_APP_TYPE) !== 0)) {
         return false;
     }
 
@@ -150,8 +151,15 @@ export function isGameOrShortcutApp(app: RawApp): boolean {
     // Shortcuts / Non-Steam are games
     if (isShortcutApp(app)) return true;
 
-    // Steam games (type 1) or demos (type 64)
-    if (type === GAME_APP_TYPE || type === DEMO_APP_TYPE) return true;
+    // Steam games (type 1), demos (type 8), or betas/playtests (type 65536)
+    if (
+        type === GAME_APP_TYPE ||
+        type === DEMO_APP_TYPE ||
+        type === BETA_APP_TYPE ||
+        (typeof type === 'number' && ((type & GAME_APP_TYPE) !== 0 || (type & DEMO_APP_TYPE) !== 0 || (type & BETA_APP_TYPE) !== 0))
+    ) {
+        return true;
+    }
 
     // If type is undefined, accept if not marked as a tool/server by name
     if (type === undefined) {
@@ -258,6 +266,7 @@ function isSystemCollection(col: Record<string, unknown>, id: string, name: stri
 
 export function readRawApps(): {
     installed: RawApp[];
+    installedAppIds: Set<number>;
     deckCompat: RawApp[];
     all: RawApp[];
     favorites: RawApp[];
@@ -383,9 +392,13 @@ export function readRawApps(): {
 
     // Installed apps
     const installed = extractCollectionApps(cStore?.localGamesCollection);
+    const installedAppIds = new Set<number>(installed.map((a) => a.appid));
     if (installed.length === 0) {
         for (const a of allAppsMap.values()) {
-            if (a.installed) installed.push(a);
+            if (a.installed) {
+                installed.push(a);
+                installedAppIds.add(a.appid);
+            }
         }
     }
 
@@ -508,14 +521,16 @@ export function readRawApps(): {
         }
     }
 
-    // Also check all apps for app_type === 8
+    // Also check all apps for music / soundtrack app_type (8192)
     for (const a of allAppsMap.values()) {
         if (soundtrackAppIds.has(a.appid)) continue;
         const overview = s.appStore?.GetAppOverviewByAppID?.(a.appid);
         const isOst =
-            a.app_type === 8 ||
-            Boolean(a.app_type && (a.app_type & 8) !== 0) ||
-            overview?.app_type === 8;
+            a.app_type === MUSIC_APP_TYPE ||
+            Boolean(a.app_type && (a.app_type & MUSIC_APP_TYPE) !== 0) ||
+            overview?.app_type === MUSIC_APP_TYPE ||
+            (overview as Record<string, unknown> | undefined)?.bIsSoundtrack === true ||
+            (overview as Record<string, unknown> | undefined)?.bIsMusic === true;
         if (isOst) {
             soundtrackAppIds.add(a.appid);
             soundtracks.push(a);
@@ -546,6 +561,7 @@ export function readRawApps(): {
 
     return {
         installed,
+        installedAppIds,
         deckCompat,
         all,
         favorites,
@@ -557,7 +573,7 @@ export function readRawApps(): {
     };
 }
 
-export function rawAppToItem(app: RawApp, isRunning: boolean, soundtrackAppIds?: Set<number>): LibraryGameItem {
+export function rawAppToItem(app: RawApp, isRunning: boolean, soundtrackAppIds?: Set<number>, installedAppIds?: Set<number>): LibraryGameItem {
     const s = steam();
     let overview = s.appStore?.GetAppOverviewByAppID?.(app.appid) ?? app;
     if ((!overview || overview === app) && (app.appid < 0 || app.appid > 0x7fffffff)) {
@@ -572,10 +588,11 @@ export function rawAppToItem(app: RawApp, isRunning: boolean, soundtrackAppIds?:
     const info = readGameInfo(overview, details);
     const isSoundtrack =
         soundtrackAppIds?.has(app.appid) === true ||
-        app.app_type === 8 ||
-        Boolean(app.app_type && (app.app_type & 8) !== 0) ||
-        (overview as { app_type?: number } | undefined)?.app_type === 8 ||
+        app.app_type === MUSIC_APP_TYPE ||
+        Boolean(app.app_type && (app.app_type & MUSIC_APP_TYPE) !== 0) ||
+        (overview as { app_type?: number } | undefined)?.app_type === MUSIC_APP_TYPE ||
         (overview as { bIsSoundtrack?: boolean } | undefined)?.bIsSoundtrack === true ||
+        (overview as { bIsMusic?: boolean } | undefined)?.bIsMusic === true ||
         (app.display_name?.toLowerCase().includes('soundtrack') ?? false) ||
         (app.display_name?.toLowerCase().includes('banda sonora') ?? false) ||
         (app.display_name?.toLowerCase().includes(' - ost') ?? false);
@@ -587,13 +604,26 @@ export function rawAppToItem(app: RawApp, isRunning: boolean, soundtrackAppIds?:
     const size = typeof app.size_on_disk === 'number' ? app.size_on_disk : Number(app.size_on_disk) || undefined;
     const gameId = app.m_gameid ?? ((overview as Record<string, unknown> | undefined)?.m_gameid as string | undefined);
 
+    const overviewRec = overview as Record<string, unknown> | undefined;
+    const isInstalled = isShortcutApp(app)
+        ? true
+        : installedAppIds && installedAppIds.size > 0
+            ? installedAppIds.has(app.appid)
+            : typeof app.installed === 'boolean'
+                ? app.installed
+                : typeof overviewRec?.installed === 'boolean'
+                    ? Boolean(overviewRec.installed)
+                    : typeof (overviewRec?.local_per_client_data as Record<string, unknown> | undefined)?.installed === 'boolean'
+                        ? Boolean((overviewRec?.local_per_client_data as Record<string, unknown>).installed)
+                        : false;
+
     return {
         appId: app.appid,
         name: info.name || app.display_name || `App ${app.appid}`,
         isShortcut: info.isShortcut,
         isSoundtrack,
         gameId,
-        installed: app.installed ?? true,
+        installed: isInstalled,
         running: isRunning,
         playedMinutes: info.playedMinutes,
         achievements: isSoundtrack ? null : info.achievements,
@@ -641,7 +671,7 @@ export function buildCategories(mockGames?: LibraryGameItem[]): LibraryCategory[
         return baseCategories;
     }
 
-    const { installed, deckCompat, all, favorites, shortcuts, soundtracks, soundtrackAppIds, userCollections, runningAppIds } = readRawApps();
+    const { installed, installedAppIds, deckCompat, all, favorites, shortcuts, soundtracks, soundtrackAppIds, userCollections, runningAppIds } = readRawApps();
 
     const toItems = (apps: RawApp[], forceSoundtrack = false): LibraryGameItem[] => {
         // Deduplicate by appid and sort alphabetically by name
@@ -650,7 +680,7 @@ export function buildCategories(mockGames?: LibraryGameItem[]): LibraryCategory[
         for (const app of apps) {
             if (!seen.has(app.appid)) {
                 seen.add(app.appid);
-                const item = rawAppToItem(app, runningAppIds.has(app.appid), soundtrackAppIds);
+                const item = rawAppToItem(app, runningAppIds.has(app.appid), soundtrackAppIds, installedAppIds);
                 if (forceSoundtrack) item.isSoundtrack = true;
                 list.push(item);
             }
@@ -660,8 +690,8 @@ export function buildCategories(mockGames?: LibraryGameItem[]): LibraryCategory[
 
     const isOst = (app: RawApp) =>
         soundtrackAppIds.has(app.appid) ||
-        app.app_type === 8 ||
-        Boolean(app.app_type && (app.app_type & 8) !== 0);
+        app.app_type === MUSIC_APP_TYPE ||
+        Boolean(app.app_type && (app.app_type & MUSIC_APP_TYPE) !== 0);
 
     const isGameApp = (app: RawApp) => isGameOrShortcutApp(app) && !isOst(app);
     const isSteamGame = (app: RawApp) => isSteamGameApp(app) && !isOst(app);

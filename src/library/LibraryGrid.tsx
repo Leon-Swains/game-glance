@@ -18,6 +18,7 @@ interface LibraryGridProps {
     isCollectionsView?: boolean;
     selectedIndex: number;
     accent: string;
+    dimUninstalled?: boolean;
     columns?: number;
     onSelectGame: (index: number) => void;
     onLaunchGame?: (game: LibraryGameItem, sourceEl?: HTMLElement) => void;
@@ -26,13 +27,18 @@ interface LibraryGridProps {
     isGridFocused?: boolean;
 }
 
-interface BannerCardProps {
+export interface BannerCardProps {
     game: LibraryGameItem;
+    index?: number;
     isFocused: boolean;
     accent: string;
-    onClick: () => void;
-    onDoubleClick: (sourceEl?: HTMLElement) => void;
+    dimUninstalled?: boolean;
+    onClick?: () => void;
+    onSelectGame?: (index: number) => void;
+    onDoubleClick?: (sourceEl?: HTMLElement) => void;
+    onLaunchGame?: (game: LibraryGameItem, sourceEl?: HTMLElement) => void;
     onContextMenu?: (e: React.MouseEvent<HTMLDivElement>) => void;
+    onContextAction?: (game: LibraryGameItem, index: number, anchorEl: HTMLElement) => void;
     isDragSuppressed?: () => boolean;
 }
 
@@ -167,7 +173,21 @@ export function resolveGameArt(game: LibraryGameItem): Promise<ResolvedCardArt> 
     return promise;
 }
 
-export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDoubleClick, onContextMenu, isDragSuppressed }: BannerCardProps) {
+export const BannerCard = React.memo(
+    function BannerCard({
+        game,
+        index,
+        isFocused,
+        accent = '#1a9fff',
+        dimUninstalled,
+        onClick,
+        onSelectGame,
+        onDoubleClick,
+        onLaunchGame,
+        onContextMenu,
+        onContextAction,
+        isDragSuppressed,
+    }: BannerCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
     const artworkVersion = useArtworkVersion();
 
@@ -207,16 +227,19 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
         }
     }, [isFocused]);
 
+    const isUninstalled = Boolean(dimUninstalled && !game.installed);
+    const cardAccent = isUninstalled ? '#707784' : accent;
+
     return (
         <div
             ref={cardRef}
             role="button"
             tabIndex={0}
             data-app-id={game.appId}
-            className={`sgl-card${isFocused ? ' focused' : ''}`}
+            className={`sgl-card${isFocused ? ' focused' : ''}${isUninstalled ? ' sgl-card-uninstalled' : ''}`}
             style={{
-                '--accent': accent,
-                '--accent-glow': `${accent}55`,
+                '--accent': cardAccent,
+                '--accent-glow': `${cardAccent}55`,
             } as React.CSSProperties}
             onClick={(e) => {
                 e.preventDefault();
@@ -225,20 +248,36 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
                     return;
                 }
                 if (isFocused) {
-                    onDoubleClick(e.currentTarget);
+                    if (onLaunchGame) {
+                        onLaunchGame(game, e.currentTarget);
+                    } else {
+                        onDoubleClick?.(e.currentTarget);
+                    }
                 } else {
-                    onClick();
+                    if (onSelectGame && index !== undefined) {
+                        onSelectGame(index);
+                    } else {
+                        onClick?.();
+                    }
                 }
             }}
             onDoubleClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onDoubleClick(e.currentTarget);
+                if (onLaunchGame) {
+                    onLaunchGame(game, e.currentTarget);
+                } else {
+                    onDoubleClick?.(e.currentTarget);
+                }
             }}
             onContextMenu={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onContextMenu?.(e);
+                if (onContextAction && index !== undefined) {
+                    onContextAction(game, index, e.currentTarget);
+                } else {
+                    onContextMenu?.(e);
+                }
             }}
         >
             {/* Primary Banner (Wide image) */}
@@ -288,14 +327,31 @@ export function BannerCard({ game, isFocused, accent = '#1a9fff', onClick, onDou
             {game.running && (
                 <div className="sgl-card-running-badge">
                     <div className="sgl-running-dot" />
-                    <span>PLAYING</span>
+                    <span className="sgl-card-running-text">PLAYING</span>
                 </div>
             )}
 
             <div className="sgl-card-bar" />
         </div>
     );
-}
+},
+(prev, next) => {
+    if (prev.index !== next.index) return false;
+    if (prev.isFocused !== next.isFocused) return false;
+    if (prev.game.appId !== next.game.appId) return false;
+    if (prev.game.installed !== next.game.installed) return false;
+    if (prev.game.running !== next.game.running) return false;
+    if (prev.dimUninstalled !== next.dimUninstalled) return false;
+    if (prev.onSelectGame !== next.onSelectGame) return false;
+    if (prev.onClick !== next.onClick) return false;
+    if (prev.onLaunchGame !== next.onLaunchGame) return false;
+    if (prev.onDoubleClick !== next.onDoubleClick) return false;
+    if (prev.onContextAction !== next.onContextAction) return false;
+    if (prev.onContextMenu !== next.onContextMenu) return false;
+    if (prev.isDragSuppressed !== next.isDragSuppressed) return false;
+    if (next.isFocused && prev.accent !== next.accent) return false;
+    return true;
+});
 
 function MiniCover({ game, className }: { game?: LibraryGameItem; className: string }) {
     const artworkVersion = useArtworkVersion();
@@ -345,14 +401,16 @@ function MiniCover({ game, className }: { game?: LibraryGameItem; className: str
 
 interface CollectionCardProps {
     collection: LibraryCollectionItem;
+    index?: number;
     isFocused: boolean;
     accent: string;
-    onClick: () => void;
+    onClick?: () => void;
+    onSelectGame?: (index: number) => void;
     onDoubleClick: () => void;
     isDragSuppressed?: () => boolean;
 }
 
-function CollectionCard({ collection, isFocused, accent, onClick, onDoubleClick, isDragSuppressed }: CollectionCardProps) {
+function CollectionCard({ collection, index, isFocused, accent, onClick, onSelectGame, onDoubleClick, isDragSuppressed }: CollectionCardProps) {
     const cardRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
@@ -397,7 +455,11 @@ function CollectionCard({ collection, isFocused, accent, onClick, onDoubleClick,
                 if (isFocused) {
                     onDoubleClick();
                 } else {
-                    onClick();
+                    if (onSelectGame && index !== undefined) {
+                        onSelectGame(index);
+                    } else {
+                        onClick?.();
+                    }
                 }
             }}
             onDoubleClick={(e) => {
@@ -444,8 +506,8 @@ function CollectionCard({ collection, isFocused, accent, onClick, onDoubleClick,
             </div>
 
             <div className="sgl-col-footer">
-                <span className="sgl-col-footer-title">{collection.name}</span>
-                <span className="sgl-col-footer-badge">{collection.count} {collection.count === 1 ? 'GAME' : 'GAMES'}</span>
+                <div className="sgl-col-footer-title">{collection.name}</div>
+                <div className="sgl-col-footer-badge">{collection.count} {collection.count === 1 ? 'GAME' : 'GAMES'}</div>
             </div>
 
             <div className="sgl-card-bar" />
@@ -459,6 +521,7 @@ export function LibraryGrid({
     isCollectionsView = false,
     selectedIndex,
     accent,
+    dimUninstalled,
     columns = 3,
     onSelectGame,
     onLaunchGame,
@@ -650,9 +713,10 @@ export function LibraryGrid({
                         <CollectionCard
                             key={`col-${col.id}-${idx}`}
                             collection={col}
+                            index={idx}
                             isFocused={isGridFocused && idx === selectedIndex}
                             accent={accent}
-                            onClick={() => onSelectGame(idx)}
+                            onSelectGame={onSelectGame}
                             onDoubleClick={() => onOpenCollection?.(col)}
                             isDragSuppressed={isDragSuppressed}
                         />
@@ -693,13 +757,15 @@ export function LibraryGrid({
             <div className="sgl-grid" style={{ '--sgl-columns': columns } as React.CSSProperties}>
                 {games.map((game, idx) => (
                     <BannerCard
-                        key={`${game.appId}-${game.isSoundtrack ? 'ost' : 'game'}`}
+                        key={`${game.appId}-${game.isSoundtrack ? 'ost' : 'game'}-${idx}`}
                         game={game}
+                        index={idx}
                         isFocused={isGridFocused && idx === selectedIndex}
                         accent={accent}
-                        onClick={() => onSelectGame(idx)}
-                        onDoubleClick={(el) => onLaunchGame?.(game, el)}
-                        onContextMenu={(e) => onContextMenu?.(game, idx, e.currentTarget)}
+                        dimUninstalled={dimUninstalled}
+                        onSelectGame={onSelectGame}
+                        onLaunchGame={onLaunchGame}
+                        onContextAction={onContextMenu}
                         isDragSuppressed={isDragSuppressed}
                     />
                 ))}

@@ -64,7 +64,25 @@ function UpdatesSection() {
 }
 
 export function SettingsPanel() {
-    const { enabled, autoPreload, spotlightHome, spotlightLibrary, libraryGridColumns, wishlistDeals, cleanPage, homeStatusBar, gameLogo, homeRow, homeRowSort } = useSettings();
+    const {
+        enabled,
+        autoPreload,
+        spotlightHome,
+        spotlightLibrary,
+        libraryGridColumns,
+        wishlistDeals,
+        cleanPage,
+        zoomTransition,
+        dimUninstalledGames,
+        homeStatusBar,
+        gameLogo,
+        homeRow,
+        homeRowSort,
+        homeWhatsNew,
+        homeFriends,
+        homeRecommended,
+        homeCollections,
+    } = useSettings();
     // Read when the panel opens, so a collection made since shows up.
     const collections = useMemo(steamHomeCollections, []);
     const rowChosen = collections.some((c) => c.id === homeRow) ? homeRow : RECENT_ROW;
@@ -171,6 +189,38 @@ export function SettingsPanel() {
                 )}
                 <PanelSectionRow>
                     <ToggleField
+                        label="What's New section"
+                        description="Shows updates, announcements, and patch notes below the carousel."
+                        checked={homeWhatsNew}
+                        onChange={(value) => settings.setHomeWhatsNew(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Friends section"
+                        description="Shows friends activity and what they're playing below the carousel."
+                        checked={homeFriends}
+                        onChange={(value) => settings.setHomeFriends(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Recommended section"
+                        description="Shows recommendations and community highlights below the carousel."
+                        checked={homeRecommended}
+                        onChange={(value) => settings.setHomeRecommended(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Collections section"
+                        description="Shows library collection shortcuts below the carousel."
+                        checked={homeCollections}
+                        onChange={(value) => settings.setHomeCollections(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
                         label="Show wishlist deals"
                         description="Sends your Steam ID to Steam's public store to find games on sale from your wishlist. Off by default."
                         checked={wishlistDeals}
@@ -208,6 +258,24 @@ export function SettingsPanel() {
                         />
                     </PanelSectionRow>
                 )}
+            </PanelSection>
+            <PanelSection title="Visuals & Effects">
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Zoom into full screen"
+                        description="Smoothly expands game art into full screen when opening game details from Home and Library. Off navigates directly."
+                        checked={zoomTransition}
+                        onChange={(value) => settings.setZoomTransition(value)}
+                    />
+                </PanelSectionRow>
+                <PanelSectionRow>
+                    <ToggleField
+                        label="Unhighlight uninstalled games"
+                        description="Applies neutral gray accents and grayscale tones to games in the library grid that are not installed on this device."
+                        checked={dimUninstalledGames}
+                        onChange={(value) => settings.setDimUninstalledGames(value)}
+                    />
+                </PanelSectionRow>
             </PanelSection>
             <PanelSection title="HowLongToBeat match">
                 {game ? (

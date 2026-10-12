@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Focusable, GamepadButton, GamepadEvent, Navigation } from '@decky/ui';
 import { LOG_PREFIX } from '../constants';
 import { cache } from '../data/cache';
 import { HltbResult, lookupHltb } from '../data/hltb';
-import { useSettings } from '../data/settings';
+import { settings, useSettings } from '../data/settings';
 import { getDescription, peekSteamLanguage } from '../data/steam';
 import { openGameActions } from '../home/ActionRow';
 import { accentFor, DEFAULT_ACCENT, legibleAccent } from '../home/accent';
@@ -15,12 +15,63 @@ import { LibraryCategoryBar } from './LibraryCategoryBar';
 import { mountOpenOverlay } from '../home/OpenOverlay';
 import { createOpenTransition, DOMRectLike, OpenTransition, usableRect } from '../home/openTransition';
 import { gameOpenArt } from '../home/homeNav';
-import { cssLayers } from '../home/homeView';
+import { cssLayers, usableSize } from '../home/homeView';
+import { homeCanvas } from '../home/scale';
 import { cardArtMemo, LibraryGrid } from './LibraryGrid';
 import { LibraryInspector } from './LibraryInspector';
 import { LIBRARY_CSS } from './libraryCss';
 import { buildCategories, LibraryCategory, LibraryCollectionItem, LibraryGameItem } from './libraryData';
 import { markLeavingLibrary, noteLibrary, resetLibraryMemory, takeLibraryRestore } from './libraryMemory';
+
+interface BoxSize {
+    width: number;
+    height: number;
+}
+
+function useBoxSize(ref: RefObject<HTMLDivElement | null>): BoxSize | null {
+    const [size, setSize] = useState<BoxSize | null>(null);
+    useLayoutEffect(() => {
+        const el = ref.current;
+        if (!el) return undefined;
+        const view = (el.ownerDocument?.defaultView ?? null) as (Window & { ResizeObserver?: typeof ResizeObserver }) | null;
+        const measure = () => {
+            try {
+                const rect = { width: el.offsetWidth, height: el.offsetHeight };
+                if (!usableSize(rect.width, rect.height)) return;
+                setSize((old) => (old && old.width === rect.width && old.height === rect.height ? old : { width: rect.width, height: rect.height }));
+            } catch {
+                // keep the last size
+            }
+        };
+        measure();
+        let observer: ResizeObserver | null = null;
+        try {
+            const Observer = view?.ResizeObserver ?? (typeof ResizeObserver === 'function' ? ResizeObserver : undefined);
+            if (Observer) {
+                observer = new Observer(() => measure());
+                observer.observe(el);
+            }
+        } catch {
+            observer = null;
+        }
+        if (!observer) {
+            try {
+                view?.addEventListener('resize', measure);
+            } catch {
+                // no way to follow resizes
+            }
+        }
+        return () => {
+            try {
+                if (observer) observer.disconnect();
+                else view?.removeEventListener('resize', measure);
+            } catch {
+                // window already gone
+            }
+        };
+    }, [ref]);
+    return size;
+}
 
 interface SpotlightLibraryProps {
     mockGames?: LibraryGameItem[];
@@ -114,6 +165,15 @@ export function getLibraryTransition(): OpenTransition {
 export function openLibraryGameDetails(game: LibraryGameItem, sourceEl?: HTMLElement | null) {
     markLeavingLibrary();
 
+    if (!settings.get().zoomTransition) {
+        try {
+            Navigation.Navigate(`/library/app/${game.appId}`);
+        } catch {
+            // ignore
+        }
+        return;
+    }
+
     let rect: DOMRectLike | null = null;
     try {
         const hasDoc = typeof document !== 'undefined';
@@ -154,6 +214,9 @@ export function openLibraryGameDetails(game: LibraryGameItem, sourceEl?: HTMLEle
 }
 
 export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) {
+    const rootRef = useRef<HTMLDivElement | null>(null);
+    const size = useBoxSize(rootRef);
+    const canvas = homeCanvas(size?.width ?? 0, size?.height ?? 0);
     const currentSettings = useSettings();
     const columns = Math.min(7, Math.max(3, currentSettings.libraryGridColumns ?? 3));
     const categories: LibraryCategory[] = useMemo(() => buildCategories(mockGames), [mockGames]);
@@ -460,15 +523,21 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
             return;
         }
 
-        handleDetails();
-    }, [handleDetails, handleOpenCollection, isCollectionsTab, isInsideSubCollection]);
+        const sourceCard = (
+            document.querySelector('.sgl-card.focused') ??
+            document.querySelector(`.sgl-card[data-app-id="${selectedGame?.appId}"]`) ??
+            document.querySelector('.sgl-poster-wrapper')
+        ) as HTMLElement | null;
+
+        handleDetails(selectedGame, sourceCard);
+    }, [handleDetails, handleOpenCollection, isCollectionsTab, isInsideSubCollection, selectedGame]);
 
     // Activation on the Focusable root container. Guard against synthetic/bubbled mouse pointer clicks
     // so mouse clicks on background or items never trigger an accidental launch of the selected game.
     const handleRootActivate = useCallback((e?: unknown) => {
         if (e && typeof e === 'object') {
             const evt = e as { type?: string; clientX?: number; clientY?: number; pointerType?: string };
-            if (evt.type === 'click' || evt.pointerType === 'mouse') {
+            if (evt.type === 'click' || evt.pointerType === 'mouse' || evt.pointerType === 'touch') {
                 return;
             }
             if (typeof evt.clientX === 'number' && typeof evt.clientY === 'number' && (evt.clientX > 0 || evt.clientY > 0)) {
@@ -548,8 +617,8 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 return;
             }
 
-            // A Button: Details / Open Collection (OK = 1)
-            if (btn === GamepadButton.OK || btn === 1) {
+            // A Button: Details / Open Collection (OK = 1 in GamepadButton, or 0 in ControllerInputGamepadButton / raw Gamepad API)
+            if (btn === GamepadButton.OK || btn === 1 || btn === 0) {
                 evt.preventDefault?.();
                 evt.stopPropagation?.();
                 onActivate();
@@ -779,15 +848,20 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
 
     return (
         <Focusable
+            ref={rootRef as unknown as React.Ref<HTMLDivElement>}
             className={`sgl-root${compact ? ' sgl-compact' : ''}`}
             preferredFocus={true}
             noFocusRing
             tabIndex={0}
             style={{
+                '--sgl-d': size ? `${canvas.scale}px` : undefined,
                 '--accent': gameAccent,
                 '--glance-accent': gameAccent,
                 '--glance-accent-text': legibleAccent(gameAccent),
                 '--accent-glow': `${gameAccent}55`,
+                lineHeight: 'normal',
+                WebkitTextSizeAdjust: '100%',
+                textSizeAdjust: '100%',
             } as React.CSSProperties}
             onGamepadFocus={() => {
                 // Keep the active focus zone (grid by default or as restored from memory)
@@ -829,7 +903,7 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                     game={selectedGame}
                     collection={selectedCollectionItem}
                     isCollectionView={isCollectionsTab && !isInsideSubCollection}
-                    accent={gameAccent}
+                    accent={Boolean(currentSettings.dimUninstalledGames && selectedGame && !selectedGame.installed) ? '#707784' : gameAccent}
                     description={gameDesc}
                     hltbMainHours={hltbHours}
                     preferLogos={currentSettings.gameLogo}
@@ -839,11 +913,13 @@ export function SpotlightLibrary({ mockGames, compact }: SpotlightLibraryProps) 
                 />
 
                 <LibraryGrid
+                    key={activeCategoryId + (selectedCollectionId ? `-${selectedCollectionId}` : '')}
                     games={currentGames}
                     collections={currentCollections}
                     isCollectionsView={isCollectionsTab && !isInsideSubCollection}
                     selectedIndex={selectedGameIdx}
                     accent={gameAccent}
+                    dimUninstalled={Boolean(currentSettings.dimUninstalledGames)}
                     columns={columns}
                     isGridFocused={focusZone === 'grid'}
                     onSelectGame={handleSelectGame}

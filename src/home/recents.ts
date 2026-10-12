@@ -1,4 +1,4 @@
-import { GAME_APP_TYPE, SHORTCUT_APP_TYPE } from '../data/installedGames';
+import { BETA_APP_TYPE, DEMO_APP_TYPE, GAME_APP_TYPE, SHORTCUT_APP_TYPE } from '../data/installedGames';
 import { tr } from '../i18n/steamText';
 
 export interface RawApp {
@@ -24,7 +24,11 @@ export interface RecentGame {
     addedAt: number;
 }
 
-const isGameOrShortcut = (a: RawApp) => a.app_type === GAME_APP_TYPE || a.app_type === SHORTCUT_APP_TYPE;
+const isGameOrShortcut = (a: RawApp) =>
+    a.app_type === GAME_APP_TYPE ||
+    a.app_type === DEMO_APP_TYPE ||
+    a.app_type === BETA_APP_TYPE ||
+    a.app_type === SHORTCUT_APP_TYPE;
 
 /** When `a` was added to the library: Steam's purchase time, else its recent activity time; 0 when neither is known. */
 export function addedTime(a: RawApp): number {

@@ -1,5 +1,7 @@
 import { Navigation } from '@decky/ui';
 import { LOG_PREFIX } from '../constants';
+import { settings } from '../data/settings';
+import { noteLibrary } from '../library/libraryMemory';
 import { browserStores, capsuleUrls, heroUrls, landscapeUrls } from './artwork';
 import { markLeaving } from './homeMemory';
 import { cssLayers, openArtLayers, wideArt } from './homeView';
@@ -103,6 +105,32 @@ export function openLibrary() {
 }
 
 /**
+ * Opens a library collection directly: when Spotlight Library is enabled, prepares the library memory to restore
+ * straight to that sub-collection (or Favorites/Installed categories) and opens the library; in native Steam,
+ * navigates to Steam's collection path `/library/collection/:id`.
+ */
+export function openCollection(collectionId: string) {
+    markLeaving();
+    try {
+        if (settings.get().spotlightLibrary) {
+            const isFav = collectionId === 'favorite' || collectionId === 'favorites';
+            const isInstalled = collectionId === 'local-install' || collectionId === 'installed';
+            noteLibrary({
+                categoryId: isFav ? 'favorites' : isInstalled ? 'installed' : 'collections',
+                subCollectionId: isFav || isInstalled ? null : collectionId,
+                focusZone: 'grid',
+            });
+            openLibrary();
+            return;
+        }
+        Navigation.Navigate(`/library/collection/${collectionId}`);
+    } catch (error) {
+        console.warn(`${LOG_PREFIX} Home: could not open collection`, error);
+        openLibrary();
+    }
+}
+
+/**
  * Moves gamepad focus to a Home element (the handoff's "focus item 0 via a ref"): the one mechanism used by the
  * restore, the Library card hand-off and every B step (tabs -> the Play pill, feed -> tabs), so there is a single fix point.
  * Steam's gamepad focus normally follows DOM focus; when it does not (Steam's window without system focus), the
@@ -183,6 +211,10 @@ function controller(): OpenTransition {
  */
 export function openGame(appId: number, source: HTMLElement | null | undefined, art: string[]) {
     markLeaving();
+    if (!settings.get().zoomTransition) {
+        openPage(appId);
+        return;
+    }
     let rect: DOMRectLike | null = null;
     try {
         leavingHome = (source?.closest?.('.gh-root') as HTMLElement | null) ?? null;

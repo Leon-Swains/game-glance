@@ -29,7 +29,7 @@ import { TrendingCard, trendingGames } from './trending';
 import { PlayNextCandidate, RecommendedCard, scorePlayNext } from './playNext';
 import { DealCard, dealCards } from './recommended';
 import { fillMissing } from './homeView';
-import { homeCollections, pickCollectionGames, RECENT_ROW, RowSort } from './collections';
+import { HomeCollection, homeCollections, pickCollectionGames, RECENT_ROW, RowSort, steamHomeCollections } from './collections';
 import { formatLastPlayed, mergeRecentSources, pickHomeRecents, pickRecents, RawApp, RecentGame } from './recents';
 import { getWishlistDeals } from './wishlist';
 import { pageHidden } from './pageVisible';
@@ -82,6 +82,8 @@ export interface HomeData {
     recommended: RecommendedCard[];
     /** Wishlist sales for the Recommended tab's second row (only with Show wishlist deals on); biggest discount first. */
     deals: DealCard[];
+    /** Library collections for the Collections tab shortcut cards. */
+    collections: HomeCollection[];
 }
 
 type AnyApp = RawApp & { installed?: boolean; m_gameid?: string; appid: number };
@@ -652,10 +654,11 @@ export function useHomeData(focusIndex = 0): HomeData {
     const derivedTrending = useMemo(() => guarded('trending', () => trendingGames(rawFriends, lastGames, appName, inLibrary, Date.now()), []), [rawFriends, lastGames]);
     const trending = steamTrending && steamTrending.length > 0 ? steamTrending : derivedTrending;
     const { cards: recommended, deals } = useRecommended(games, wishlistDeals, true);
+    const collections = useMemo(() => guarded('collections', steamHomeCollections, []), []);
 
     const focusedRunning = appId !== null && isRunning(appId);
     const { download, installed: installedNow, status: pillStatus } = useDownload(appId, focused?.installed ?? false);
     const focusedLive = useMemo(() => (focused && focused.installed !== installedNow ? { ...focused, installed: installedNow } : focused), [focused, installedNow]);
 
-    return { games, recentsSettled, focused: focusedLive, focusedRunning, download, pillStatus, detailsVersion, locale, lastPlayedLabel, focusedIsNew, rowCollection, chips, source, libraryChips: library, accent, news, updated, friends, friendsOnline, trending, recommended, deals };
+    return { games, recentsSettled, focused: focusedLive, focusedRunning, download, pillStatus, detailsVersion, locale, lastPlayedLabel, focusedIsNew, rowCollection, chips, source, libraryChips: library, accent, news, updated, friends, friendsOnline, trending, recommended, deals, collections };
 }

@@ -125,7 +125,8 @@ export function SpotlightHome() {
     // the first game and then jumps. `restoring` also keeps the Play pill from claiming focus while it runs.
     const [restore] = useState(takeRestore);
     // Home is clean: the What's new, Friends and Recommended tabs are always there (Down reaches them) but stay out of sight until focus is in them.
-    const { homeStatusBar, gameLogo } = useSettings();
+    const { homeStatusBar, gameLogo, homeWhatsNew, homeFriends, homeRecommended, homeCollections } = useSettings();
+    const hasFeed = homeWhatsNew || homeFriends || homeRecommended || homeCollections;
     const [resolved, setResolved] = useState(restore === null);
     const [restoring, setRestoring] = useState(restore !== null);
     const data = useHomeData(recentIndex);
@@ -152,13 +153,14 @@ export function SpotlightHome() {
         if (resolved || !restore || (gameIds.length === 0 && !data.recentsSettled)) return;
         if (gameIds.length > 0) {
             setRecentIndex(recentIndexFor(restore.recent, gameIds));
-            setZone(restore.zone);
+            const targetZone = !hasFeed && (restore.zone === 'tabs' || restore.zone === 'feed') ? 'recents' : restore.zone;
+            setZone(targetZone);
         } else {
             setRestoring(false);
         }
         setResolved(true);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [resolved, gameIds, data.recentsSettled]);
+    }, [resolved, gameIds, data.recentsSettled, hasFeed]);
     const rootRef = useRef<HTMLDivElement>(null);
     const cloud = useCloud(onLibrary ? null : data.focused?.appId ?? null);
     // The action button that last had focus. A button can leave while focused (the cloud circle when the next game
@@ -195,8 +197,14 @@ export function SpotlightHome() {
     const heldDirection = useRef<RepeatState | null>(null);
     const onRecentsButtonDown = (evt: GamepadEvent) => {
         try {
+            const btn = Number(evt?.detail?.button);
+            if (!hasFeed && btn === 10) {
+                evt.preventDefault?.();
+                evt.stopPropagation?.();
+                return;
+            }
             const isRepeat = Boolean(evt?.detail?.is_repeat);
-            const what = recentsButton(Number(evt?.detail?.button), focusIndex, data.games.length, isRepeat);
+            const what = recentsButton(btn, focusIndex, data.games.length, isRepeat);
             if (what === null) return;
             if (what === 'bumper') {
                 focusElement(actionButtons()[0], 'the Play pill');
@@ -321,7 +329,10 @@ export function SpotlightHome() {
     // Once the content is up: focus what was focused. The game cards or the actions here; the tabs and the feed are
     // the feed sheet's (their cards may still be loading), which says when it is done. Without a restore (a cold start
     // or a fresh visit) Home opens on the first game card, as Steam's own Home does.
-    const restoreZone: Zone = restore?.zone ?? 'recents';
+    const rawRestoreZone: Zone = restore?.zone ?? 'recents';
+    const restoreZone: Zone = !hasFeed && (rawRestoreZone === 'tabs' || rawRestoreZone === 'feed')
+        ? 'recents'
+        : rawRestoreZone;
     useEffect(() => {
         if (contentUp && !restore) focusElementSettled(recentsRef.current, 'the game cards');
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -333,12 +344,12 @@ export function SpotlightHome() {
         } else if (restoreZone === 'actions') {
             const buttons = actionButtons();
             focusElementSettled(buttons[Math.min(Math.max(0, restore?.action ?? 0), Math.max(0, buttons.length - 1))], 'the action');
-        } else if (game) {
+        } else if (hasFeed && game) {
             return; // the feed sheet finishes it
         }
         setRestoring(false);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [contentUp, restoring]);
+    }, [contentUp, restoring, hasFeed]);
 
     return (
         <div ref={rootRef} className="gh-root" style={{ '--glance-accent': data.accent, '--glance-accent-text': legibleAccent(data.accent), '--gh-dim': sheetUp ? DIM_SHEET : DIM_REST, '--gh-side': `${side}px`, '--gh-row': `${rowInset(side, tv)}px`, '--gh-pill': `${pillInset(tv)}px`, '--gh-bottom': `${legend}px`, '--gh-shift': `${stackShift(logicalHeight, legend, false)}px`, '--gh-raise': `${FEED_SHEET.raise + raiseDelta}px` } as CSSProperties}>
@@ -390,7 +401,8 @@ export function SpotlightHome() {
                                     </SourcePill>
                                 )}
                                 <RecentsRow games={data.games} selected={focusIndex} geometry={geometry} nav={recentsNav} />
-                                <FeedSheet
+                                {hasFeed && (
+                                    <FeedSheet
                                         data={data}
                                         raised={sheetUp}
                                         viewport={canvas.logicalWidth - feedViewportInset(side, tv)}
@@ -400,6 +412,7 @@ export function SpotlightHome() {
                                         restore={restore}
                                         onRestored={() => setRestoring(false)}
                                     />
+                                )}
                             </>
                         ) : showEmptyMessage(data.games.length, data.recentsSettled) ? (
                             // No recents once the boot-time retries are over: the Library action, so Home is never
